@@ -24,6 +24,7 @@ website/configs/
 # Docker / Runtime
 # ====================
 docker-compose.override.yml
+local.compose.yaml
 .env.local
 
 # Logs and temp
