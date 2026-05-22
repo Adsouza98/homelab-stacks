@@ -1,0 +1,238 @@
+services:
+  gluetun:
+    image: qmcgaw/gluetun:latest
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=openvpn
+      - OPENVPN_USER=${OPENVPN_USER}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+      - OPENVPN_CUSTOM_CONFIG=/gluetun/ovpn/Toronto.ovpn
+
+      # Keep your TLS timeout (still useful)
+      - OPENVPN_FLAGS=--tls-timeout 120
+
+      # Optional but recommended for ExpressVPN
+      # - OPENVPN_PROTOCOL=udp               # or tcp if you want to try TCP 443
+    ports:
+      - 9696:9696     # prowlarr
+      - 7878:7878     # radarr
+      - 8787:8787     # radarr-4k
+      - 8989:8989     # sonarr
+      - 9898:9898     # sonarr-4k
+      - 6767:6767     # bazarr
+      - 8191:8191     # flaresolverr
+      - 8080:8080     # sabnzbd
+      - 8112:8112     # deluge
+      - 6881:6881/udp # deluge - Torrenting
+      - 6881:6881/tcp # deluge - Torrenting
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/gluetun/:/gluetun
+    restart: unless-stopped
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    network_mode: service:gluetun  # This uses ExpressVPN’s network stack - 9696:9696
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=America/New_York
+      # Theme-park
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:prowlarr
+      - TP_THEME=organizr
+      - TP_ADDON=prowlarr-text-logo
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/prowlarr/:/config          # Config
+      - /mnt/Starlink/Movies/:/mnt/Starlink/Movies                                       # Movies
+      - /mnt/Starlink/Movies-4K/:/mnt/Starlink/Movies-4K                                 # Movies-4k
+      - /mnt/Starlink/TvShows/:/mnt/Starlink/TvShows                                     # TvShows
+      - /mnt/Starlink/TvShows-4K/:/mnt/Starlink/TvShows-4K                               # TvShows-4k
+      - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
+    restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 7878:7878
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=America/New_York
+      # Theme-park
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:radarr
+      - TP_THEME=organizr
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/radarr/:/config            # Config
+      - /mnt/Starlink/Movies/:/mnt/Starlink/Movies                                       # Movies
+      - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
+    restart: unless-stopped
+  radarr-4k:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr-4k
+    network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 8787:8787
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=America/New_York
+      # Theme-park
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:radarr
+      - TP_THEME=organizr
+      - TP_ADDON=radarr-4k-logo | radarr-4k-favicon
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/radarr-4k/:/config         # Config
+      - /mnt/Starlink/Movies-4K/:/mnt/Starlink/Movies-4K                                 # Movies-4k
+      - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
+    restart: unless-stopped
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 8989:8989
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=America/New_York
+      # Theme-park
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:sonarr
+      - TP_THEME=organizr
+      - TP_ADDON=sonarr-text-logo
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/sonarr/:/config            # Config
+      - /mnt/Starlink/TvShows/:/mnt/Starlink/TvShows                                     # TvShows
+      - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
+    restart: unless-stopped
+  sonarr-4k:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr-4k
+    network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 9898:9898
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=America/New_York
+      # Theme-park
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:sonarr
+      - TP_THEME=organizr
+      - TP_ADDON=sonarr-4k-logo | sonarr-4k-favicon
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/sonarr-4k/:/config         # Config
+      - /mnt/Starlink/TvShows-4K/:/mnt/Starlink/TvShows-4K                               # TvShows-4K
+      - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
+    restart: unless-stopped
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 6767:6767
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=America/New_York
+      # Theme-park
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:bazarr
+      - TP_THEME=organizr
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/bazarr/:/config            # Config
+      - /mnt/Starlink/Movies/:/mnt/Starlink/Movies                                       # Movies
+      - /mnt/Starlink/Movies-4K/:/mnt/Starlink/Movies-4K                                 # Movies-4k
+      - /mnt/Starlink/TvShows/:/mnt/Starlink/TvShows                                     # TvShows
+      - /mnt/Starlink/TvShows-4K/:/mnt/Starlink/TvShows-4K                               # TvShows-4K
+    restart: unless-stopped
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 8191:8191
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    environment:
+      - LOG_LEVEL=info
+      - LOG_HTML=false
+      - CAPTCHA_SOLVER=none
+      - TZ=America/New_York
+    restart: unless-stopped
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 8080:8080
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=America/New_York
+      # Theme-park
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:sabnzbd
+      - TP_THEME=organizr
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/sabnzbd/:/config           # Config
+      - /mnt/Starlink/Downloads/Sabnzbd/:/Downloads/Sabnzbd                              # Downloads
+    restart: unless-stopped
+  deluge:
+    image: lscr.io/linuxserver/deluge:latest
+    container_name: deluge
+    network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 8112:8112 | 6881:6881/udp | 6881:6881/tcp
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    restart: unless-stopped
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=America/New_York
+      # Theme-park
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:deluge
+      - TP_THEME=organizr
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/deluge/:/config            # Config
+      - /mnt/Starlink/Downloads/Deluge:/Downloads/Deluge/                                # Downloads
+  tautulli:
+    image: lscr.io/linuxserver/tautulli:latest
+    container_name: tautulli
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=America/New_York
+      # Theme-park
+      - DOCKER_MODS=ghcr.io/themepark-dev/theme.park:tautulli
+      - TP_THEME=organizr
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/tautulli/:/config          # Config
+    ports:
+      - 8181:8181
+    restart: unless-stopped
+  kometa:
+    image: lscr.io/linuxserver/kometa:latest
+    container_name: kometa
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=America/New_York
+      - KOMETA_CONFIG=/config/config.yml #optional
+      - KOMETA_TIME=03:00 #optional
+      - KOMETA_RUN=False #optional
+      - KOMETA_TEST=False #optional
+      - KOMETA_NO_MISSING=False #optional
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/kometa/:/config            # Config
+    restart: unless-stopped
+networks: {}
