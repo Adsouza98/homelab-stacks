@@ -1,0 +1,50 @@
+services:
+  muse:
+    image: ghcr.io/museofficial/muse:latest
+    restart: always
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/muse:/data
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - YOUTUBE_API_KEY=${YOUTUBE_API_KEY}
+      - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
+      - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
+
+  scrutiny:
+    container_name: scrutiny
+    image: ghcr.io/analogj/scrutiny:master-omnibus
+    cap_add:
+      - SYS_RAWIO
+    ports:
+      - "9090:8085" # webapp
+      - "8086:8086" # influxDB admin
+    volumes:
+      - /run/udev:/run/udev:ro
+      - ./config:/opt/scrutiny/config
+      - ./influxdb:/opt/scrutiny/influxdb
+    devices:
+      - "/dev/sda"
+      - "/dev/sdb"
+      - "/dev/sdc"
+      - "/dev/sdd"
+      - "/dev/sde"
+      - "/dev/sdf"
+      - "/dev/sdg"
+      - "/dev/sdh"
+      - "/dev/sdi"
+      - "/dev/sdj"
+      - "/dev/sdk"
+      - "/dev/sdm"
+  threadfin:
+    image: fyb3roptik/threadfin
+    container_name: threadfin
+    ports:
+      - 34400:34400
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=America/Toronto
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/threadfin/conf:/home/threadfin/conf
+      - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/threadfin/temp:/tmp/threadfin:rw
+    restart: unless-stopped
