@@ -1,0 +1,46 @@
+# ====================
+# Secrets & Environment
+# ====================
+.env
+*.env
+!.env.example
+arr-stack.env
+misc.env
+website.env
+*.stack.env
+
+# ====================
+# Config Directories - DO NOT COMMIT real app data
+# ====================
+**/configs/
+!**/configs/.gitkeep   # optional: allows empty folder tracking
+
+# Specific config folders (extra safety)
+arr-stack/configs/
+misc/configs/
+website/configs/
+
+# ====================
+# Docker / Runtime
+# ====================
+docker-compose.override.yml
+.env.local
+
+# Logs and temp
+*.log
+*.tmp
+*.temp
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Misc
+__pycache__/
+node_modules/
