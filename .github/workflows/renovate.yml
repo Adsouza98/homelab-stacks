@@ -19,4 +19,4 @@ jobs:
           token: ${{ secrets.RENOVATE_TOKEN }}
           renovate-version: latest
         env:
-          RENOVATE_AUTODISCOVER: "true"
+          RENOVATE_REPOSITORIES: "Adsouza98/homelab-stacks"
