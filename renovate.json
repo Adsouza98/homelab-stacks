@@ -1,7 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "repository": "Adsouza98/homelab-stacks",
   "extends": [
-    "config:base",
+    "config:recommended",
     ":dependencyDashboard",
     ":semanticCommits"
   ],
@@ -17,7 +18,7 @@
       "matchPackagePatterns": ["gluetun"],
       "groupName": "VPN (gluetun)",
       "groupSlug": "vpn-gluetun",
-      "schedule": ["every 4 weeks"],
+      "schedule": ["at 3am on Monday"],
       "automerge": false,
       "labels": ["vpn", "critical"]
     },
@@ -47,13 +48,8 @@
       "groupSlug": "misc-stack"
     }
   ],
-  "docker": {
-    "enabled": true,
-    "automerge": false
-  },
   "automerge": false,
-  "prConcurrentLimit": 4,
-  "prCreationLimit": 3,
+  "prConcurrentLimit": 5,
   "semanticCommits": "enabled",
   "commitMessagePrefix": "chore(deps):",
   "vulnerabilityAlerts": {
