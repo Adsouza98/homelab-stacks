@@ -18,7 +18,7 @@
       "matchPackagePatterns": ["gluetun"],
       "groupName": "VPN (gluetun)",
       "groupSlug": "vpn-gluetun",
-      "schedule": ["before 3am on Monday"],
+      "schedule": ["at 3am on Monday"],
       "automerge": false,
       "labels": ["vpn", "critical"]
     },
