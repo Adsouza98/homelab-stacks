@@ -1,6 +1,6 @@
 services:
   gluetun:
-    image: qmcgaw/gluetun:latest
+    image: qmcgaw/gluetun:v3.41.0
     container_name: gluetun
     cap_add:
       - NET_ADMIN
@@ -34,7 +34,7 @@ services:
       - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/gluetun/:/gluetun
     restart: unless-stopped
   prowlarr:
-    image: lscr.io/linuxserver/prowlarr:latest
+    image: lscr.io/linuxserver/prowlarr:2.3.5.5327-ls147
     container_name: prowlarr
     network_mode: service:gluetun  # This uses ExpressVPN’s network stack - 9696:9696
     depends_on:
@@ -57,7 +57,7 @@ services:
       - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
     restart: unless-stopped
   radarr:
-    image: lscr.io/linuxserver/radarr:latest
+    image: lscr.io/linuxserver/radarr:6.1.1.10360-ls303
     container_name: radarr
     network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 7878:7878
     depends_on:
@@ -76,7 +76,7 @@ services:
       - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
     restart: unless-stopped
   radarr-4k:
-    image: lscr.io/linuxserver/radarr:latest
+    image: lscr.io/linuxserver/radarr:6.1.1.10360-ls303
     container_name: radarr-4k
     network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 8787:8787
     depends_on:
@@ -96,7 +96,7 @@ services:
       - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
     restart: unless-stopped
   sonarr:
-    image: lscr.io/linuxserver/sonarr:latest
+    image: lscr.io/linuxserver/sonarr:4.0.17.2952-ls311
     container_name: sonarr
     network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 8989:8989
     depends_on:
@@ -116,7 +116,7 @@ services:
       - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
     restart: unless-stopped
   sonarr-4k:
-    image: lscr.io/linuxserver/sonarr:latest
+    image: lscr.io/linuxserver/sonarr:4.0.17.2952-ls311
     container_name: sonarr-4k
     network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 9898:9898
     depends_on:
@@ -136,7 +136,7 @@ services:
       - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
     restart: unless-stopped
   bazarr:
-    image: lscr.io/linuxserver/bazarr:latest
+    image: lscr.io/linuxserver/bazarr:v1.5.6-ls349
     container_name: bazarr
     network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 6767:6767
     depends_on:
@@ -157,7 +157,7 @@ services:
       - /mnt/Starlink/TvShows-4K/:/mnt/Starlink/TvShows-4K                               # TvShows-4K
     restart: unless-stopped
   flaresolverr:
-    image: ghcr.io/flaresolverr/flaresolverr:latest
+    image: ghcr.io/flaresolverr/flaresolverr:v3.4.6
     container_name: flaresolverr
     network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 8191:8191
     depends_on:
@@ -170,7 +170,7 @@ services:
       - TZ=America/New_York
     restart: unless-stopped
   sabnzbd:
-    image: lscr.io/linuxserver/sabnzbd:latest
+    image: lscr.io/linuxserver/sabnzbd:5.0.3-ls255
     container_name: sabnzbd
     network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 8080:8080
     depends_on:
@@ -188,7 +188,7 @@ services:
       - /mnt/Starlink/Downloads/Sabnzbd/:/Downloads/Sabnzbd                              # Downloads
     restart: unless-stopped
   deluge:
-    image: lscr.io/linuxserver/deluge:latest
+    image: lscr.io/linuxserver/deluge:2.2.0-ls377
     container_name: deluge
     network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 8112:8112 | 6881:6881/udp | 6881:6881/tcp
     depends_on:
@@ -206,7 +206,7 @@ services:
       - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/deluge/:/config            # Config
       - /mnt/Starlink/Downloads/Deluge:/Downloads/Deluge/                                # Downloads
   tautulli:
-    image: lscr.io/linuxserver/tautulli:latest
+    image: lscr.io/linuxserver/tautulli:v2.17.1-ls231
     container_name: tautulli
     environment:
       - PUID=568
@@ -221,7 +221,7 @@ services:
       - 8181:8181
     restart: unless-stopped
   kometa:
-    image: lscr.io/linuxserver/kometa:latest
+    image: lscr.io/linuxserver/kometa:v2.3.1-ls97
     container_name: kometa
     environment:
       - PUID=568

@@ -1,6 +1,7 @@
 services:
   muse:
-    image: ghcr.io/museofficial/muse:latest
+    container_name: muse
+    image: ghcr.io/museofficial/muse:2.11.4
     restart: always
     volumes:
       - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/muse:/data
@@ -12,7 +13,7 @@ services:
 
   scrutiny:
     container_name: scrutiny
-    image: ghcr.io/analogj/scrutiny:master-omnibus
+    image: ghcr.io/analogj/scrutiny:v0.9.1-omnibus
     cap_add:
       - SYS_RAWIO
     ports:
@@ -36,8 +37,8 @@ services:
       - "/dev/sdk"
       - "/dev/sdm"
   threadfin:
-    image: fyb3roptik/threadfin
     container_name: threadfin
+    image: fyb3roptik/threadfin:1.2.37
     ports:
       - 34400:34400
     environment:

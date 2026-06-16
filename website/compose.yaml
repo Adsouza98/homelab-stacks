@@ -15,7 +15,7 @@ services:
     ombi:
         container_name: ombi
         hostname: ombi
-        image: lscr.io/linuxserver/ombi:latest
+        image: lscr.io/linuxserver/ombi:v4.53.5-ls255
         restart: unless-stopped
         environment:
           - PUID=568
@@ -31,7 +31,7 @@ services:
             condition: service_started
     nginx-proxy-manager:
       container_name: nginx-proxy-manager
-      image: 'jc21/nginx-proxy-manager:latest'
+      image: 'jc21/nginx-proxy-manager:2.14.0'
       ports:
         - '80:80'
         - '82:81'
@@ -50,7 +50,7 @@ services:
         - /mnt/Starlink/Stacks/homelab-stacks/website/configs/nginx-proxy-manager/theme-park/98-themepark-npm/98-themepark:/etc/cont-init.d/99-themepark
     db:
       container_name: db
-      image: 'jc21/mariadb-aria:latest'
+      image: 'jc21/mariadb-aria:v10.11.5'
       environment:
         PUID: 568
         PGID: 568
@@ -61,8 +61,8 @@ services:
       volumes:
         - /mnt/Starlink/Stacks/homelab-stacks/website/configs/mysql:/var/lib/mysql
     mariadb-client:
-      image: mariadb:latest
       container_name: mariadb-client
+      image: mariadb:12.2.2
       command: sleep infinity         # keeps it running so you can exec into it
       networks:
         - default

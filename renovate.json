@@ -1,0 +1,62 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    ":dependencyDashboard",
+    ":semanticCommits"
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "groupName": "Docker images",
+      "groupSlug": "docker-images",
+      "schedule": ["before 3am on Monday"],
+      "minimumReleaseAge": "3 days"
+    },
+    {
+      "matchPackagePatterns": ["gluetun"],
+      "groupName": "VPN (gluetun)",
+      "groupSlug": "vpn-gluetun",
+      "schedule": ["every 4 weeks"],
+      "automerge": false,
+      "labels": ["vpn", "critical"]
+    },
+    {
+      "matchPackagePatterns": ["prowlarr|radarr|sonarr|bazarr|sabnzbd|deluge"],
+      "groupName": "Arr Stack - Downloaders",
+      "groupSlug": "arr-downloaders"
+    },
+    {
+      "matchPackagePatterns": ["tautulli|kometa"],
+      "groupName": "Arr Stack - Management",
+      "groupSlug": "arr-management"
+    },
+    {
+      "matchPackagePatterns": ["flaresolverr"],
+      "groupName": "Utility Services",
+      "groupSlug": "utility-services"
+    },
+    {
+      "matchPackagePatterns": ["organizr|ombi|nginx-proxy-manager|mariadb"],
+      "groupName": "Website Stack",
+      "groupSlug": "website-stack"
+    },
+    {
+      "matchPackagePatterns": ["muse|scrutiny|threadfin"],
+      "groupName": "Misc Stack",
+      "groupSlug": "misc-stack"
+    }
+  ],
+  "docker": {
+    "enabled": true,
+    "automerge": false
+  },
+  "automerge": false,
+  "prConcurrentLimit": 4,
+  "prCreationLimit": 3,
+  "semanticCommits": "enabled",
+  "commitMessagePrefix": "chore(deps):",
+  "vulnerabilityAlerts": {
+    "labels": ["security", "renovate"]
+  }
+}
