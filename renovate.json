@@ -15,37 +15,49 @@
       "minimumReleaseAge": "3 days"
     },
     {
-      "matchPackagePatterns": ["gluetun"],
       "groupName": "VPN (gluetun)",
       "groupSlug": "vpn-gluetun",
       "schedule": ["at 3am on Monday"],
       "automerge": false,
-      "labels": ["vpn", "critical"]
+      "labels": ["vpn", "critical"],
+      "matchPackageNames": [
+        "/gluetun/"
+      ]
     },
     {
-      "matchPackagePatterns": ["prowlarr|radarr|sonarr|bazarr|sabnzbd|deluge"],
       "groupName": "Arr Stack - Downloaders",
-      "groupSlug": "arr-downloaders"
+      "groupSlug": "arr-downloaders",
+      "matchPackageNames": [
+        "/prowlarr|radarr|sonarr|bazarr|sabnzbd|deluge/"
+      ]
     },
     {
-      "matchPackagePatterns": ["tautulli|kometa"],
       "groupName": "Arr Stack - Management",
-      "groupSlug": "arr-management"
+      "groupSlug": "arr-management",
+      "matchPackageNames": [
+        "/tautulli|kometa/"
+      ]
     },
     {
-      "matchPackagePatterns": ["flaresolverr"],
       "groupName": "Utility Services",
-      "groupSlug": "utility-services"
+      "groupSlug": "utility-services",
+      "matchPackageNames": [
+        "/flaresolverr/"
+      ]
     },
     {
-      "matchPackagePatterns": ["organizr|ombi|nginx-proxy-manager|mariadb"],
       "groupName": "Website Stack",
-      "groupSlug": "website-stack"
+      "groupSlug": "website-stack",
+      "matchPackageNames": [
+        "/organizr|ombi|nginx-proxy-manager|mariadb/"
+      ]
     },
     {
-      "matchPackagePatterns": ["muse|scrutiny|threadfin"],
       "groupName": "Misc Stack",
-      "groupSlug": "misc-stack"
+      "groupSlug": "misc-stack",
+      "matchPackageNames": [
+        "/muse|scrutiny|threadfin/"
+      ]
     }
   ],
   "automerge": false,
