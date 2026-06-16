@@ -7,7 +7,7 @@ A collection of utility and monitoring services for the homelab, including music
 ### Muse
 **Discord Music Bot** — Music streaming for Discord with support for YouTube and Spotify.
 
-- **Image**: `ghcr.io/museofficial/muse:latest`
+- **Image**: `ghcr.io/museofficial/muse:2.11.5`
 - **Restart Policy**: Always
 - **Config Path**: `/mnt/Starlink/Stacks/homelab-stacks/misc/configs/muse`
 
@@ -25,7 +25,7 @@ Ensure credentials are configured in `misc.env` or your environment before start
 ### Scrutiny
 **Disk Health Monitoring** — Real-time monitoring and tracking of disk health using SMART data.
 
-- **Image**: `ghcr.io/analogj/scrutiny:master-omnibus`
+- **Image**: `ghcr.io/analogj/scrutiny:v0.9.2-omnibus`
 - **Container Name**: `scrutiny`
 - **Restart Policy**: No automatic restart (manual restart required)
 
@@ -55,7 +55,7 @@ Visit `http://<host>:9090` to view disk health dashboards and alerts.
 ### Threadfin
 **IPTV/TV Streaming Server** — M3U/XMLTV-compatible streaming server for IPTV playlists and EPG.
 
-- **Image**: `fyb3roptik/threadfin`
+- **Image**: `fyb3roptik/threadfin:1.2.37`
 - **Container Name**: `threadfin`
 - **Restart Policy**: Unless stopped
 

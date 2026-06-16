@@ -28,7 +28,7 @@ Kometa (Direct) ─── Library Metadata
 ### Gluetun
 **VPN Provider & Network Router** — OpenVPN container that routes traffic through ExpressVPN. All *arr services and downloaders use this container's network stack.
 
-- **Image**: `qmcgaw/gluetun:latest`
+- **Image**: `qmcgaw/gluetun:v3.41.1`
 - **Container Name**: `gluetun`
 - **Restart Policy**: Unless stopped
 - **Capabilities**: `NET_ADMIN` (required for VPN tunnel)
@@ -56,18 +56,65 @@ Kometa (Direct) ─── Library Metadata
 | 8112 | Deluge Web UI |
 | 6881/udp, 6881/tcp | Deluge Torrenting |
 
-#### Volumes
-- `/gluetun/ovpn/` — OpenVPN config files
-
 #### Critical Note
 All services that use `network_mode: service:gluetun` depend on this container being healthy.
+
+---
+
+### Tautulli
+**Plex Library Monitoring** — Monitors Plex Media Server activity, usage statistics, and playback history.
+
+- **Image**: `lscr.io/linuxserver/tautulli:v2.17.1-ls231`
+- **Container Name**: `tautulli`
+- **Port**: `8181`
+- **Network**: Direct (not routed through VPN)
+- **Restart Policy**: Unless stopped
+
+#### Environment
+- `PUID=568`, `PGID=568` — Process user/group
+- `TZ=America/New_York` — Timezone
+- Theme-Park customization enabled (Organizr theme)
+
+#### Volumes
+- `/config` — Tautulli configuration and database
+
+#### Access
+`http://<host>:8181` — Plex monitoring interface
+
+---
+
+### Kometa
+**Library Metadata Manager** — Automatically manages and updates Plex library metadata, collections, and overlays.
+
+- **Image**: `lscr.io/linuxserver/kometa:v2.3.1-ls97`
+- **Container Name**: `kometa`
+- **Network**: Direct (not routed through VPN)
+- **Restart Policy**: Unless stopped
+
+#### Environment
+- `PUID=568`, `PGID=568` — Process user/group
+- `TZ=America/New_York` — Timezone
+- `KOMETA_CONFIG=/config/config.yml` — Configuration file path
+- `KOMETA_TIME=03:00` — Scheduled run time (3 AM)
+- `KOMETA_RUN=False` — Run on startup (disabled)
+- `KOMETA_TEST=False` — Test mode (disabled)
+- `KOMETA_NO_MISSING=False` — Include missing metadata (disabled)
+
+#### Volumes
+- `/config` — Kometa configuration and metadata files
+
+#### Notes
+Kometa runs on a scheduled basis (3 AM by default) to update Plex library metadata without requiring manual intervention.
+
+#### Volumes
+- `/gluetun/ovpn/` — OpenVPN config files
 
 ---
 
 ### Prowlarr
 **Indexer Manager** — Centralizes and manages search indexers (torrent sites, newsgroups, etc.) for the *arr services.
 
-- **Image**: `lscr.io/linuxserver/prowlarr:latest`
+- **Image**: `lscr.io/linuxserver/prowlarr:2.3.5.5327-ls147`
 - **Container Name**: `prowlarr`
 - **Port**: `9696`
 - **Network**: Uses Gluetun VPN
@@ -90,7 +137,7 @@ All services that use `network_mode: service:gluetun` depend on this container b
 ### Radarr
 **Movie Automation** — Automatically searches for, downloads, and organizes movies.
 
-- **Image**: `lscr.io/linuxserver/radarr:latest`
+- **Image**: `lscr.io/linuxserver/radarr:6.1.1.10360-ls303`
 - **Container Name**: `radarr`
 - **Port**: `7878`
 - **Network**: Uses Gluetun VPN
@@ -114,7 +161,7 @@ All services that use `network_mode: service:gluetun` depend on this container b
 ### Radarr-4K
 **4K Movie Automation** — Manages 4K quality movie downloads separately from standard quality.
 
-- **Image**: `lscr.io/linuxserver/radarr:latest`
+- **Image**: `lscr.io/linuxserver/radarr:6.1.1.10360-ls303`
 - **Container Name**: `radarr-4k`
 - **Port**: `8787`
 - **Network**: Uses Gluetun VPN
@@ -138,7 +185,7 @@ All services that use `network_mode: service:gluetun` depend on this container b
 ### Sonarr
 **TV Show Automation** — Automatically searches for, downloads, and organizes TV episodes.
 
-- **Image**: `lscr.io/linuxserver/sonarr:latest`
+- **Image**: `lscr.io/linuxserver/sonarr:4.0.17.2952-ls311`
 - **Container Name**: `sonarr`
 - **Port**: `8989`
 - **Network**: Uses Gluetun VPN
@@ -162,7 +209,7 @@ All services that use `network_mode: service:gluetun` depend on this container b
 ### Sonarr-4K
 **4K TV Show Automation** — Manages 4K quality TV episodes separately from standard quality.
 
-- **Image**: `lscr.io/linuxserver/sonarr:latest`
+- **Image**: `lscr.io/linuxserver/sonarr:4.0.17.2952-ls311`
 - **Container Name**: `sonarr-4k`
 - **Port**: `9898`
 - **Network**: Uses Gluetun VPN
@@ -186,7 +233,7 @@ All services that use `network_mode: service:gluetun` depend on this container b
 ### Bazarr
 **Subtitle Management** — Automatically finds and downloads subtitles for movies and TV shows.
 
-- **Image**: `lscr.io/linuxserver/bazarr:latest`
+- **Image**: `lscr.io/linuxserver/bazarr:v1.5.6-ls349`
 - **Container Name**: `bazarr`
 - **Port**: `6767`
 - **Network**: Uses Gluetun VPN
@@ -209,7 +256,7 @@ All services that use `network_mode: service:gluetun` depend on this container b
 ### Flaresolverr
 **Cloudflare Bypass** — Solves Cloudflare challenges for web scraping by indexers.
 
-- **Image**: `ghcr.io/flaresolverr/flaresolverr:latest`
+- **Image**: `ghcr.io/flaresolverr/flaresolverr:v3.5.0`
 - **Container Name**: `flaresolverr`
 - **Port**: `8191`
 - **Network**: Uses Gluetun VPN
@@ -229,7 +276,7 @@ Indexers use this internally to bypass Cloudflare protection.
 ### SABnzbd
 **Usenet Downloader** — Downloads from Usenet newsgroups using NZB files from Prowlarr.
 
-- **Image**: `lscr.io/linuxserver/sabnzbd:latest`
+- **Image**: `lscr.io/linuxserver/sabnzbd:5.0.3-ls255`
 - **Container Name**: `sabnzbd`
 - **Port**: `8080`
 - **Network**: Uses Gluetun VPN
@@ -252,7 +299,7 @@ Indexers use this internally to bypass Cloudflare protection.
 ### Deluge
 **Torrent Client** — Downloads torrents from Prowlarr with private IP through VPN.
 
-- **Image**: `lscr.io/linuxserver/deluge:latest`
+- **Image**: `lscr.io/linuxserver/deluge:2.2.0-ls377`
 - **Container Name**: `deluge`
 - **Ports**: `8112` (Web UI), `6881/udp`, `6881/tcp` (Torrenting)
 - **Network**: Uses Gluetun VPN
@@ -275,7 +322,7 @@ Indexers use this internally to bypass Cloudflare protection.
 ### Tautulli
 **Plex Monitoring & Analytics** — Monitors Plex Media Server usage and provides stats/notifications.
 
-- **Image**: `lscr.io/linuxserver/tautulli:latest`
+- **Image**: `lscr.io/linuxserver/tautulli:v2.17.1-ls231`
 - **Container Name**: `tautulli`
 - **Port**: `8181`
 - **Network**: Direct (no VPN) — connects to Plex server
@@ -297,7 +344,7 @@ Indexers use this internally to bypass Cloudflare protection.
 ### Kometa
 **Library Metadata & Automation** — Manages Plex library metadata, collections, and automation rules.
 
-- **Image**: `lscr.io/linuxserver/kometa:latest`
+- **Image**: `lscr.io/linuxserver/kometa:v2.3.1-ls97`
 - **Container Name**: `kometa`
 - **Network**: Direct (no VPN) — connects to Plex server
 - **Restart Policy**: Unless stopped

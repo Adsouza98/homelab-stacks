@@ -32,7 +32,7 @@ Visit `http://<host>:85` to access the Organizr dashboard.
 ### Ombi
 **Request/Demand Management** — User-friendly interface for requesting movies, TV shows, and music additions.
 
-- **Image**: `lscr.io/linuxserver/ombi:latest`
+- **Image**: `lscr.io/linuxserver/ombi:v4.53.10-ls255`
 - **Container Name**: `ombi`
 - **Restart Policy**: Unless stopped
 - **Dependency**: Requires database service to be running
@@ -59,7 +59,7 @@ Visit `http://<host>:3579` to access Ombi's request interface.
 ### Nginx Proxy Manager
 **Reverse Proxy & SSL Manager** — Manages reverse proxy rules, subdomains, and SSL certificates (Let's Encrypt).
 
-- **Image**: `jc21/nginx-proxy-manager:latest`
+- **Image**: `jc21/nginx-proxy-manager:2.15.1`
 - **Container Name**: `nginx-proxy-manager`
 - **Restart Policy**: No automatic restart
 
@@ -92,7 +92,7 @@ Visit `http://<host>:3579` to access Ombi's request interface.
 ### Database (MariaDB)
 **Database Backend** — Stores configuration for Nginx Proxy Manager and Ombi.
 
-- **Image**: `jc21/mariadb-aria:latest`
+- **Image**: `jc21/mariadb-aria:10.11.5`
 - **Container Name**: `db`
 - **Restart Policy**: No automatic restart
 
@@ -114,7 +114,7 @@ Visit `http://<host>:3579` to access Ombi's request interface.
 ### MariaDB Client
 **Database Utility** — Helper container for executing database commands and maintenance.
 
-- **Image**: `mariadb:latest`
+- **Image**: `mariadb:12.3.2`
 - **Container Name**: `mariadb-client`
 - **Restart Policy**: Unless stopped
 - **Command**: `sleep infinity` — Keeps container running for interactive access
