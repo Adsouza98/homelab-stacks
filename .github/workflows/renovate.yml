@@ -18,4 +18,5 @@ jobs:
           configurationFile: renovate.json
           token: ${{ secrets.RENOVATE_TOKEN }}
           renovate-version: latest
-          renovate-args: "--autodiscover=true"
+        env:
+          RENOVATE_AUTODISCOVER: "true"
