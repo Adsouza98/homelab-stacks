@@ -31,7 +31,7 @@ services:
             condition: service_started
     nginx-proxy-manager:
       container_name: nginx-proxy-manager
-      image: 'jc21/nginx-proxy-manager:2.14.0'
+      image: 'jc21/nginx-proxy-manager:2.15.1'
       ports:
         - '80:80'
         - '82:81'
@@ -62,7 +62,7 @@ services:
         - /mnt/Starlink/Stacks/homelab-stacks/website/configs/mysql:/var/lib/mysql
     mariadb-client:
       container_name: mariadb-client
-      image: mariadb:12.2.2
+      image: mariadb:12.3.2
       command: sleep infinity         # keeps it running so you can exec into it
       networks:
         - default
