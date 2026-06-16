@@ -50,7 +50,7 @@ services:
         - /mnt/Starlink/Stacks/homelab-stacks/website/configs/nginx-proxy-manager/theme-park/98-themepark-npm/98-themepark:/etc/cont-init.d/99-themepark
     db:
       container_name: db
-      image: 'jc21/mariadb-aria:v10.11.5'
+      image: 'jc21/mariadb-aria:10.11.5'
       environment:
         PUID: 568
         PGID: 568
