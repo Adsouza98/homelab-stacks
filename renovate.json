@@ -1,5 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "repository": "Adsouza98/homelab-stacks",
   "extends": [
     "config:recommended",
     ":dependencyDashboard",
