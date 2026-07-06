@@ -20,3 +20,4 @@ jobs:
           renovate-version: latest
         env:
           RENOVATE_REPOSITORIES: "Adsouza98/homelab-stacks"
+          RENOVATE_LOG_LEVEL: debug

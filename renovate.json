@@ -6,6 +6,26 @@
     ":dependencyDashboard",
     ":semanticCommits"
   ],
+  "enabledManagers": [
+    "docker-compose",
+    "github-actions",
+    "custom.regex"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update Docker images referenced in Compose files",
+      "managerFilePatterns": [
+        "/(^|/)(?:docker-)?compose[^/]*\\.ya?ml$/",
+        "/(^|/).*\\.compose\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "image:\\s*['\"]?(?<depName>[^'\"\\s]+?)(?::(?<currentValue>[^'\"\\s]+))['\"]?"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
+    }
+  ],
   "packageRules": [
     {
       "matchDatasources": ["docker"],
