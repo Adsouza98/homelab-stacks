@@ -206,7 +206,7 @@ services:
       - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/deluge/:/config            # Config
       - /mnt/Starlink/Downloads/Deluge:/Downloads/Deluge/                                # Downloads
   tautulli:
-    image: lscr.io/linuxserver/tautulli:v2.17.1-ls231
+    image: lscr.io/linuxserver/tautulli:v2.17.2-ls235
     container_name: tautulli
     environment:
       - PUID=568
@@ -221,7 +221,7 @@ services:
       - 8181:8181
     restart: unless-stopped
   kometa:
-    image: lscr.io/linuxserver/kometa:v2.3.1-ls97
+    image: lscr.io/linuxserver/kometa:v2.4.4-ls104
     container_name: kometa
     environment:
       - PUID=568
