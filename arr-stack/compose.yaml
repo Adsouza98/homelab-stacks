@@ -7,14 +7,17 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     environment:
-      - VPN_SERVICE_PROVIDER=expressvpn
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=openvpn
       - OPENVPN_USER=${OPENVPN_USER}
       - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
-      - SERVER_CITIES=Toronto,New York,New Jersey,Montreal
+      - OPENVPN_CUSTOM_CONFIG=/gluetun/ovpn/Toronto.ovpn
+
+      # Keep your TLS timeout (still useful)
+      - OPENVPN_FLAGS=--tls-timeout 120
+
       # Optional but recommended for ExpressVPN
-      - OPENVPN_PROTOCOL=udp
-      # Optional Update Server List every 20 days (480 hours) to avoid connection issues with ExpressVPN
-      - UPDATER_PERIOD=480h
+      # - OPENVPN_PROTOCOL=udp               # or tcp if you want to try TCP 443
     ports:
       - 9696:9696     # prowlarr
       - 7878:7878     # radarr
