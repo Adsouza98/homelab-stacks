@@ -14,14 +14,15 @@
       "description": "LinuxServer images use ls### build tags on lscr.io",
       "matchPackageNames": ["/^lscr\\.io\\/linuxserver\\//"],
       "versioning": "regex:^v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?:\\.(?<build>\\d+))?-ls(?<revision>\\d+)$",
-      "dockerMaxPages": 100
+      "minimumReleaseAgeBehaviour": "flexible"
     },
     {
       "matchDatasources": ["docker"],
       "groupName": "Docker images",
       "groupSlug": "docker-images",
       "schedule": ["every weekend"],
-      "minimumReleaseAge": "3 days"
+      "minimumReleaseAge": "3 days",
+      "minimumReleaseAgeBehaviour": "flexible"
     },
     {
       "groupName": "VPN (gluetun)",

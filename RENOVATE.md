@@ -21,7 +21,7 @@ This repository is configured to use [Renovate](https://www.renovatebot.com/) fo
 The current `renovate.json` includes:
 
 - **Docker Image Updates**: Detects and updates pinned Docker image versions in `compose.yaml` files via the built-in `docker-compose` manager
-- **LinuxServer (`lscr.io/linuxserver/*`)**: Custom regex versioning for tags like `2.3.5.5327-ls147` and `dockerMaxPages: 100` so Renovate can find stable `ls###` builds among thousands of arch/hash tags on the registry
+- **LinuxServer (`lscr.io/linuxserver/*`)**: Custom regex versioning for tags like `2.3.5.5327-ls147`; tag pagination uses `RENOVATE_DOCKER_MAX_PAGES: 100` in the GitHub Actions workflow (global-only setting, not valid in `renovate.json`)
 - **Grouping Strategy**: Updates are grouped by service category using package name matching:
   - **VPN (gluetun)**: Matches `/gluetun/` - labeled `vpn` and `critical` - updates at 3am on Monday
   - **Arr Stack Downloaders**: Matches prowlarr, radarr, sonarr, bazarr, sabnzbd, deluge
@@ -34,7 +34,7 @@ The current `renovate.json` includes:
   - Most Docker images: Every weekend (UTC), aligned with the Sunday 4 AM GitHub Actions workflow
   - Gluetun (VPN): Runs at 3am on Monday separately (critical service)
 - **Excluded from updates**: `organizr/organizr:latest` uses a floating tag; Renovate only updates pinned version tags (or digest-pinned images)
-- **Minimum Release Age**: Waits 3 days after a release before creating a PR (stability buffer)
+- **Minimum Release Age**: Waits 3 days when a release timestamp is available; `minimumReleaseAgeBehaviour: flexible` allows LinuxServer tags without registry timestamps to open PRs
 - **Auto-merge**: Disabled by default (all PRs require manual review)
 - **PR Limits**: 
   - Maximum 5 concurrent PRs
@@ -153,18 +153,19 @@ The dedicated package rule matches `lscr.io/linuxserver/*` and uses:
 {
   "matchPackageNames": ["/^lscr\\.io\\/linuxserver\\//"],
   "versioning": "regex:^v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?:\\.(?<build>\\d+))?-ls(?<revision>\\d+)$",
-  "dockerMaxPages": 100
+  "minimumReleaseAgeBehaviour": "flexible"
 }
 ```
 
-If updates still do not appear, check the Renovate workflow log for `Skipping lscr.io/linuxserver/...` lines (hash or date tags crowding the tag list) and increase `dockerMaxPages` further if needed.
+Tag pagination is set in `.github/workflows/renovate.yml` via `RENOVATE_DOCKER_MAX_PAGES: 100` (a global Renovate option). If updates still do not appear for a specific image, check the workflow log for `Skipping lscr.io/linuxserver/...` lines and increase that value.
 
 ## Troubleshooting
 
-1. **No compose image PRs, but GitHub Actions PRs work** — Usually missing LinuxServer versioning or tag pagination; confirm the package rule above is present in `renovate.json`.
-2. **Manual run finds 0 updates** — Run from **Actions → Renovate → Run workflow** on a weekend, or check the Dependency Dashboard after a successful lookup (Tuesday manual runs may be outside the weekend docker schedule).
-3. **Duplicate entries on the Dependency Dashboard** — Caused by enabling both `docker-compose` and `custom.regex` for the same files; only `docker-compose` should be enabled.
-4. **Organizr never updates** — Pin `organizr/organizr` to a version tag in `website/compose.yaml` instead of `latest`.
+1. **No compose image PRs, but GitHub Actions PRs work** — Usually missing LinuxServer versioning or tag pagination; confirm the package rule above is present in `renovate.json` and `RENOVATE_DOCKER_MAX_PAGES` is set in the workflow.
+2. **Updates detected but branches stay pending** — Log shows `internalChecksFilter was not met` when `minimumReleaseAgeBehaviour` is `timestamp-required` (from `config:recommended`) and Docker tags lack release timestamps; the LinuxServer and docker package rules set `flexible` to allow PRs.
+3. **Manual run finds 0 updates** — Run from **Actions → Renovate → Run workflow** on a weekend, or check the Dependency Dashboard after a successful lookup (Tuesday manual runs may be outside the weekend docker schedule).
+4. **Duplicate entries on the Dependency Dashboard** — Caused by enabling both `docker-compose` and `custom.regex` for the same files; only `docker-compose` should be enabled.
+5. **Organizr never updates** — Pin `organizr/organizr` to a version tag in `website/compose.yaml` instead of `latest`.
 
 ## Why These Settings?
 
@@ -181,9 +182,9 @@ Gluetun is your critical VPN provider for the Arr Stack. Running it on the same 
 - Gluetun still uses a separate Monday 3 AM window for critical VPN changes
 
 ### 3-Day Minimum Release Age
-- Allows critical bugs to be discovered in new versions
-- Prevents deploying unstable releases
-- Still gets updates quickly after proven stability
+- Applies when the registry provides a release timestamp (e.g. Docker Hub)
+- LinuxServer tags often lack timestamps; `flexible` behaviour still opens PRs for those images
+- Prevents deploying very fresh releases when timestamp data is available
 
 ### No Auto-merge
 - All updates require your manual review

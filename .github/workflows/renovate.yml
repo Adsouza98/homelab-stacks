@@ -21,3 +21,4 @@ jobs:
         env:
           RENOVATE_REPOSITORIES: "Adsouza98/homelab-stacks"
           RENOVATE_LOG_LEVEL: debug
+          RENOVATE_DOCKER_MAX_PAGES: 100
