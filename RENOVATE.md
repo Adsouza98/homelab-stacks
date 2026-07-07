@@ -31,7 +31,7 @@ The current `renovate.json` includes:
   - **Misc Stack**: Matches muse, scrutiny, threadfin
 
 - **Update Schedule**: 
-  - Most Docker images: Every weekend (UTC), aligned with the Sunday 4 AM GitHub Actions workflow
+  - Most Docker images: No in-config schedule — timing is controlled by the Sunday 4 AM GitHub Actions workflow (manual `workflow_dispatch` runs create PRs any day)
   - Gluetun (VPN): Runs at 3am on Monday separately (critical service)
 - **Excluded from updates**: `organizr/organizr:latest` uses a floating tag; Renovate only updates pinned version tags (or digest-pinned images)
 - **Minimum Release Age**: Waits 3 days when a release timestamp is available; `minimumReleaseAgeBehaviour: flexible` allows LinuxServer tags without registry timestamps to open PRs
@@ -163,9 +163,10 @@ Tag pagination is set in `.github/workflows/renovate.yml` via `RENOVATE_DOCKER_M
 
 1. **No compose image PRs, but GitHub Actions PRs work** — Usually missing LinuxServer versioning or tag pagination; confirm the package rule above is present in `renovate.json` and `RENOVATE_DOCKER_MAX_PAGES` is set in the workflow.
 2. **Updates detected but branches stay pending** — Log shows `internalChecksFilter was not met` when `minimumReleaseAgeBehaviour` is `timestamp-required` (from `config:recommended`) and Docker tags lack release timestamps; the LinuxServer and docker package rules set `flexible` to allow PRs.
-3. **Manual run finds 0 updates** — Run from **Actions → Renovate → Run workflow** on a weekend, or check the Dependency Dashboard after a successful lookup (Tuesday manual runs may be outside the weekend docker schedule).
-4. **Duplicate entries on the Dependency Dashboard** — Caused by enabling both `docker-compose` and `custom.regex` for the same files; only `docker-compose` should be enabled.
-5. **Organizr never updates** — Pin `organizr/organizr` to a version tag in `website/compose.yaml` instead of `latest`.
+3. **Updates found but `result: not-scheduled`** — A `schedule: ["every weekend"]` rule blocks PR creation on weekdays; remove it from the docker package rule and rely on the workflow cron for automated timing.
+4. **Manual run finds 0 updates** — Check the Dependency Dashboard after a successful lookup; confirm LinuxServer versioning and `RENOVATE_DOCKER_MAX_PAGES` are configured.
+5. **Duplicate entries on the Dependency Dashboard** — Caused by enabling both `docker-compose` and `custom.regex` for the same files; only `docker-compose` should be enabled.
+6. **Organizr never updates** — Pin `organizr/organizr` to a version tag in `website/compose.yaml` instead of `latest`.
 
 ## Why These Settings?
 
@@ -176,9 +177,9 @@ Gluetun is your critical VPN provider for the Arr Stack. Running it on the same 
 - Easier to test VPN changes independently
 - Reduces risk of accidentally merging critical infrastructure updates with other changes
 
-### Weekend Docker Updates
-- Aligned with the Sunday 4 AM UTC GitHub Actions workflow (`0 4 * * 0`)
-- Gives you the work week to review PRs before pulling images on the NAS
+### Docker Update Timing
+- Automated runs use the Sunday 4 AM UTC GitHub Actions workflow (`0 4 * * 0`)
+- No weekend-only schedule in `renovate.json`, so manual workflow triggers create PRs on any day
 - Gluetun still uses a separate Monday 3 AM window for critical VPN changes
 
 ### 3-Day Minimum Release Age

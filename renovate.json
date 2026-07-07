@@ -20,7 +20,6 @@
       "matchDatasources": ["docker"],
       "groupName": "Docker images",
       "groupSlug": "docker-images",
-      "schedule": ["every weekend"],
       "minimumReleaseAge": "3 days",
       "minimumReleaseAgeBehaviour": "flexible"
     },
