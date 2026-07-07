@@ -35,12 +35,12 @@ Kometa (Direct) ─── Library Metadata
 - **Device**: `/dev/net/tun` (TUN device for VPN)
 
 #### Environment
-- `VPN_SERVICE_PROVIDER=custom` — Using custom OpenVPN config
-- `VPN_TYPE=openvpn` — OpenVPN protocol
+- `VPN_SERVICE_PROVIDER=expressvpn` — Native ExpressVPN integration
 - `OPENVPN_USER` — ExpressVPN username (from env vars)
 - `OPENVPN_PASSWORD` — ExpressVPN password (from env vars)
-- `OPENVPN_CUSTOM_CONFIG=/gluetun/ovpn/Toronto.ovpn` — Toronto location
-- `OPENVPN_FLAGS=--tls-timeout 120` — TLS timeout configuration
+- `SERVER_CITIES=Toronto,New York,New Jersey,Montreal` — Available server cities for automatic selection
+- `OPENVPN_PROTOCOL=udp` — UDP protocol for faster performance
+- `UPDATER_PERIOD=480h` — Update server list every 20 days to maintain connection stability
 
 #### Ports (exposed by Gluetun for services)
 | Port | Service |
@@ -374,17 +374,12 @@ Runs automatically at 03:00 daily to update library metadata and create collecti
    OPENVPN_PASSWORD=your_expressvpn_password
    ```
 
-2. Ensure ExpressVPN config exists at:
-   ```
-   configs/gluetun/Toronto.ovpn
-   ```
-
-3. Start all services:
+2. Start all services:
    ```bash
    docker-compose up -d
    ```
 
-4. Access the services:
+3. Access the services:
    - Prowlarr: `http://<host>:9696` — Configure indexers first
    - Radarr: `http://<host>:7878` — Add movies
    - Sonarr: `http://<host>:8989` — Add TV shows
