@@ -20,7 +20,8 @@ This repository is configured to use [Renovate](https://www.renovatebot.com/) fo
 
 The current `renovate.json` includes:
 
-- **Docker Image Updates**: Detects and updates all Docker image versions in `compose.yaml` files
+- **Docker Image Updates**: Detects and updates pinned Docker image versions in `compose.yaml` files via the built-in `docker-compose` manager
+- **LinuxServer (`lscr.io/linuxserver/*`)**: Custom regex versioning for tags like `2.3.5.5327-ls147` and `dockerMaxPages: 100` so Renovate can find stable `ls###` builds among thousands of arch/hash tags on the registry
 - **Grouping Strategy**: Updates are grouped by service category using package name matching:
   - **VPN (gluetun)**: Matches `/gluetun/` - labeled `vpn` and `critical` - updates at 3am on Monday
   - **Arr Stack Downloaders**: Matches prowlarr, radarr, sonarr, bazarr, sabnzbd, deluge
@@ -30,8 +31,9 @@ The current `renovate.json` includes:
   - **Misc Stack**: Matches muse, scrutiny, threadfin
 
 - **Update Schedule**: 
-  - Most Docker images: Before 3am on Monday (UTC)
+  - Most Docker images: Every weekend (UTC), aligned with the Sunday 4 AM GitHub Actions workflow
   - Gluetun (VPN): Runs at 3am on Monday separately (critical service)
+- **Excluded from updates**: `organizr/organizr:latest` uses a floating tag; Renovate only updates pinned version tags (or digest-pinned images)
 - **Minimum Release Age**: Waits 3 days after a release before creating a PR (stability buffer)
 - **Auto-merge**: Disabled by default (all PRs require manual review)
 - **PR Limits**: 
@@ -136,9 +138,33 @@ This is normal and expected—no action needed on your part. The migrated config
 Renovate automatically detects images from:
 
 - Docker Hub
+- LinuxServer Container Registry (`lscr.io/linuxserver/*`) — requires the LinuxServer package rule in `renovate.json`
 - GitHub Container Registry (ghcr.io)
 - Quay.io
 - Private registries (with additional setup)
+
+## LinuxServer Image Tags
+
+Most Arr and website services use LinuxServer images with tags such as `6.1.1.10360-ls303` (app version + `ls` build number). Without a custom versioning rule, Renovate strips the `-ls###` suffix and cannot detect rebuild or patch updates.
+
+The dedicated package rule matches `lscr.io/linuxserver/*` and uses:
+
+```json
+{
+  "matchPackageNames": ["/^lscr\\.io\\/linuxserver\\//"],
+  "versioning": "regex:^v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?:\\.(?<build>\\d+))?-ls(?<revision>\\d+)$",
+  "dockerMaxPages": 100
+}
+```
+
+If updates still do not appear, check the Renovate workflow log for `Skipping lscr.io/linuxserver/...` lines (hash or date tags crowding the tag list) and increase `dockerMaxPages` further if needed.
+
+## Troubleshooting
+
+1. **No compose image PRs, but GitHub Actions PRs work** — Usually missing LinuxServer versioning or tag pagination; confirm the package rule above is present in `renovate.json`.
+2. **Manual run finds 0 updates** — Run from **Actions → Renovate → Run workflow** on a weekend, or check the Dependency Dashboard after a successful lookup (Tuesday manual runs may be outside the weekend docker schedule).
+3. **Duplicate entries on the Dependency Dashboard** — Caused by enabling both `docker-compose` and `custom.regex` for the same files; only `docker-compose` should be enabled.
+4. **Organizr never updates** — Pin `organizr/organizr` to a version tag in `website/compose.yaml` instead of `latest`.
 
 ## Why These Settings?
 
@@ -149,10 +175,10 @@ Gluetun is your critical VPN provider for the Arr Stack. Running it on the same 
 - Easier to test VPN changes independently
 - Reduces risk of accidentally merging critical infrastructure updates with other changes
 
-### Monday Morning Updates
-- Gives you the work week to monitor and react to any issues
-- Scheduled before business hours (3am UTC) to minimize service disruption
-- All other updates run before the critical VPN updates
+### Weekend Docker Updates
+- Aligned with the Sunday 4 AM UTC GitHub Actions workflow (`0 4 * * 0`)
+- Gives you the work week to review PRs before pulling images on the NAS
+- Gluetun still uses a separate Monday 3 AM window for critical VPN changes
 
 ### 3-Day Minimum Release Age
 - Allows critical bugs to be discovered in new versions
@@ -171,6 +197,9 @@ Gluetun is your critical VPN provider for the Arr Stack. Running it on the same 
 - Uses `find` command for flexibility
 
 ### Repository Restriction
-- `RENOVATE_REPOSITORIES` environment variable restricts scanning to only `homelab-stacks`
+- `RENOVATE_REPOSITORIES` environment variable in `.github/workflows/renovate.yml` restricts scanning to only `homelab-stacks`
 - Prevents Renovate from scanning all your other repositories
 - Keeps updates isolated to this infrastructure
+
+### Local `mcps/` Directory
+- The `mcps/` folder is gitignored — it holds local MCP tool descriptors for editors/agents, not repo configuration

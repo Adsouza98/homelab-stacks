@@ -32,9 +32,10 @@ local.compose.yaml
 *.tmp
 *.temp
 
-# IDE / Editor
+# IDE / Editor / local tooling
 .vscode/
 .idea/
+mcps/
 *.swp
 *~
 

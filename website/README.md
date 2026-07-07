@@ -7,7 +7,7 @@ A complete web service stack featuring a dashboard, request management system, a
 ### Organizr
 **Homelab Dashboard** — A customizable homepage to organize and access all homelab services.
 
-- **Image**: `organizr/organizr:latest`
+- **Image**: `organizr/organizr:latest` (floating tag — not updated by Renovate; pin a version tag to enable automated bumps)
 - **Container Name**: `organizr`
 - **Restart Policy**: Unless stopped
 

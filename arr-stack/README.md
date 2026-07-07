@@ -433,6 +433,7 @@ configs/
 
 ## Important Notes
 
+- **Image versions** in `compose.yaml` are updated by Renovate using LinuxServer `ls###` tag versioning (`lscr.io/linuxserver/*`); see [RENOVATE.md](../RENOVATE.md)
 - **Gluetun must be healthy** before any dependent services will start
 - **All VPN services will fail** if Gluetun is down or misconfigured
 - **Prowlarr acts as the indexer hub** — configure it first, then connect all *arr services to it

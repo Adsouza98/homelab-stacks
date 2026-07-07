@@ -333,6 +333,18 @@ done
 - **Storage**: 12× HDDs (8×12TB + 4×20TB)
 - **Network**: 10GbE interface + SAS HBA
 
+## Automated Updates (Renovate)
+
+Docker image and GitHub Actions versions in this repo are updated by [Renovate](https://www.renovatebot.com/) via the scheduled workflow in `.github/workflows/renovate.yml` (Sundays at 4 AM UTC, or on demand from the Actions tab).
+
+- **LinuxServer images** (`lscr.io/linuxserver/*`) use custom versioning for `ls###` build tags and extended Docker Hub tag pagination — see [RENOVATE.md](./RENOVATE.md).
+- **Compose files** are scanned by the built-in `docker-compose` manager only (no duplicate regex manager).
+- **Floating tags** such as `organizr/organizr:latest` are not updated automatically; pin a version tag in `website/compose.yaml` if you want Renovate to track Organizr.
+
+Open the **Dependency Dashboard** issue on GitHub to see pending updates or trigger a manual run.
+
+[→ Full Renovate configuration](./RENOVATE.md)
+
 ## Stack Maintenance
 
 ### Monthly Tasks
@@ -352,6 +364,8 @@ done
 
 ## Documentation
 
+- [Renovate / dependency updates](./RENOVATE.md) — LinuxServer tagging, schedules, workflows
+
 Each stack has detailed documentation:
 - [ARR Stack README](./arr-stack/README.md) — Media automation, VPN routing, setup workflow
 - [Website Stack README](./website/README.md) — Web services, SSL, database, dashboard
@@ -364,7 +378,7 @@ When modifying stacks:
 2. Update relevant README if ports/volumes change
 3. Update environment variable documentation
 4. Only commit `compose.yaml`, `.gitignore`, documentation, and `.gitattributes`
-5. Never commit `.env` or `configs/` directories
+5. Never commit `.env`, `configs/`, or local tooling paths such as `mcps/`
 
 ## Related Resources
 

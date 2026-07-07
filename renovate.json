@@ -1,6 +1,5 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "repository": "Adsouza98/homelab-stacks",
   "extends": [
     "config:recommended",
     ":dependencyDashboard",
@@ -8,30 +7,20 @@
   ],
   "enabledManagers": [
     "docker-compose",
-    "github-actions",
-    "custom.regex"
-  ],
-  "customManagers": [
-    {
-      "customType": "regex",
-      "description": "Update Docker images referenced in Compose files",
-      "managerFilePatterns": [
-        "/(^|/)(?:docker-)?compose[^/]*\\.ya?ml$/",
-        "/(^|/).*\\.compose\\.ya?ml$/"
-      ],
-      "matchStrings": [
-        "image:\\s*['\"]?(?<depName>[^'\"\\s]+?)(?::(?<currentValue>[^'\"\\s]+))['\"]?"
-      ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "docker"
-    }
+    "github-actions"
   ],
   "packageRules": [
+    {
+      "description": "LinuxServer images use ls### build tags on lscr.io",
+      "matchPackageNames": ["/^lscr\\.io\\/linuxserver\\//"],
+      "versioning": "regex:^v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?:\\.(?<build>\\d+))?-ls(?<revision>\\d+)$",
+      "dockerMaxPages": 100
+    },
     {
       "matchDatasources": ["docker"],
       "groupName": "Docker images",
       "groupSlug": "docker-images",
-      "schedule": ["before 3am on Monday"],
+      "schedule": ["every weekend"],
       "minimumReleaseAge": "3 days"
     },
     {
