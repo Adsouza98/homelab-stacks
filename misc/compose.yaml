@@ -1,7 +1,7 @@
 services:
   muse:
     container_name: muse
-    image: ghcr.io/museofficial/muse:2.11.5
+    image: ghcr.io/museofficial/muse:2.11.6
     restart: always
     volumes:
       - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/muse:/data
