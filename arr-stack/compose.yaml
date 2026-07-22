@@ -221,7 +221,7 @@ services:
       - 8181:8181
     restart: unless-stopped
   kometa:
-    image: lscr.io/linuxserver/kometa:v2.4.4-ls104
+    image: lscr.io/linuxserver/kometa:v2.4.5-ls108
     container_name: kometa
     environment:
       - PUID=568
