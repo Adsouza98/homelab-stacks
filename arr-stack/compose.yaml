@@ -57,7 +57,7 @@ services:
       - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
     restart: unless-stopped
   radarr:
-    image: lscr.io/linuxserver/radarr:6.3.0.10514-ls312
+    image: lscr.io/linuxserver/radarr:6.3.0.10514-ls313
     container_name: radarr
     network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 7878:7878
     depends_on:
@@ -76,7 +76,7 @@ services:
       - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
     restart: unless-stopped
   radarr-4k:
-    image: lscr.io/linuxserver/radarr:6.3.0.10514-ls312
+    image: lscr.io/linuxserver/radarr:6.3.0.10514-ls313
     container_name: radarr-4k
     network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 8787:8787
     depends_on:
