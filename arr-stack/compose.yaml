@@ -170,7 +170,7 @@ services:
       - TZ=America/New_York
     restart: unless-stopped
   sabnzbd:
-    image: lscr.io/linuxserver/sabnzbd:5.1.0-ls266
+    image: lscr.io/linuxserver/sabnzbd:5.1.1-ls268
     container_name: sabnzbd
     network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 8080:8080
     depends_on:
