@@ -35,7 +35,7 @@ Visit `http://<host>:85` to access the Organizr dashboard.
 - **Image**: `lscr.io/linuxserver/ombi:v4.53.10-ls255`
 - **Container Name**: `ombi`
 - **Restart Policy**: Unless stopped
-- **Dependency**: Requires database service to be running
+- **Dependency**: Requires the `mariadb` service to be healthy
 
 #### Ports
 | Port | Service |
@@ -90,7 +90,7 @@ Visit `http://<host>:3579` to access Ombi's request interface.
 ---
 
 ### Database (MariaDB)
-**Database Backend** — Stores configuration for Nginx Proxy Manager and Ombi.
+**Nginx Proxy Manager Database Backend** — Stores configuration for Nginx Proxy Manager.
 
 - **Image**: `jc21/mariadb-aria:10.11.5`
 - **Container Name**: `db`
@@ -111,6 +111,30 @@ Visit `http://<host>:3579` to access Ombi's request interface.
 
 ---
 
+### MariaDB (Ombi)
+**Ombi Database Backend** — Dedicated MariaDB instance for Ombi's database.
+
+- **Image**: `mariadb:11.4`
+- **Container Name**: `mariadb`
+- **Restart Policy**: Unless stopped
+
+#### Environment
+- `MYSQL_ROOT_PASSWORD` — Root password (from env vars)
+
+#### Volumes
+- `/mnt/Starlink/Stacks/homelab-stacks/website/configs/mariadb:/var/lib/mysql` — Ombi database files
+
+#### Configuration
+- UTF-8 (`utf8mb4`) character set and collation
+- Dynamic InnoDB row format
+- `max_allowed_packet=256M`
+- `innodb-buffer-pool-size=512M`
+- Healthcheck used by Ombi before startup
+
+The Ombi database is created manually after the MariaDB container is running.
+
+---
+
 ### MariaDB Client
 **Database Utility** — Helper container for executing database commands and maintenance.
 
@@ -122,7 +146,7 @@ Visit `http://<host>:3579` to access Ombi's request interface.
 #### Usage
 Exec into the container to run database queries:
 ```bash
-docker exec -it mariadb-client mysql -h db -u <user> -p <password>
+docker exec -it mariadb-client mysql -h mariadb -u <user> -p <password>
 ```
 
 ---
@@ -158,23 +182,24 @@ configs/
 │   ├── data/                    # Proxy rules and settings
 │   ├── letsencrypt/             # SSL certificates
 │   └── theme-park/98-themepark/ # Theme customization
-└── mysql/                       # MariaDB database files
+├── mysql/                        # Nginx Proxy Manager database files
+└── mariadb/                      # Ombi database files
 ```
 
-## Service Dependencies
+## Service Relationships
 
 ```
-Ombi ──┐
-       ├─→ MariaDB (db)
-NPM ───┘
+Ombi ──→ MariaDB (mariadb)
+NPM ──→ MariaDB (db)
 ```
 
-Both Ombi and Nginx Proxy Manager depend on the MariaDB database for configuration storage.
+Ombi and Nginx Proxy Manager use separate MariaDB services for their configuration storage. Ombi waits for the `mariadb` healthcheck to pass before starting; Nginx Proxy Manager uses `db` for its database connection.
 
 ## Notes
 
 - **Nginx Proxy Manager** runs as root (`PUID=0`) to bind to privileged ports (80, 443)
 - **Database credentials** must be configured in `website.env` before starting services
+- The `db` service is dedicated to Nginx Proxy Manager; the `mariadb` service is dedicated to Ombi
 - All data persists in mounted volumes for backup and recovery
 - SSL certificates are automatically managed by Let's Encrypt via Nginx Proxy Manager
 - The **MariaDB Client** container is optional but useful for database administration

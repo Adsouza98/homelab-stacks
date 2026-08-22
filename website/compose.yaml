@@ -27,8 +27,8 @@ services:
         ports:
           - 3579:3579
         depends_on:
-          db:
-            condition: service_started
+          mariadb:
+            condition: service_healthy
     nginx-proxy-manager:
       container_name: nginx-proxy-manager
       image: 'jc21/nginx-proxy-manager:2.15.1'
@@ -60,6 +60,27 @@ services:
         MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       volumes:
         - /mnt/Starlink/Stacks/homelab-stacks/website/configs/mysql:/var/lib/mysql
+    mariadb:
+      image: mariadb:11.4
+      container_name: mariadb
+      restart: unless-stopped
+      environment:
+        MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+        # We will create the ombi database manually
+      volumes:
+        - /mnt/Starlink/Stacks/homelab-stacks/website/configs/mariadb:/var/lib/mysql
+      command: >
+        --character-set-server=utf8mb4
+        --collation-server=utf8mb4_unicode_ci
+        --innodb-default-row-format=DYNAMIC
+        --max_allowed_packet=256M
+        --innodb-buffer-pool-size=512M
+      healthcheck:
+        test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+        start_period: 40s
     mariadb-client:
       container_name: mariadb-client
       image: mariadb:12.3.2
