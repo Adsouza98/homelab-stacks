@@ -27,8 +27,8 @@ services:
         ports:
           - 3579:3579
         depends_on:
-          db:
-            condition: service_started
+          mariadb:
+            condition: service_healthy
     nginx-proxy-manager:
       container_name: nginx-proxy-manager
       image: 'jc21/nginx-proxy-manager:2.15.1'
@@ -39,7 +39,7 @@ services:
       environment:
         PUID: 0
         PGID: 0
-        DB_MYSQL_HOST: "db"
+        DB_MYSQL_HOST: "mariadb"
         DB_MYSQL_PORT: 3306
         DB_MYSQL_USER: ${DB_USER}
         DB_MYSQL_PASSWORD: ${DB_PASSWORD}
@@ -48,22 +48,27 @@ services:
         - /mnt/Starlink/Stacks/homelab-stacks/website/configs/nginx-proxy-manager/data:/data
         - /mnt/Starlink/Stacks/homelab-stacks/website/configs/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
         - /mnt/Starlink/Stacks/homelab-stacks/website/configs/nginx-proxy-manager/theme-park/98-themepark-npm/98-themepark:/etc/cont-init.d/99-themepark
-    db:
-      container_name: db
-      image: 'jc21/mariadb-aria:10.11.5'
-      environment:
-        PUID: 568
-        PGID: 568
-        MYSQL_DATABASE: ${DB_NAME}
-        MYSQL_USER: ${DB_USER}
-        MYSQL_PASSWORD: ${DB_PASSWORD}
-        MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      volumes:
-        - /mnt/Starlink/Stacks/homelab-stacks/website/configs/mysql:/var/lib/mysql
-    mariadb-client:
-      container_name: mariadb-client
-      image: mariadb:12.3.2
-      command: sleep infinity         # keeps it running so you can exec into it
-      networks:
-        - default
+      depends_on:
+        mariadb:
+          condition: service_healthy
+    mariadb:
+      image: mariadb:11.4
+      container_name: mariadb
       restart: unless-stopped
+      environment:
+        MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+        # We will create the ombi database manually
+      volumes:
+        - /mnt/Starlink/Stacks/homelab-stacks/website/configs/mariadb:/var/lib/mysql
+      command: >
+        --character-set-server=utf8mb4
+        --collation-server=utf8mb4_unicode_ci
+        --innodb-default-row-format=DYNAMIC
+        --max_allowed_packet=256M
+        --innodb-buffer-pool-size=512M
+      healthcheck:
+        test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+        start_period: 40s
