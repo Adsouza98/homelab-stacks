@@ -117,40 +117,17 @@ Visit `http://<host>:3579` to access Ombi's request interface.
 
 ---
 
-### Legacy Database Service
-The `db` service using `jc21/mariadb-aria:10.11.5` remains defined in Compose but is no longer used by Nginx Proxy Manager. The active database is the `mariadb` service described above.
-
----
-
-### MariaDB Client
-**Database Utility** — Helper container for executing database commands and maintenance.
-
-- **Image**: `mariadb:12.3.2`
-- **Container Name**: `mariadb-client`
-- **Restart Policy**: Unless stopped
-- **Command**: `sleep infinity` — Keeps container running for interactive access
-
-#### Usage
-Exec into the container to run database queries:
-```bash
-docker exec -it mariadb-client mysql -h mariadb -u <user> -p <password>
-```
-
----
-
 ## Quick Start
 
 1. Configure environment variables in `website.env`:
    ```env
-   DB_NAME=<database_name>
-   DB_USER=<database_user>
    DB_PASSWORD=<database_password>
    DB_ROOT_PASSWORD=<root_password>
    ```
 
 2. Start all services:
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
 
 3. Access the services:
@@ -169,8 +146,7 @@ configs/
 │   ├── data/                    # Proxy rules and settings
 │   ├── letsencrypt/             # SSL certificates
 │   └── theme-park/98-themepark/ # Theme customization
-├── mysql/                        # Legacy database files
-└── mariadb/                      # Active Ombi and Nginx Proxy Manager database files
+└── mariadb/                      # Ombi and Nginx Proxy Manager database files
 ```
 
 ## Service Relationships
@@ -188,7 +164,5 @@ Ombi and Nginx Proxy Manager use the shared `mariadb` service. Both wait for its
 - **Nginx Proxy Manager** runs as root (`PUID=0`) to bind to privileged ports (80, 443)
 - **Database credentials** must be configured in `website.env` before starting services
 - Nginx Proxy Manager uses InnoDB tables in the active `mariadb` database
-- The legacy `db` service uses MariaDB Aria and is no longer the Nginx Proxy Manager database
 - All data persists in mounted volumes for backup and recovery
 - SSL certificates are automatically managed by Let's Encrypt via Nginx Proxy Manager
-- The **MariaDB Client** container is optional but useful for database administration

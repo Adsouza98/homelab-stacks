@@ -51,18 +51,6 @@ services:
       depends_on:
         mariadb:
           condition: service_healthy
-    db:
-      container_name: db
-      image: 'jc21/mariadb-aria:10.11.5'
-      environment:
-        PUID: 568
-        PGID: 568
-        MYSQL_DATABASE: ${DB_NAME}
-        MYSQL_USER: ${DB_USER}
-        MYSQL_PASSWORD: ${DB_PASSWORD}
-        MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      volumes:
-        - /mnt/Starlink/Stacks/homelab-stacks/website/configs/mysql:/var/lib/mysql
     mariadb:
       image: mariadb:11.4
       container_name: mariadb
@@ -84,10 +72,3 @@ services:
         timeout: 5s
         retries: 5
         start_period: 40s
-    mariadb-client:
-      container_name: mariadb-client
-      image: mariadb:12.3.2
-      command: sleep infinity         # keeps it running so you can exec into it
-      networks:
-        - default
-      restart: unless-stopped
