@@ -1,6 +1,6 @@
 # ARR Stack
 
-A complete media automation and management ecosystem with VPN-routed services for private downloading and indexing. This stack manages movies, TV shows, and their subtitles through automated workflows.
+A complete media automation and management ecosystem with VPN-routed services for private downloading and indexing. This stack manages movies, TV shows, games, and subtitles through automated workflows.
 
 ## Architecture
 
@@ -15,7 +15,8 @@ Gluetun (VPN) ─┬─ Prowlarr (Indexer)
                ├─ Bazarr (Subtitles)
                ├─ Flaresolverr (Anti-captcha)
                ├─ SABnzbd (Usenet)
-               └─ Deluge (Torrents)
+               ├─ Deluge (Torrents)
+               └─ Questarr (Games)
 
 Tautulli (Direct) ─ Plex Monitoring
 Kometa (Direct) ─── Library Metadata
@@ -55,6 +56,7 @@ Kometa (Direct) ─── Library Metadata
 | 8080 | SABnzbd |
 | 8112 | Deluge Web UI |
 | 6881/udp, 6881/tcp | Deluge Torrenting |
+| 5000 | Questarr |
 
 #### Critical Note
 All services that use `network_mode: service:gluetun` depend on this container being healthy.
@@ -319,6 +321,32 @@ Indexers use this internally to bypass Cloudflare protection.
 
 ---
 
+### Questarr
+**Game Automation** — Discovers, tracks, and automatically downloads games via IGDB metadata, Prowlarr indexers, and the existing Deluge/SABnzbd clients.
+
+- **Image**: `ghcr.io/doezer/questarr:v1.4.2`
+- **Container Name**: `questarr`
+- **Port**: `5000` (HTTP). `SSL_PORT` is set to `15000` and not published — Questarr's default HTTPS port is `9898`, which collides with Sonarr-4K on the shared Gluetun network namespace.
+- **Network**: Uses Gluetun VPN
+- **Depends On**: Gluetun (healthy)
+
+#### Environment
+- `PUID=568`, `PGID=568` — Process user/group (LinuxServer-style privilege drop)
+- `TZ=America/New_York` — Timezone
+- `PORT=5000` — HTTP listen port
+- `SSL_PORT=15000` — Unused HTTPS bind, moved off `9898`
+- `SQLITE_DB_PATH=/app/data/sqlite.db` — SQLite database path
+
+#### Volumes
+- `/app/data` — Questarr configuration and SQLite database
+- `/mnt/Starlink/Games/` — Game library (create this dataset on TrueNAS if it does not exist)
+- `/Downloads` — Download staging area (shared with Deluge/SABnzbd for post-processing)
+
+#### Access
+`http://<host>:5000` — Game management interface
+
+---
+
 ### Tautulli
 **Plex Monitoring & Analytics** — Monitors Plex Media Server usage and provides stats/notifications.
 
@@ -391,6 +419,7 @@ Runs automatically at 03:00 daily to update library metadata and create collecti
    - Bazarr: `http://<host>:6767` — Configure subtitles
    - Deluge: `http://<host>:8112` — Check downloads
    - SABnzbd: `http://<host>:8080` — Check downloads
+   - Questarr: `http://<host>:5000` — Add games
    - Tautulli: `http://<host>:8181` — View stats
    - Radarr-4K: `http://<host>:8787` — 4K movies
    - Sonarr-4K: `http://<host>:9898` — 4K shows
@@ -409,6 +438,7 @@ configs/
 ├── bazarr/             # Subtitle definitions and languages
 ├── sabnzbd/            # Usenet server configs
 ├── deluge/             # Torrent client settings
+├── questarr/           # Game profiles and SQLite DB
 ├── tautulli/           # Plex monitoring config
 └── kometa/             # Plex metadata templates
 ```
@@ -416,15 +446,15 @@ configs/
 ## Setup Workflow
 
 1. **Configure Prowlarr**: Add indexers (NZBGeek, 1337x, ThePirateBay, etc.)
-2. **Configure Radarr/Sonarr**: Set quality profiles, media paths, connect to Prowlarr
-3. **Configure Download Clients**: Radarr/Sonarr → SABnzbd/Deluge
+2. **Configure Radarr/Sonarr/Questarr**: Set quality profiles, media paths, connect to Prowlarr
+3. **Configure Download Clients**: Radarr/Sonarr/Questarr → SABnzbd/Deluge
 4. **Configure Bazarr**: Add to Radarr/Sonarr, set language preferences
-5. **Add Content**: Use Radarr/Sonarr UI to add movies/shows (triggers automated downloads)
+5. **Add Content**: Use Radarr/Sonarr/Questarr UI to add movies/shows/games (triggers automated downloads)
 6. **Monitor**: Check Tautulli for Plex usage stats
 
 ## Network Architecture
 
-- **VPN Services**: Prowlarr, Radarr, Sonarr, Bazarr, Flaresolverr, SABnzbd, Deluge
+- **VPN Services**: Prowlarr, Radarr, Sonarr, Bazarr, Flaresolverr, SABnzbd, Deluge, Questarr
   - All traffic routed through ExpressVPN (Toronto)
   - Private IP for torrent/usenet activities
 - **Direct Services**: Tautulli, Kometa
@@ -433,10 +463,12 @@ configs/
 
 ## Important Notes
 
-- **Image versions** in `compose.yaml` are updated by Renovate using LinuxServer `ls###` tag versioning (`lscr.io/linuxserver/*`); see [RENOVATE.md](../RENOVATE.md)
+- **Image versions** in `compose.yaml` are updated by Renovate; LinuxServer images use `ls###` tag versioning (`lscr.io/linuxserver/*`) and Questarr uses standard `vX.Y.Z` tags on GHCR. See [RENOVATE.md](../RENOVATE.md)
 - **Gluetun must be healthy** before any dependent services will start
 - **All VPN services will fail** if Gluetun is down or misconfigured
 - **Prowlarr acts as the indexer hub** — configure it first, then connect all *arr services to it
+- **Questarr uses IGDB** for game metadata and talks to Prowlarr plus Deluge/SABnzbd like the other *arr apps
+- **Create `/mnt/Starlink/Games`** on TrueNAS before the first start if that dataset does not already exist
 - **Separate 4K instances** allow quality-specific rules and profiles
 - **Usenet requires subscription** to newsgroups (e.g., Newshosting, Frugal Usenet)
 - **Indexers require configuration** — add custom indexers or presets in Prowlarr

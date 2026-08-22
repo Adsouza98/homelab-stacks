@@ -7,7 +7,7 @@ A complete Docker-based homelab infrastructure for media management, web service
 ### [ARR Stack](./arr-stack/) — Media Automation
 Complete media automation ecosystem with VPN-routed services for private downloading and indexing.
 
-**Services**: Prowlarr (indexer), Radarr/Radarr-4K (movies), Sonarr/Sonarr-4K (TV), Bazarr (subtitles), Deluge (torrents), SABnzbd (usenet), Flaresolverr (anti-captcha), Tautulli (Plex monitoring), Kometa (metadata)
+**Services**: Prowlarr (indexer), Radarr/Radarr-4K (movies), Sonarr/Sonarr-4K (TV), Bazarr (subtitles), Questarr (games), Deluge (torrents), SABnzbd (usenet), Flaresolverr (anti-captcha), Tautulli (Plex monitoring), Kometa (metadata)
 
 **Key Features**:
 - All download/indexing services route through VPN (Gluetun + ExpressVPN)
@@ -15,7 +15,7 @@ Complete media automation ecosystem with VPN-routed services for private downloa
 - Automatic subtitle management
 - Plex library monitoring and metadata automation
 
-**Ports**: 9696 (Prowlarr), 7878 (Radarr), 8989 (Sonarr), 8112 (Deluge), 8080 (SABnzbd), 8181 (Tautulli), + more
+**Ports**: 9696 (Prowlarr), 7878 (Radarr), 8989 (Sonarr), 5000 (Questarr), 8112 (Deluge), 8080 (SABnzbd), 8181 (Tautulli), + more
 
 [→ Read ARR Stack README](./arr-stack/README.md)
 
@@ -114,6 +114,7 @@ Collection of utility and monitoring services for the homelab.
    - Prowlarr: `http://<NAS-IP>:9696`
    - Radarr: `http://<NAS-IP>:7878`
    - Sonarr: `http://<NAS-IP>:8989`
+   - Questarr: `http://<NAS-IP>:5000`
    - Nginx Proxy Manager: `http://<NAS-IP>:82`
    - Tautulli: `http://<NAS-IP>:8181`
    - Scrutiny: `http://<NAS-IP>:9090`
@@ -188,6 +189,7 @@ SPOTIFY_CLIENT_SECRET=spotify_client_secret
 Gluetun (VPN) ──┬─ Prowlarr ──┐
                 ├─ Radarr    ├─ Download to /Downloads
                 ├─ Sonarr    │
+                ├─ Questarr  │
                 ├─ Deluge ───┘
                 └─ SABnzbd
 
@@ -202,7 +204,7 @@ Plex (external) ┬─ Tautulli
 
 ### VPN-Routed Services (Private IP via ExpressVPN/Toronto)
 - Prowlarr, Radarr, Radarr-4K, Sonarr, Sonarr-4K
-- Bazarr, Flaresolverr, Deluge, SABnzbd
+- Bazarr, Flaresolverr, Deluge, SABnzbd, Questarr
 - All torrent/usenet traffic is private and anonymized
 
 ### Direct Services (Local Network)
@@ -388,3 +390,4 @@ When modifying stacks:
 - [Prowlarr Docs](https://wiki.servarr.com/prowlarr)
 - [Radarr Docs](https://wiki.servarr.com/radarr)
 - [Sonarr Docs](https://wiki.servarr.com/sonarr)
+- [Questarr](https://github.com/doezer/questarr)
