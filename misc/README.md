@@ -81,7 +81,7 @@ Visit `http://<host>:34400` to configure playlists and access the IPTV interface
 ### TeslaCam Viewer
 **TeslaUSB clip browser** — Dark-theme web UI for Saved / Sentry / Recent clips archived to TrueNAS. Does not need the Pi online.
 
-- **Image**: `ghcr.io/adsouza98/teslacam-viewer:1.1.0`
+- **Image**: `ghcr.io/adsouza98/teslacam-viewer:1.1.2`
 - **Container Name**: `teslacam-viewer`
 - **Restart Policy**: Unless stopped
 
