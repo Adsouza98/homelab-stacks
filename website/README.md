@@ -75,9 +75,9 @@ Visit `http://<host>:3579` to access Ombi's request interface.
 - `PUID=0`, `PGID=0` — Root privileges for port binding
 - `DB_MYSQL_HOST=mariadb` — Database hostname
 - `DB_MYSQL_PORT=3306` — Database port
-- `DB_MYSQL_USER=npm` — Database user
+- `DB_MYSQL_USER` — Database user (from env vars)
 - `DB_MYSQL_PASSWORD` — Database password (from env vars)
-- `DB_MYSQL_NAME=npm` — Database name
+- `DB_MYSQL_NAME` — Database name (from env vars)
 
 #### Volumes
 - `/mnt/Starlink/Stacks/homelab-stacks/website/configs/nginx-proxy-manager/data:/data` — Proxy rules and configuration
@@ -109,7 +109,6 @@ Visit `http://<host>:3579` to access Ombi's request interface.
 - `max_allowed_packet=256M`
 - `innodb-buffer-pool-size=512M`
 - Healthcheck required by Ombi and Nginx Proxy Manager before startup
-- Nginx Proxy Manager uses the `npm` database and user
 - Nginx Proxy Manager tables have been converted from Aria to InnoDB
 
 #### Port
@@ -121,6 +120,8 @@ Visit `http://<host>:3579` to access Ombi's request interface.
 
 1. Configure environment variables in `website.env`:
    ```env
+   DB_NAME=<database_name>
+   DB_USER=<database_user>
    DB_PASSWORD=<database_password>
    DB_ROOT_PASSWORD=<root_password>
    ```
