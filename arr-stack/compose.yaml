@@ -30,6 +30,7 @@ services:
       - 8112:8112     # deluge
       - 6881:6881/udp # deluge - Torrenting
       - 6881:6881/tcp # deluge - Torrenting
+      - 5000:5000     # questarr
     volumes:
       - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/gluetun/:/gluetun
     restart: unless-stopped
@@ -205,6 +206,26 @@ services:
     volumes:
       - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/deluge/:/config            # Config
       - /mnt/Starlink/Downloads/Deluge:/Downloads/Deluge/                                # Downloads
+  questarr:
+    image: ghcr.io/doezer/questarr:v1.4.2
+    container_name: questarr
+    network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 5000:5000
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=America/New_York
+      - PORT=5000
+      # Default SSL_PORT is 9898, which collides with sonarr-4k on the shared Gluetun stack
+      - SSL_PORT=15000
+      - SQLITE_DB_PATH=/app/data/sqlite.db
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/questarr:/app/data          # Config
+      - /mnt/Starlink/Games/:/mnt/Starlink/Games                                         # Games
+      - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
+    restart: unless-stopped
   tautulli:
     image: lscr.io/linuxserver/tautulli:v2.17.2-ls235
     container_name: tautulli
