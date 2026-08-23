@@ -52,7 +52,7 @@ services:
 
   teslacam-viewer:
     container_name: teslacam-viewer
-    image: ghcr.io/adsouza98/teslacam-viewer:1.1.6
+    image: ghcr.io/adsouza98/teslacam-viewer:1.1.7
     restart: unless-stopped
     ports:
       - "${TESLACAM_PORT:-8000}:8000"
