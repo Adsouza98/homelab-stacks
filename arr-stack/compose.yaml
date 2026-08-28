@@ -227,7 +227,7 @@ services:
       - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
     restart: unless-stopped
   tautulli:
-    image: lscr.io/linuxserver/tautulli:v2.17.2-ls235
+    image: lscr.io/linuxserver/tautulli:v2.18.1-ls242
     container_name: tautulli
     environment:
       - PUID=568
