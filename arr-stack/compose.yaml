@@ -35,7 +35,7 @@ services:
       - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/gluetun/:/gluetun
     restart: unless-stopped
   prowlarr:
-    image: lscr.io/linuxserver/prowlarr:2.5.2.5491-ls156
+    image: lscr.io/linuxserver/prowlarr:2.5.2.5491-ls157
     container_name: prowlarr
     network_mode: service:gluetun  # This uses ExpressVPN’s network stack - 9696:9696
     depends_on:
@@ -58,7 +58,7 @@ services:
       - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
     restart: unless-stopped
   radarr:
-    image: lscr.io/linuxserver/radarr:6.3.0.10514-ls313
+    image: lscr.io/linuxserver/radarr:6.3.0.10514-ls314
     container_name: radarr
     network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 7878:7878
     depends_on:
@@ -77,7 +77,7 @@ services:
       - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
     restart: unless-stopped
   radarr-4k:
-    image: lscr.io/linuxserver/radarr:6.3.0.10514-ls313
+    image: lscr.io/linuxserver/radarr:6.3.0.10514-ls314
     container_name: radarr-4k
     network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 8787:8787
     depends_on:
@@ -171,7 +171,7 @@ services:
       - TZ=America/New_York
     restart: unless-stopped
   sabnzbd:
-    image: lscr.io/linuxserver/sabnzbd:5.1.1-ls268
+    image: lscr.io/linuxserver/sabnzbd:5.1.2-ls270
     container_name: sabnzbd
     network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 8080:8080
     depends_on:
