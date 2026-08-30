@@ -35,7 +35,7 @@ Visit `http://<host>:85` to access the Organizr dashboard.
 - **Image**: `lscr.io/linuxserver/ombi:v4.53.10-ls255`
 - **Container Name**: `ombi`
 - **Restart Policy**: Unless stopped
-- **Dependency**: Requires database service to be running
+- **Dependency**: Requires the `mariadb` service to be healthy
 
 #### Ports
 | Port | Service |
@@ -62,6 +62,7 @@ Visit `http://<host>:3579` to access Ombi's request interface.
 - **Image**: `jc21/nginx-proxy-manager:2.15.1`
 - **Container Name**: `nginx-proxy-manager`
 - **Restart Policy**: No automatic restart
+- **Dependency**: Requires the `mariadb` service to be healthy
 
 #### Ports
 | Port | Service |
@@ -72,7 +73,7 @@ Visit `http://<host>:3579` to access Ombi's request interface.
 
 #### Environment
 - `PUID=0`, `PGID=0` — Root privileges for port binding
-- `DB_MYSQL_HOST=db` — Database hostname
+- `DB_MYSQL_HOST=mariadb` — Database hostname
 - `DB_MYSQL_PORT=3306` — Database port
 - `DB_MYSQL_USER` — Database user (from env vars)
 - `DB_MYSQL_PASSWORD` — Database password (from env vars)
@@ -89,41 +90,29 @@ Visit `http://<host>:3579` to access Ombi's request interface.
 
 ---
 
-### Database (MariaDB)
-**Database Backend** — Stores configuration for Nginx Proxy Manager and Ombi.
+### MariaDB (Ombi and Nginx Proxy Manager)
+**Database Backend** — Dedicated MariaDB instance for Ombi and Nginx Proxy Manager, using InnoDB tables.
 
-- **Image**: `jc21/mariadb-aria:10.11.5`
-- **Container Name**: `db`
-- **Restart Policy**: No automatic restart
+- **Image**: `mariadb:11.4`
+- **Container Name**: `mariadb`
+- **Restart Policy**: Unless stopped
 
 #### Environment
-- `PUID=568`, `PGID=568` — Process user ID and group ID
-- `MYSQL_DATABASE` — Database name (from env vars)
-- `MYSQL_USER` — Database user (from env vars)
-- `MYSQL_PASSWORD` — Database password (from env vars)
 - `MYSQL_ROOT_PASSWORD` — Root password (from env vars)
 
 #### Volumes
-- `/mnt/Starlink/Stacks/homelab-stacks/website/configs/mysql:/var/lib/mysql` — Database files
+- `/mnt/Starlink/Stacks/homelab-stacks/website/configs/mariadb:/var/lib/mysql` — Database files
+
+#### Configuration
+- UTF-8 (`utf8mb4`) character set and collation
+- Dynamic InnoDB row format
+- `max_allowed_packet=256M`
+- `innodb-buffer-pool-size=512M`
+- Healthcheck required by Ombi and Nginx Proxy Manager before startup
+- Nginx Proxy Manager tables have been converted from Aria to InnoDB
 
 #### Port
-- `3306` (internal, not exposed) — MySQL/MariaDB port
-
----
-
-### MariaDB Client
-**Database Utility** — Helper container for executing database commands and maintenance.
-
-- **Image**: `mariadb:12.3.2`
-- **Container Name**: `mariadb-client`
-- **Restart Policy**: Unless stopped
-- **Command**: `sleep infinity` — Keeps container running for interactive access
-
-#### Usage
-Exec into the container to run database queries:
-```bash
-docker exec -it mariadb-client mysql -h db -u <user> -p <password>
-```
+- `3306` (internal, not exposed) — MariaDB port
 
 ---
 
@@ -139,7 +128,7 @@ docker exec -it mariadb-client mysql -h db -u <user> -p <password>
 
 2. Start all services:
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
 
 3. Access the services:
@@ -158,23 +147,23 @@ configs/
 │   ├── data/                    # Proxy rules and settings
 │   ├── letsencrypt/             # SSL certificates
 │   └── theme-park/98-themepark/ # Theme customization
-└── mysql/                       # MariaDB database files
+└── mariadb/                      # Ombi and Nginx Proxy Manager database files
 ```
 
-## Service Dependencies
+## Service Relationships
 
 ```
 Ombi ──┐
-       ├─→ MariaDB (db)
+       ├─→ MariaDB (mariadb)
 NPM ───┘
 ```
 
-Both Ombi and Nginx Proxy Manager depend on the MariaDB database for configuration storage.
+Ombi and Nginx Proxy Manager use the shared `mariadb` service. Both wait for its healthcheck to pass before starting.
 
 ## Notes
 
 - **Nginx Proxy Manager** runs as root (`PUID=0`) to bind to privileged ports (80, 443)
 - **Database credentials** must be configured in `website.env` before starting services
+- Nginx Proxy Manager uses InnoDB tables in the active `mariadb` database
 - All data persists in mounted volumes for backup and recovery
 - SSL certificates are automatically managed by Let's Encrypt via Nginx Proxy Manager
-- The **MariaDB Client** container is optional but useful for database administration

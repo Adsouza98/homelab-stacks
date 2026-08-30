@@ -37,7 +37,7 @@
       "groupName": "Arr Stack - Downloaders",
       "groupSlug": "arr-downloaders",
       "matchPackageNames": [
-        "/prowlarr|radarr|sonarr|bazarr|sabnzbd|deluge/"
+        "/prowlarr|radarr|sonarr|bazarr|sabnzbd|deluge|questarr/"
       ]
     },
     {

@@ -24,7 +24,7 @@ The current `renovate.json` includes:
 - **LinuxServer (`lscr.io/linuxserver/*`)**: Custom regex versioning for tags like `2.3.5.5327-ls147`; tag pagination uses `RENOVATE_DOCKER_MAX_PAGES: 100` in the GitHub Actions workflow (global-only setting, not valid in `renovate.json`)
 - **Grouping Strategy**: Updates are grouped by service category using package name matching:
   - **VPN (gluetun)**: Matches `/gluetun/` - labeled `vpn` and `critical` - updates at 3am on Monday
-  - **Arr Stack Downloaders**: Matches prowlarr, radarr, sonarr, bazarr, sabnzbd, deluge
+  - **Arr Stack Downloaders**: Matches prowlarr, radarr, sonarr, bazarr, sabnzbd, deluge, questarr
   - **Arr Stack Management**: Matches tautulli, kometa
   - **Utility Services**: Matches flaresolverr
   - **Website Stack**: Matches organizr, ombi, nginx-proxy-manager, mariadb
