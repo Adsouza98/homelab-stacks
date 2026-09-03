@@ -41,14 +41,15 @@ Complete web service stack featuring dashboard, request management, and reverse 
 ### [Misc Stack](./misc/) — Utilities & Monitoring
 Collection of utility and monitoring services for the homelab.
 
-**Services**: Muse (Discord music bot), Scrutiny (disk health monitoring), Threadfin (IPTV streaming)
+**Services**: Muse (Discord music bot), Groksito (Grok Discord bot, SuperGrok OAuth), Scrutiny (disk health monitoring), Threadfin (IPTV streaming)
 
 **Key Features**:
 - Discord bot for music streaming (YouTube + Spotify)
+- Discord bot for Grok chat / Imagine using SuperGrok OAuth (no xAI API credits)
 - Real-time disk health monitoring for all 12 drives
 - IPTV/M3U playlist server
 
-**Ports**: 9090 (Scrutiny), 34400 (Threadfin)
+**Ports**: 9090 (Scrutiny), 34400 (Threadfin), 8010 (Groksito dashboard)
 
 [→ Read Misc Stack README](./misc/README.md)
 
@@ -86,12 +87,14 @@ Collection of utility and monitoring services for the homelab.
    DB_ROOT_PASSWORD=your_secure_root_password
    EOF
    
-   # Misc Stack (if using Muse)
+   # Misc Stack (Muse + Groksito)
    cat > misc/misc.env << EOF
    DISCORD_TOKEN=your_discord_bot_token
    YOUTUBE_API_KEY=your_youtube_api_key
    SPOTIFY_CLIENT_ID=your_spotify_client_id
    SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
+   GROKSITO_DISCORD_BOT_TOKEN=your_groksito_discord_bot_token
+   GROKSITO_ALLOWED_GUILD_IDS=your_discord_server_id
    EOF
    ```
 
@@ -118,6 +121,7 @@ Collection of utility and monitoring services for the homelab.
    - Nginx Proxy Manager: `http://<NAS-IP>:82`
    - Tautulli: `http://<NAS-IP>:8181`
    - Scrutiny: `http://<NAS-IP>:9090`
+   - Groksito dashboard: `http://<NAS-IP>:8010`
 
 ## Directory Structure
 
@@ -145,6 +149,7 @@ homelab-stacks/
     ├── compose.yaml                   # Service definitions
     ├── local.compose.yaml             # Local overrides (not committed)
     ├── misc.env                       # Credentials (not committed)
+    ├── groksito.env.example           # Groksito Portainer env template
     ├── README.md                      # Stack documentation
     └── configs/                       # Service configs (not committed)
 ```
@@ -181,6 +186,8 @@ DISCORD_TOKEN=discord_bot_token
 YOUTUBE_API_KEY=youtube_api_key
 SPOTIFY_CLIENT_ID=spotify_client_id
 SPOTIFY_CLIENT_SECRET=spotify_client_secret
+GROKSITO_DISCORD_BOT_TOKEN=groksito_discord_bot_token
+GROKSITO_ALLOWED_GUILD_IDS=your_discord_server_id
 ```
 
 ## Service Dependencies
@@ -209,7 +216,7 @@ Plex (external) ┬─ Tautulli
 
 ### Direct Services (Local Network)
 - Organizr, Ombi, Nginx Proxy Manager, MariaDB
-- Tautulli, Kometa, Muse, Scrutiny, Threadfin
+- Tautulli, Kometa, Muse, Groksito, Scrutiny, Threadfin
 - Can be exposed via Nginx Proxy Manager with SSL
 
 ## Common Tasks
@@ -371,7 +378,7 @@ Open the **Dependency Dashboard** issue on GitHub to see pending updates or trig
 Each stack has detailed documentation:
 - [ARR Stack README](./arr-stack/README.md) — Media automation, VPN routing, setup workflow
 - [Website Stack README](./website/README.md) — Web services, SSL, database, dashboard
-- [Misc Stack README](./misc/README.md) — Utilities, monitoring, music bot
+- [Misc Stack README](./misc/README.md) — Utilities, monitoring, music bot, Grok Discord bot
 
 ## Contributing
 
