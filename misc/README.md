@@ -1,13 +1,13 @@
 # Misc Stack
 
-A collection of utility and monitoring services for the homelab, including music streaming, disk health monitoring, and IPTV streaming.
+A collection of utility and monitoring services for the homelab, including Discord bots, disk health monitoring, and IPTV streaming.
 
 ## Services
 
 ### Muse
 **Discord Music Bot** — Music streaming for Discord with support for YouTube and Spotify.
 
-- **Image**: `ghcr.io/museofficial/muse:2.11.5`
+- **Image**: `ghcr.io/museofficial/muse:2.11.7`
 - **Restart Policy**: Always
 - **Config Path**: `/mnt/Starlink/Stacks/homelab-stacks/misc/configs/muse`
 
@@ -18,14 +18,79 @@ A collection of utility and monitoring services for the homelab, including music
 - `SPOTIFY_CLIENT_SECRET` — Spotify application client secret
 
 #### Setup
-Ensure credentials are configured in `misc.env` or your environment before starting.
+Ensure credentials are configured in `misc.env` or Portainer stack env before starting.
+
+---
+
+### Groksito
+**Grok Discord bot** — Conversational Grok in Discord using SuperGrok OAuth (no xAI API credits).
+
+- **Images**:
+  - `ghcr.io/lupintic/groksito-discord-bot:0.2.0-pre.1` (bot)
+  - `ghcr.io/lupintic/groksito-discord-bot-web:0.2.0-pre.1` (LAN dashboard)
+- **Restart Policy**: Unless stopped
+- **Auth**: `GROK_AUTH_MODE=oauth` (SuperGrok / X Premium+ quota)
+- **Video generation**: off (`ENABLE_VIDEO_GENERATION=false`)
+- **Network**: LAN only. Do **not** attach to Gluetun / ExpressVPN.
+
+#### Ports
+| Port | Service |
+|------|---------|
+| 8010 | Groksito web dashboard (status / quotas / safe config) |
+
+#### Required Portainer environment variables
+- `GROKSITO_DISCORD_BOT_TOKEN` — Discord bot token for Groksito (**not** Muse's `DISCORD_TOKEN`)
+- `GROKSITO_ALLOWED_GUILD_IDS` — Discord server ID (snowflake). Restricts the bot to that guild.
+
+See `groksito.env.example`.
+
+#### Volumes
+- `/mnt/Starlink/Stacks/homelab-stacks/misc/configs/groksito/data` — conversation state
+- `/mnt/Starlink/Stacks/homelab-stacks/misc/configs/groksito/oauth` — SuperGrok OAuth tokens (`xai_oauth_tokens.json`)
+
+Create both folders before the first deploy (apps user `568` if you chown them).
+
+#### Discord application (one-time)
+1. [Discord Developer Portal](https://discord.com/developers/applications) → New Application.
+2. Bot → Reset Token → paste into `GROKSITO_DISCORD_BOT_TOKEN`.
+3. Privileged Gateway Intents → enable **Message Content Intent** only.
+4. Invite with Send Messages, Embed Links, Attach Files, Read History, Add Reactions, Slash Commands.
+5. Developer Mode → right-click server name → Copy Server ID → `GROKSITO_ALLOWED_GUILD_IDS`.
+6. Restrict the Groksito role: deny View Channel on every channel except `#commands`.
+
+#### SuperGrok OAuth (one-time, after the volume exists)
+The running container does not have a browser. From a laptop, tunnel then run a one-shot login:
+
+```bash
+ssh -L 56121:127.0.0.1:56121 USER@192.168.1.42
+```
+
+On the NAS (TrueNAS Shell or Portainer):
+
+```bash
+docker run --rm -p 56121:56121 \
+  -e GROK_AUTH_MODE=oauth \
+  -e GROK_OAUTH_TOKEN_FILE=/app/oauth/xai_oauth_tokens.json \
+  -e GROK_OAUTH_PORT=56121 \
+  -v /mnt/Starlink/Stacks/homelab-stacks/misc/configs/groksito/oauth:/app/oauth \
+  ghcr.io/lupintic/groksito-discord-bot:0.2.0-pre.1 \
+  --login-oauth --print-url-only
+```
+
+Open the printed URL on the laptop, sign in with the SuperGrok account, confirm `oauth/xai_oauth_tokens.json` exists, then restart `groksito`.
+
+OAuth is experimental. A 403 means that SuperGrok surface is blocked for the account.
+
+#### Access
+- Dashboard: `http://<host>:8010`
+- Bot: mention in `#commands` after it shows online
 
 ---
 
 ### Scrutiny
 **Disk Health Monitoring** — Real-time monitoring and tracking of disk health using SMART data.
 
-- **Image**: `ghcr.io/analogj/scrutiny:v0.9.2-omnibus`
+- **Image**: `ghcr.io/analogj/scrutiny:v0.9.3-omnibus`
 - **Container Name**: `scrutiny`
 - **Restart Policy**: No automatic restart (manual restart required)
 
@@ -80,15 +145,17 @@ Visit `http://<host>:34400` to configure playlists and access the IPTV interface
 
 ## Quick Start
 
-1. Configure environment variables in `misc.env` (Discord token, API keys)
-2. Start all services:
+1. Configure environment variables in Portainer (or `misc.env`): Discord tokens, API keys, Groksito guild ID
+2. Create Groksito data/oauth folders, complete SuperGrok OAuth once
+3. Start all services:
    ```bash
    docker-compose up -d
    ```
-3. Access the services:
+4. Access the services:
    - Scrutiny: `http://<host>:9090`
    - Threadfin: `http://<host>:34400`
-   - Muse: Runs as Discord bot (invite to server via Discord)
+   - Groksito dashboard: `http://<host>:8010`
+   - Muse / Groksito: Discord bots (invite each application separately)
 
 ## Configuration
 
@@ -96,9 +163,12 @@ All service configurations are stored in `./configs/`:
 ```
 configs/
 ├── muse/              # Muse bot data
-├── threadfin/
-│   ├── conf/          # Playlists and settings
-│   └── temp/          # Temporary cache
+├── groksito/
+│   ├── data/         # Groksito conversation state
+│   └── oauth/        # SuperGrok OAuth tokens (do not commit)
+└── threadfin/
+    ├── conf/          # Playlists and settings
+    └── temp/          # Temporary cache
 ```
 
 Scrutiny stores its configuration locally in `./config` and time-series data in `./influxdb`.
@@ -108,3 +178,5 @@ Scrutiny stores its configuration locally in `./config` and time-series data in 
 - **Scrutiny** requires privileged access (`SYS_RAWIO`) to read SMART data from all drives
 - All services persist their data in mounted volumes for configuration and state preservation
 - **Threadfin** and **Muse** use non-root user IDs (UID/GID 568) for security
+- **Groksito** and **Muse** are separate Discord applications with separate tokens
+- **Groksito** stays off the VPN stack so the Discord gateway remains stable

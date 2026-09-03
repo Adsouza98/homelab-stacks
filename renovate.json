@@ -65,7 +65,7 @@
       "groupName": "Misc Stack",
       "groupSlug": "misc-stack",
       "matchPackageNames": [
-        "/muse|scrutiny|threadfin/"
+        "/muse|scrutiny|threadfin|groksito/"
       ]
     }
   ],

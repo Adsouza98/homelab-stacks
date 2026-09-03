@@ -11,6 +11,46 @@ services:
       - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
       - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
 
+  groksito:
+    container_name: groksito
+    hostname: groksito
+    image: ghcr.io/lupintic/groksito-discord-bot:0.2.0-pre.1
+    restart: unless-stopped
+    # Discord gateway is outbound. Do NOT attach this to the VPN / Gluetun stack.
+    environment:
+      - TZ=America/Toronto
+      - DISCORD_BOT_TOKEN=${GROKSITO_DISCORD_BOT_TOKEN}
+      - ALLOWED_GUILD_IDS=${GROKSITO_ALLOWED_GUILD_IDS}
+      - GROK_AUTH_MODE=oauth
+      - GROK_MODEL=grok-4.3
+      - ENABLE_VIDEO_GENERATION=false
+      - TTS_DEFAULT_VOICE=eve
+      - TTS_DEFAULT_LANGUAGE=en
+      - DATA_DIR=/app/data
+      - LOG_LEVEL=INFO
+      - GROK_OAUTH_TOKEN_FILE=/app/oauth/xai_oauth_tokens.json
+      - GROK_OAUTH_PORT=56121
+      - FORCE_COLOR=1
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/groksito/data:/app/data
+      - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/groksito/oauth:/app/oauth
+
+  groksito-web:
+    container_name: groksito-web
+    hostname: groksito-web
+    image: ghcr.io/lupintic/groksito-discord-bot-web:0.2.0-pre.1
+    restart: unless-stopped
+    command: uvicorn web.main:app --host 0.0.0.0 --port 8010
+    ports:
+      - "8010:8010"
+    environment:
+      - TZ=America/Toronto
+      - DATA_DIR=/app/data
+      - LOG_LEVEL=INFO
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/groksito/data:/app/data
+      - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/groksito/oauth:/app/oauth
+
   scrutiny:
     container_name: scrutiny
     image: ghcr.io/analogj/scrutiny:v0.9.3-omnibus
