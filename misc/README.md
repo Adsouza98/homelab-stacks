@@ -59,25 +59,28 @@ Create both folders before the first deploy (apps user `568` if you chown them).
 6. Restrict the Groksito role: deny View Channel on every channel except `#commands`.
 
 #### SuperGrok OAuth (one-time, after the volume exists)
-The running container does not have a browser. From a laptop, tunnel then run a one-shot login:
+The GHCR image has `CMD ["groksito"]` and **no ENTRYPOINT**. Flags after the image name replace the binary unless you pass `groksito` first.
+
+Phone / Terminus (recommended — no SSH tunnel):
 
 ```bash
-ssh -L 56121:127.0.0.1:56121 USER@192.168.1.42
-```
-
-On the NAS (TrueNAS Shell or Portainer):
-
-```bash
-docker run --rm -p 56121:56121 \
+docker run --rm -it \
   -e GROK_AUTH_MODE=oauth \
   -e GROK_OAUTH_TOKEN_FILE=/app/oauth/xai_oauth_tokens.json \
   -e GROK_OAUTH_PORT=56121 \
   -v /mnt/Starlink/Stacks/homelab-stacks/misc/configs/groksito/oauth:/app/oauth \
   ghcr.io/lupintic/groksito-discord-bot:0.2.0-pre.1 \
-  --login-oauth --print-url-only
+  groksito --login-oauth --print-url-only --manual-paste
 ```
 
-Open the printed URL on the laptop, sign in with the SuperGrok account, confirm `oauth/xai_oauth_tokens.json` exists, then restart `groksito`.
+Open the printed URL in the phone browser, sign in with SuperGrok, then copy the address bar (`http://127.0.0.1:56121/callback?code=...` — the page will fail to load; that is expected) and paste it into the SSH session.
+
+Confirm tokens, then restart the bot:
+
+```bash
+ls -l /mnt/Starlink/Stacks/homelab-stacks/misc/configs/groksito/oauth/xai_oauth_tokens.json
+docker restart groksito
+```
 
 OAuth is experimental. A 403 means that SuperGrok surface is blocked for the account.
 
