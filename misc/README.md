@@ -81,6 +81,35 @@ Open the printed URL on the laptop, sign in with the SuperGrok account, confirm 
 
 OAuth is experimental. A 403 means that SuperGrok surface is blocked for the account.
 
+#### What Groksito can do
+
+Chat is the main interface. There is no `/ask` command. Mention `@Groksito` or reply to it in `#commands`.
+
+**Natural language (mention / reply)**
+- Chat with Grok (`grok-4.3`) using SuperGrok quota
+- Native vision: attach or link images, or reply to a message that has one
+- Generate an image: "generate an image of …" (Grok Imagine)
+- Edit an image: attach a picture and ask for changes
+- Read text aloud: "read this in voice" / "lee esto en voz alta"
+- Video generation is **disabled** in this stack (`ENABLE_VIDEO_GENERATION=false`)
+- Native web / X search when the model needs it
+- Can reply, react, or open a thread
+
+**Slash commands**
+| Command | What it does |
+|---------|----------------|
+| `/audio` | Generate TTS audio (voices: eve, ara, rex, sal, leo; language control) |
+| `/stmchr` | Fixed popular Steam character chart |
+| `/steamchart` | Custom Steam games chart |
+| `/topgames` | Live top games from Steam Charts |
+| `/topkorea` | Live top 10 Korean PC bang games (TheLog) |
+| `/korea50` | Weekly top 50 Korean games (Gamemeca) |
+
+**Context menu**
+- Right-click a message → Apps → **Leer en voz alta** — TTS of that message.
+
+**Rate limit:** 6 requests / 60 seconds per user (before LLM calls). Image/TTS limits come from the SuperGrok plan, not the bot.
+
 #### Access
 - Dashboard: `http://<host>:8010`
 - Bot: mention in `#commands` after it shows online
