@@ -24,6 +24,13 @@
       "minimumReleaseAgeBehaviour": "flexible"
     },
     {
+      "description": "Own TeslaCam Viewer image — bump immediately",
+      "matchPackageNames": ["ghcr.io/adsouza98/teslacam-viewer"],
+      "minimumReleaseAge": "0 days",
+      "groupName": "Misc Stack",
+      "groupSlug": "misc-stack"
+    },
+    {
       "groupName": "VPN (gluetun)",
       "groupSlug": "vpn-gluetun",
       "schedule": ["at 3am on Monday"],
@@ -65,7 +72,7 @@
       "groupName": "Misc Stack",
       "groupSlug": "misc-stack",
       "matchPackageNames": [
-        "/muse|scrutiny|threadfin/"
+        "/muse|scrutiny|threadfin|teslacam-viewer/"
       ]
     }
   ],
