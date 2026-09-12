@@ -158,7 +158,7 @@ services:
       - /mnt/Starlink/TvShows-4K/:/mnt/Starlink/TvShows-4K                               # TvShows-4K
     restart: unless-stopped
   flaresolverr:
-    image: ghcr.io/flaresolverr/flaresolverr:v3.5.0
+    image: ghcr.io/flaresolverr/flaresolverr:v3.5.2
     container_name: flaresolverr
     network_mode: service:gluetun    # This uses ExpressVPN’s network stack - 8191:8191
     depends_on:
