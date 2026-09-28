@@ -31,7 +31,7 @@ services:
             condition: service_healthy
     nginx-proxy-manager:
       container_name: nginx-proxy-manager
-      image: 'jc21/nginx-proxy-manager:2.15.1'
+      image: 'jc21/nginx-proxy-manager:2.16.0'
       ports:
         - '80:80'
         - '82:81'
