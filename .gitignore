@@ -12,11 +12,15 @@ website.env
 # ====================
 # Config Directories - DO NOT COMMIT real app data
 # ====================
-**/configs/
+**/configs/**
 !**/configs/.gitkeep   # optional: allows empty folder tracking
 
+# Track sanitized Kometa config only
+!arr-stack/configs/
+!arr-stack/configs/kometa/
+!arr-stack/configs/kometa/config.yml
+
 # Specific config folders (extra safety)
-arr-stack/configs/
 misc/configs/
 website/configs/
 

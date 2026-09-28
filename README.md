@@ -76,6 +76,15 @@ Collection of utility and monitoring services for the homelab.
    cat > arr-stack/arr-stack.env << EOF
    OPENVPN_USER=your_expressvpn_username
    OPENVPN_PASSWORD=your_expressvpn_password
+   KOMETA_PLEXTOKEN=your_plex_token
+   KOMETA_TMDBAPIKEY=your_tmdb_api_key
+   KOMETA_MDBLISTAPIKEY=your_mdblist_api_key
+   KOMETA_TAUTULLIAPIKEY=your_tautulli_api_key
+   KOMETA_RADARRTOKEN=your_radarr_api_key
+   KOMETA_RADARR4KTOKEN=your_radarr_4k_api_key
+   KOMETA_SONARRTOKEN=your_sonarr_api_key
+   KOMETA_TRAKTCLIENTID=your_trakt_client_id
+   KOMETA_TRAKTCLIENTSECRET=your_trakt_client_secret
    EOF
    
    # Website Stack
@@ -132,7 +141,7 @@ homelab-stacks/
 │   ├── local.compose.yaml             # Local overrides (not committed)
 │   ├── arr-stack.env                  # Credentials (not committed)
 │   ├── README.md                      # Stack documentation
-│   └── configs/                       # Service configs (not committed)
+│   └── configs/                       # Service configs (not committed, except Kometa config.yml)
 │
 ├── website/
 │   ├── compose.yaml                   # Service definitions
@@ -165,7 +174,18 @@ Each stack requires environment variables for credentials and API keys. These ar
 ```env
 OPENVPN_USER=expressvpn_username
 OPENVPN_PASSWORD=expressvpn_password
+KOMETA_PLEXTOKEN=plex_token
+KOMETA_TMDBAPIKEY=tmdb_api_key
+KOMETA_MDBLISTAPIKEY=mdblist_api_key
+KOMETA_TAUTULLIAPIKEY=tautulli_api_key
+KOMETA_RADARRTOKEN=radarr_api_key
+KOMETA_RADARR4KTOKEN=radarr_4k_api_key
+KOMETA_SONARRTOKEN=sonarr_api_key
+KOMETA_TRAKTCLIENTID=trakt_client_id
+KOMETA_TRAKTCLIENTSECRET=trakt_client_secret
 ```
+
+Kometa `config.yml` is committed with `<<SECRET>>` placeholders. Set the `KOMETA_*` variables in Portainer (or `arr-stack.env`). Leave `trakt.authorization` empty in git; complete Trakt PIN auth on the NAS so Kometa can refresh tokens locally — do not commit those writes.
 
 **Website Stack** (`website.env`):
 ```env
@@ -379,8 +399,8 @@ When modifying stacks:
 1. Test changes in `local.compose.yaml` first
 2. Update relevant README if ports/volumes change
 3. Update environment variable documentation
-4. Only commit `compose.yaml`, `.gitignore`, documentation, and `.gitattributes`
-5. Never commit `.env`, `configs/`, or local tooling paths such as `mcps/`
+4. Only commit `compose.yaml`, `.gitignore`, documentation, `.gitattributes`, and the sanitized Kometa `config.yml`
+5. Never commit `.env`, other `configs/` trees, or local tooling paths such as `mcps/`
 
 ## Related Resources
 
