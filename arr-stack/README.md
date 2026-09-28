@@ -97,16 +97,21 @@ All services that use `network_mode: service:gluetun` depend on this container b
 - `PUID=568`, `PGID=568` — Process user/group
 - `TZ=America/New_York` — Timezone
 - `KOMETA_CONFIG=/config/config.yml` — Configuration file path
-- `KOMETA_TIME=03:00` — Scheduled run time (3 AM)
+- `KOMETA_TIME=01:30` — Scheduled run time
 - `KOMETA_RUN=False` — Run on startup (disabled)
 - `KOMETA_TEST=False` — Test mode (disabled)
 - `KOMETA_NO_MISSING=False` — Include missing metadata (disabled)
+- `KOMETA_PLEXTOKEN`, `KOMETA_TMDBAPIKEY`, `KOMETA_MDBLISTAPIKEY`, `KOMETA_TAUTULLIAPIKEY` — API keys (from env vars)
+- `KOMETA_RADARRTOKEN`, `KOMETA_RADARR4KTOKEN`, `KOMETA_SONARRTOKEN` — *arr API tokens (from env vars)
+- `KOMETA_TRAKTCLIENTID`, `KOMETA_TRAKTCLIENTSECRET` — Trakt app credentials (from env vars)
+
+Placeholders in `configs/kometa/config.yml` use Kometa Config Secrets (`<<PLEXTOKEN>>`, no underscores). Set the matching `KOMETA_*` values in Portainer or `arr-stack.env`. Leave `trakt.authorization` empty in git; Kometa writes refreshed tokens into the live file after PIN auth. Do not commit those tokens and do not set `KOMETA_READ_ONLY_CONFIG`.
 
 #### Volumes
 - `/config` — Kometa configuration and metadata files
 
 #### Notes
-Kometa runs on a scheduled basis (3 AM by default) to update Plex library metadata without requiring manual intervention.
+Kometa runs on a scheduled basis (01:30 by default) to update Plex library metadata without requiring manual intervention.
 
 #### Volumes
 - `/gluetun/ovpn/` — OpenVPN config files
@@ -381,25 +386,35 @@ Indexers use this internally to bypass Cloudflare protection.
 - `PUID=568`, `PGID=568` — Process user/group
 - `TZ=America/New_York` — Timezone
 - `KOMETA_CONFIG=/config/config.yml` — Config file path
-- `KOMETA_TIME=03:00` — Daily run time (3 AM)
+- `KOMETA_TIME=01:30` — Daily run time
 - `KOMETA_RUN=False` — Manual execution only
 - `KOMETA_TEST=False` — Production mode
 - `KOMETA_NO_MISSING=False` — Include missing items
+- Kometa Config Secrets (`KOMETA_PLEXTOKEN`, `KOMETA_TMDBAPIKEY`, `KOMETA_MDBLISTAPIKEY`, `KOMETA_TAUTULLIAPIKEY`, `KOMETA_RADARRTOKEN`, `KOMETA_RADARR4KTOKEN`, `KOMETA_SONARRTOKEN`, `KOMETA_TRAKTCLIENTID`, `KOMETA_TRAKTCLIENTSECRET`) — from Portainer / `arr-stack.env`
 
 #### Volumes
-- `/config` — Kometa configuration and templates
+- `/config` — Kometa configuration and templates (`config.yml` is tracked in git; assets, cache, and Trakt refresh tokens stay local)
 
 #### Usage
-Runs automatically at 03:00 daily to update library metadata and create collections in Plex.
+Runs automatically at 01:30 daily to update library metadata and create collections in Plex. After deploy, complete Trakt PIN auth once so Kometa can write `trakt.authorization` on the NAS; never commit those refreshed tokens.
 
 ---
 
 ## Quick Start
 
-1. Configure environment variables in `arr-stack.env`:
+1. Configure environment variables in `arr-stack.env` (or Portainer stack env):
    ```env
    OPENVPN_USER=your_expressvpn_username
    OPENVPN_PASSWORD=your_expressvpn_password
+   KOMETA_PLEXTOKEN=your_plex_token
+   KOMETA_TMDBAPIKEY=your_tmdb_api_key
+   KOMETA_MDBLISTAPIKEY=your_mdblist_api_key
+   KOMETA_TAUTULLIAPIKEY=your_tautulli_api_key
+   KOMETA_RADARRTOKEN=your_radarr_api_key
+   KOMETA_RADARR4KTOKEN=your_radarr_4k_api_key
+   KOMETA_SONARRTOKEN=your_sonarr_api_key
+   KOMETA_TRAKTCLIENTID=your_trakt_client_id
+   KOMETA_TRAKTCLIENTSECRET=your_trakt_client_secret
    ```
 
 2. Ensure ExpressVPN config exists at:
@@ -426,7 +441,7 @@ Runs automatically at 03:00 daily to update library metadata and create collecti
 
 ## Configuration
 
-Service configurations are stored in `./configs/`:
+Service configurations are stored in `./configs/` (gitignored except the sanitized Kometa `config.yml`):
 ```
 configs/
 ├── gluetun/            # VPN config and .ovpn files
@@ -440,7 +455,7 @@ configs/
 ├── deluge/             # Torrent client settings
 ├── questarr/           # Game profiles and SQLite DB
 ├── tautulli/           # Plex monitoring config
-└── kometa/             # Plex metadata templates
+└── kometa/             # Plex metadata templates (config.yml committed; no secrets)
 ```
 
 ## Setup Workflow

@@ -1,0 +1,600 @@
+libraries: # This is called out once within the config.yml file
+  Movies: # These are names of libraries in your Plex
+    collection_files:
+    - default: basic   # 1 - Newly Released
+      filters:
+        original_language: en
+      template_variables:
+        collection_section: 1
+    - default: imdb   # 2 - IMDb Popular, IMDb Top 250
+      filters:
+        original_language: en
+      template_variables:
+        use_lowest: false
+        collection_section: 2
+    - default: bafta   # 3 - BAFTA Best Films
+      template_variables:
+        use_year_collections: false
+        radarr_add_missing: true
+        collection_order: release.desc
+        collection_section: 3
+    - default: oscars   # 4 - Oscars Best Picture Winners, Oscars Best Director Winners
+      template_variables:
+        use_year_collections: false
+        radarr_add_missing: true
+        collection_order: release.desc
+        order_best_picture: 1
+        order_best_director: 2
+        collection_section: 4
+    - default: director   # 5 - Collection of Movies by Director
+      template_variables:
+        use_separator: false
+        collection_section: 5
+        name_format: <<key_name>> Collection
+        include:
+        - Christopher Nolan
+        - David Fincher
+        - James Cameron
+        - Martin Scorsese
+        - Quentin Tarantino
+        - Ridley Scott
+        - Steven Spielberg
+    - default: seasonal   # 6 - Collection of Movies for Seasonal Events
+      filters:
+        original_language: en
+      template_variables:
+        use_separator: false
+        emoji: ''
+        radarr_add_missing: false
+        collection_section: 6
+        exclude:
+        - lgbtq     # LGBTQ+ Pride Month
+        - black_history     # Black History Month
+        - latinx     # Latinx Heritage Month
+        - women     # Women's History Month
+        - aapi     # AAPI Heritage Month
+        - disabilities     # Disabilities Awareness Month
+    - default: genre   # 7 - Collection of Movies by Genre
+      filters:
+        original_language: en
+      template_variables:
+        use_separator: false
+        collection_section: 7
+        exclude:
+        - Children
+        - Family
+        - Fantasy
+        - Film Noir
+        - Food
+        - Game
+        - Indie
+        - Martial Arts
+        - Music
+        - Musical
+        - News
+        - Reality
+        - Romance
+        - Short
+        - Sport
+        - Talk Show
+        - Travel
+        - TV Movie
+        append_addons:
+          Horror:
+          - Thriller
+          - Suspense
+    - default: universe   # 8 - Collection of Moivie Universes
+      template_variables:
+        use_separator: false
+        collection_order: release
+        collection_section: 8
+        radarr_add_missing: false
+        radarr_ignore_cache: true
+        exclude:
+        - middle
+        - mummy
+        - askew
+        - trek
+        - dca
+        - dcu
+        append_data:
+          monster: MonsterVerse
+          bond: 007 - James Bond
+          dcau: DC Animated Movie Universe
+          dcao: DC Animated Originals
+          dcuo: DC Original Films
+          dceu: DC Extended Universe
+          dcstudios: DC Universe Studios
+          spidey: Spider-Man Universe
+          mcu1: MCU - Phase 1
+          mcu2: MCU - Phase 2
+          mcu3: MCU - Phase 3
+          mcu4: MCU - Phase 4
+          mcu5: MCU - Phase 5
+          pixar: Pixar Collection
+          disney: Disney Live-Action Collection
+          disa: Disney Animation Collection
+          dream: Dreamworks Animation Collection
+          scooby: Scooby-Doo Collection
+          poki: Pokémon Collection
+          george: George Collection
+          jrchange: JuniorChange Collection
+            # MonsterVerse
+        trakt_list_monster: https://trakt.tv/users/juniorchange/lists/monsterverse
+        url_poster_monster: https://theposterdb.com/api/assets/138821
+            # 007 - James Bond
+        trakt_list_bond: https://trakt.tv/users/hdlists/lists/james-bond-movies
+        url_poster_bond: https://theposterdb.com/api/assets/201230
+            # Pixar Collection
+        trakt_list_pixar: https://trakt.tv/users/juniorchange/lists/pixar
+        url_poster_pixar: https://theposterdb.com/api/assets/2190
+            # Disney Live-Action Collection
+        trakt_list_disney: https://trakt.tv/users/donxy/lists/disney-live-action-movies
+        url_poster_disney: https://theposterdb.com/api/assets/200068
+            # Disney Animation Collection
+        trakt_list_disa: https://trakt.tv/users/juniorchange/lists/disney-animated-movies
+        url_poster_disa: https://theposterdb.com/api/assets/11845
+            # Dreamworks Animation Collection
+        trakt_list_dream: https://trakt.tv/users/tehrobot/lists/dreamworks
+        url_poster_dream: https://theposterdb.com/api/assets/57647
+            # Scooby-Doo Collection
+        trakt_list_scooby: https://trakt.tv/users/duxast33/lists/scooby-doo
+        url_poster_scooby: https://theposterdb.com/api/assets/5898
+        radarr_add_missing_scooby: false
+            # Spider-Man Universe
+        trakt_list_spidey: https://trakt.tv/users/juniorchange/lists/spider-verse
+        url_poster_spidey: https://theposterdb.com/api/assets/52965
+            # DC Animated Movie Universe
+        trakt_list_dcau: https://trakt.tv/users/juniorchange/lists/dc-animated-movie-universe
+        url_poster_dcau: https://theposterdb.com/api/assets/52947
+            # DC Animated Originals
+        trakt_list_dcao: https://trakt.tv/users/juniorchange/lists/dc-animated-originals
+        url_poster_dcao: https://theposterdb.com/api/assets/72333
+            # DC Original Films
+        trakt_list_dcuo: https://trakt.tv/users/juniorchange/lists/dc-original-films
+        url_poster_dcuo: https://theposterdb.com/api/assets/53777
+            # DC Extended Universe
+        trakt_list_dceu: https://trakt.tv/users/juniorchange/lists/dc-extended-universe
+        url_poster_dceu: https://theposterdb.com/api/assets/15280
+            # DC Universe Studios
+        trakt_list_dcstudios: https://trakt.tv/users/juniorchange/lists/dc-universe
+        url_poster_dcstudios: https://theposterdb.com/api/assets/731902
+            # Marvel Cinematic Universe - Default
+        url_poster_mcu: https://theposterdb.com/api/assets/5912
+            # MCU - Phase 1
+        trakt_list_mcu1: https://trakt.tv/users/juniorchange/lists/mcu-phase-1
+        url_poster_mcu1: https://theposterdb.com/api/assets/324669
+            # MCU - Phase 2
+        trakt_list_mcu2: https://trakt.tv/users/juniorchange/lists/mcu-phase-2
+        url_poster_mcu2: https://theposterdb.com/api/assets/324670
+            # MCU - Phase 3
+        trakt_list_mcu3: https://trakt.tv/users/juniorchange/lists/mcu-phase-3
+        url_poster_mcu3: https://theposterdb.com/api/assets/324673
+            # MCU - Phase 4
+        trakt_list_mcu4: https://trakt.tv/users/juniorchange/lists/mcu-phase-4
+        url_poster_mcu4: https://theposterdb.com/api/assets/324674
+            # MCU - Phase 5
+        trakt_list_mcu5: https://trakt.tv/users/juniorchange/lists/mcu-phase-5
+        url_poster_mcu5: https://theposterdb.com/api/assets/324675
+            # Pokémon Collection
+        trakt_list_poki: https://trakt.tv/users/jmpichardo/lists/pokemon
+        url_poster_poki: https://theposterdb.com/api/assets/1140
+            # JuniorChange Collection
+        trakt_list_jrchange: https://trakt.tv/users/juniorchange/lists/juniorchange-picks
+        file_poster_jrchange: config/assets/Jrchange-collection-poster.jpg
+        order_jrchange: 1
+            # George Collection
+        imdb_list_george: https://www.imdb.com/list/ls529469250
+        file_poster_george: config/assets/George-collection-poster.jpg
+        order_george: 2
+            # Marvel Legacy Collection - Default
+        name_marvel: Marvel Legacy Collection
+        url_poster_marvel: https://theposterdb.com/api/assets/133816
+            # X-Men Universe - Default
+        url_poster_xmen: https://theposterdb.com/api/assets/20
+            # Star Wars Collection - Default
+        name_star: Star Wars Collection
+        url_poster_star: https://theposterdb.com/api/assets/69931
+            # Wizarding World - Default
+        url_poster_wizard: https://theposterdb.com/api/assets/21739
+            # Alien / Predator Collection - Default
+        name_avp: Alien / Predator Collection
+        url_poster_avp: https://theposterdb.com/api/assets/26268
+            # Fast & Furious - Default
+        url_poster_fast: https://theposterdb.com/api/assets/166111
+            # Rocky / Creed Collection - Default
+        name_rocky: Rocky & Creed Collection
+        url_poster_rocky: https://theposterdb.com/api/assets/5907
+            # Star Trek - Default
+            #url_poster_trek: https://theposterdb.com/api/assets/62523
+        #- file: config/config-files/user-collections/JrChange-collection.yml
+    remove_overlays: false
+    overlay_files:
+    - default: ribbon
+  Movies-4K:
+    radarr:
+      url: http://192.168.1.42:8787/radarr-4k/
+      token: <<RADARR4KTOKEN>>
+      add_missing: true
+      add_existing: false
+      root_folder_path: /mnt/Starlink/Movies-4K
+      monitor: true
+      availability: released
+      quality_profile: Ultra-HD
+      tag: pmm
+      search: true
+    collection_files:
+    - default: universe   # 1 - Collection of Moivie Universes
+      template_variables:
+        use_separator: false
+        collection_order: release
+        collection_section: 8
+        radarr_add_missing: false
+        radarr_ignore_cache: true
+        exclude:
+        - middle
+        - mummy
+        - askew
+        - trek
+        - dca
+        - dcu
+        append_data:
+          monster: MonsterVerse
+          bond: 007 - James Bond
+          dcau: DC Animated Movie Universe
+          dcao: DC Animated Originals
+          dcuo: DC Original Films
+          dceu: DC Extended Universe
+          dcstudios: DC Universe Studios
+          spidey: Spider-Man Universe
+          mcu1: MCU - Phase 1
+          mcu2: MCU - Phase 2
+          mcu3: MCU - Phase 3
+          mcu4: MCU - Phase 4
+          mcu5: MCU - Phase 5
+          pixar: Pixar Collection
+          disney: Disney Live-Action Collection
+          disa: Disney Animation Collection
+          dream: Dreamworks Animation Collection
+          scooby: Scooby-Doo Collection
+          poki: Pokémon Collection
+          george: George Collection
+          jrchange: JuniorChange Collection
+          # MonsterVerse
+        trakt_list_monster: https://trakt.tv/users/juniorchange/lists/monsterverse
+        url_poster_monster: https://theposterdb.com/api/assets/138821
+          # 007 - James Bond
+        trakt_list_bond: https://trakt.tv/users/hdlists/lists/james-bond-movies
+        url_poster_bond: https://theposterdb.com/api/assets/201230
+          # Pixar Collection
+        trakt_list_pixar: https://trakt.tv/users/juniorchange/lists/pixar
+        url_poster_pixar: https://theposterdb.com/api/assets/2190
+          # Disney Live-Action Collection
+        trakt_list_disney: https://trakt.tv/users/donxy/lists/disney-live-action-movies
+        url_poster_disney: https://theposterdb.com/api/assets/200068
+          # Disney Animation Collection
+        trakt_list_disa: https://trakt.tv/users/juniorchange/lists/disney-animated-movies
+        url_poster_disa: https://theposterdb.com/api/assets/11845
+          # Dreamworks Animation Collection
+        trakt_list_dream: https://trakt.tv/users/tehrobot/lists/dreamworks
+        url_poster_dream: https://theposterdb.com/api/assets/57647
+          # Scooby-Doo Collection
+        trakt_list_scooby: https://trakt.tv/users/duxast33/lists/scooby-doo
+        url_poster_scooby: https://theposterdb.com/api/assets/5898
+        radarr_add_missing_scooby: false
+          # Spider-Man Universe
+        trakt_list_spidey: https://trakt.tv/users/juniorchange/lists/spider-verse
+        url_poster_spidey: https://theposterdb.com/api/assets/52965
+          # DC Animated Movie Universe
+        trakt_list_dcau: https://trakt.tv/users/juniorchange/lists/dc-animated-movie-universe
+        url_poster_dcau: https://theposterdb.com/api/assets/52947
+          # DC Animated Originals
+        trakt_list_dcao: https://trakt.tv/users/juniorchange/lists/dc-animated-originals
+        url_poster_dcao: https://theposterdb.com/api/assets/72333
+          # DC Original Films
+        trakt_list_dcuo: https://trakt.tv/users/juniorchange/lists/dc-original-films
+        url_poster_dcuo: https://theposterdb.com/api/assets/53777
+          # DC Extended Universe
+        trakt_list_dceu: https://trakt.tv/users/juniorchange/lists/dc-extended-universe
+        url_poster_dceu: https://theposterdb.com/api/assets/15280
+          # DC Universe Studios
+        trakt_list_dcstudios: https://trakt.tv/users/juniorchange/lists/dc-universe
+        url_poster_dcstudios: https://theposterdb.com/api/assets/731902
+          # Marvel Cinematic Universe - Default
+        url_poster_mcu: https://theposterdb.com/api/assets/5912
+          # MCU - Phase 1
+        trakt_list_mcu1: https://trakt.tv/users/juniorchange/lists/mcu-phase-1
+        url_poster_mcu1: https://theposterdb.com/api/assets/324669
+        radarr_add_missing_mcu1: true
+          # MCU - Phase 2
+        trakt_list_mcu2: https://trakt.tv/users/juniorchange/lists/mcu-phase-2
+        url_poster_mcu2: https://theposterdb.com/api/assets/324670
+        radarr_add_missing_mcu2: true
+          # MCU - Phase 3
+        trakt_list_mcu3: https://trakt.tv/users/juniorchange/lists/mcu-phase-3
+        url_poster_mcu3: https://theposterdb.com/api/assets/324673
+        radarr_add_missing_mcu3: true
+          # MCU - Phase 4
+        trakt_list_mcu4: https://trakt.tv/users/juniorchange/lists/mcu-phase-4
+        url_poster_mcu4: https://theposterdb.com/api/assets/324674
+        radarr_add_missing_mcu4: true
+          # MCU - Phase 5
+        trakt_list_mcu5: https://trakt.tv/users/juniorchange/lists/mcu-phase-5
+        url_poster_mcu5: https://theposterdb.com/api/assets/324675
+        radarr_add_missing_mcu5: true
+          # Pokémon Collection
+        trakt_list_poki: https://trakt.tv/users/jmpichardo/lists/pokemon
+        url_poster_poki: https://theposterdb.com/api/assets/1140
+          # JuniorChange Collection
+        trakt_list_jrchange: https://trakt.tv/users/juniorchange/lists/juniorchange-picks
+        file_poster_jrchange: config/assets/Jrchange-collection-poster.jpg
+        order_jrchange: 1
+          # George Collection
+        imdb_list_george: https://www.imdb.com/list/ls529469250
+        file_poster_george: config/assets/George-collection-poster.jpg
+        order_george: 2
+          # Marvel Legacy Collection - Default
+        name_marvel: Marvel Legacy Collection
+        url_poster_marvel: https://theposterdb.com/api/assets/133816
+          # X-Men Universe - Default
+        url_poster_xmen: https://theposterdb.com/api/assets/20
+          # Star Wars Collection - Default
+        name_star: Star Wars Collection
+        url_poster_star: https://theposterdb.com/api/assets/69931
+          # Wizarding World - Default
+        url_poster_wizard: https://theposterdb.com/api/assets/21739
+          # Alien / Predator Collection - Default
+        name_avp: Alien / Predator Collection
+        url_poster_avp: https://theposterdb.com/api/assets/26268
+          # Fast & Furious - Default
+        url_poster_fast: https://theposterdb.com/api/assets/166111
+          # Rocky / Creed Collection - Default
+        name_rocky: Rocky & Creed Collection
+        url_poster_rocky: https://theposterdb.com/api/assets/5907
+          # Star Trek - Default
+          #url_poster_trek: https://theposterdb.com/api/assets/62523
+    remove_overlays: false
+    reapply_overlay: true
+    overlay_files:
+    - default: resolution
+    - default: audio_codec
+    - default: video_format
+    - default: ribbon
+  TV Shows:
+    collection_files:
+    - default: basic   # 1 - Newly Released
+      template_variables:
+        collection_section: 1
+    - default: imdb   # 2 - IMDb Popular, IMDb Top 250
+      template_variables:
+        collection_section: 2
+    - default: streaming   # 3 - Streaming Services
+      template_variables:
+        collection_section: 3
+        use_separator: false
+        exclude:
+        - BET+
+    - default: network   # 4 - Networks
+      template_variables:
+        collection_section: 4
+        use_separator: false
+        include:
+        - ABC
+        - AMC
+        - BBC
+        - Cartoon Network
+        - CBC Television
+        - CBS
+        - Comedy Central
+        - Discovery
+        - ESPN
+        - FOX
+        - MTV
+        - National Geographic
+        - NBC
+        - Nickelodeon
+        - The CW
+        - USA Network
+    - default: universe   # 5 - Collection of TvShow Universes
+      template_variables:
+        collection_section: 5
+        use_separator: false
+        collection_order: release
+        sonarr_add_missing: false
+        exclude:
+        - middle
+        - mummy
+        - askew
+        - dca
+        - dcu
+        - marvel
+        - trek
+        - xmen
+        append_data:
+          scooby: Scooby-Doo Collection
+          jrchange: JuniorChange Collection
+          dcstudios: DC Universe Studios
+          # JuniorChange Collection
+        trakt_list_jrchange: https://trakt.tv/users/juniorchange/lists/juniorchange-picks
+        file_poster_jrchange: config/assets/Jrchange-collection-poster.jpg
+        order_jrchange: 1
+          # Scooby-Doo Collection
+        trakt_list_scooby: https://trakt.tv/users/duxast33/lists/scooby-doo
+        url_poster_scooby: https://theposterdb.com/api/assets/5898
+          # Marvel Cinematic Universe - Default
+        url_poster_mcu: https://theposterdb.com/api/assets/5912
+          # Star Wars Collection - Default
+        name_star: Star Wars Collection
+        url_poster_star: https://theposterdb.com/api/assets/69931
+          # ArrowVerse - Default
+        url_poster_arrow: https://theposterdb.com/api/assets/25569
+          # DC Universe Studios - Default
+        trakt_list_dcstudios: https://trakt.tv/users/juniorchange/lists/dc-universe
+        url_poster_dcstudios: https://theposterdb.com/api/assets/731902
+    overlay_files:
+    - default: streaming
+      template_variables:
+        vertical_offset: 15
+        vertical_align: top
+  TV Shows-4K:
+    collection_files:
+    - default: universe   # 1 - Collection of TvShow Universes
+      template_variables:
+        use_separator: false
+        collection_order: release
+        sonarr_add_missing: false
+        exclude:
+        - middle
+        - mummy
+        - askew
+        - dca
+        - dcu
+        - marvel
+        - trek
+        - xmen
+        append_data:
+          jrchange: JuniorChange Collection
+          dcstudios: DC Universe Studios
+          # JuniorChange Collection
+        trakt_list_jrchange: https://trakt.tv/users/juniorchange/lists/juniorchange-picks
+        file_poster_jrchange: config/assets/Jrchange-collection-poster.jpg
+        order_jrchange: 1
+          # Marvel Cinematic Universe - Default
+        url_poster_mcu: https://theposterdb.com/api/assets/5912
+          # Star Wars Collection - Default
+        name_star: Star Wars Collection
+        url_poster_star: https://theposterdb.com/api/assets/69931
+          # ArrowVerse - Default
+        url_poster_arrow: https://theposterdb.com/api/assets/25569
+          # DC Universe Studios - Default
+        trakt_list_dcstudios: https://trakt.tv/users/juniorchange/lists/dc-universe
+        url_poster_dcstudios: https://theposterdb.com/api/assets/731902
+    remove_overlays: false
+    reapply_overlay: true
+    overlay_files:
+    - default: resolution
+    - default: audio_codec
+settings:
+  cache: true # Used to control PMM's cache database.
+  cache_expiration: 60 # Used to control how long data is cached for.
+  asset_directory: /config/assets # Used to define where local assets are located.
+  asset_folders: true # Used to control the asset directory folder structure.
+  asset_depth: 0 # Used to control the depth of search in the asset directory.
+  create_asset_folders: false # Used to automatically create asset folders when none exist.
+  prioritize_assets: false # Used to prioritize asset_directory images over all other images types.
+  dimensional_asset_rename: false # Used to automatically rename asset files based on their dimensions.
+  download_url_assets: false # Used to download url images into the asset directory.
+  show_missing_season_assets: false # Used to show any missing season assets.
+  show_missing_episode_assets: false # Used to show any missing episode assets.
+  show_asset_not_needed: true # Used to show/hide the update not needed messages.
+  sync_mode: append # Used to set the sync_mode for collections and playlists.
+  minimum_items: 1 # Used to control minimum items requires to build a collection/playlist.
+  default_collection_order: # Used to set the collection_order for every collection run.
+  delete_below_minimum: true # Used to delete collections below minimum_items.
+  delete_not_scheduled: false # Used to delete collections not scheduled.
+  run_again_delay: 2 # Used to control the number of minutes to delay running run_again collections.
+  missing_only_released: false # Used to filter unreleased items from missing lists.
+  only_filter_missing: false # Used to have the filter only apply to missing items.
+  show_unmanaged: true # Used to show collections not managed by PMM.
+  show_filtered: false # Used to show filtered items.
+  show_options: false # Used to show attribute options from plex.
+  show_missing: true # Used to show missing items from collections or playlists.
+  show_missing_assets: true # Used to print a message when assets are missing.
+  save_report: false # Used to save a report YAML file.
+  tvdb_language: eng # Specify the language to query TVDb in.
+  ignore_ids: # List of TMDb/TVDb IDs to ignore.
+  ignore_imdb_ids: # List of IMDb IDs to ignore.
+  item_refresh_delay: 0 # Time to wait between each item_refresh.
+  playlist_sync_to_user: all # Set the default playlist sync_to_users.
+  playlist_exclude_user: # Set the default playlist exclude_users.
+  playlist_report: false # Used to print out a playlist report.
+  verify_ssl: true # Turn SSL Verification on or off.
+  custom_repo: # Used to set up the custom repo file block type.
+  check_nightly: false # Will check nightly for updates instead of develop.
+  show_unconfigured: true # Used to show collections not in the current run.
+  playlist_exclude_users: # Set the default playlist exclude_users.
+  run_order: # Used to specify the run order of the library components.
+  - operations
+  - metadata
+  - collections
+  - overlays
+  overlay_artwork_filetype: jpg
+  overlay_artwork_quality:
+  show_unfiltered: false
+  auto_sort_hubs:
+webhooks: # Can be individually specified per library as well
+  error:
+  version:
+  run_start:
+  run_end:
+  changes:
+  delete:
+plex: # Can be individually specified per library as well; REQUIRED for the script to run
+  url: http://192.168.1.42:32400
+  token: <<PLEXTOKEN>>
+  timeout: 60
+  clean_bundles: false
+  empty_trash: false
+  optimize: false
+  db_cache:
+  verify_ssl:
+tmdb: # REQUIRED for the script to run
+  apikey: <<TMDBAPIKEY>>
+  language: en
+  cache_expiration: 60
+  region:
+mdblist: # REQUIRED for the script to run
+  apikey: <<MDBLISTAPIKEY>>
+  cache_expiration: 60
+tautulli: # Can be individually specified per library as well
+  url: http://192.168.1.42:8181/
+  apikey: <<TAUTULLIAPIKEY>>
+notifiarr:
+  apikey: ####################################
+radarr: # Can be individually specified per library as well
+  url: http://192.168.1.42:7878/radarr/
+  token: <<RADARRTOKEN>>
+  add_missing: true
+  add_existing: false
+  root_folder_path: /mnt/Starlink/Movies
+  monitor: true
+  availability: announced
+  quality_profile: HD-1080p
+  tag: pmm
+  search: true
+  radarr_path:
+  plex_path:
+  upgrade_existing: false
+  ignore_cache: false
+  monitor_existing: false
+sonarr: # Can be individually specified per library as well
+  url: http://192.168.1.42:8989/sonarr/
+  token: <<SONARRTOKEN>>
+  add_missing: false
+  add_existing: false
+  root_folder_path: /mnt/Starlink/TvShows
+  monitor: all
+  quality_profile: HD-1080p
+  language_profile: English
+  series_type: standard
+  season_folder: true
+  tag: pmm
+  search: false
+  cutoff_search: false
+  sonarr_path:
+  plex_path:
+  upgrade_existing: false
+  ignore_cache: false
+  monitor_existing: false
+trakt:
+  client_id: <<TRAKTCLIENTID>>
+  client_secret: <<TRAKTCLIENTSECRET>>
+  authorization:
+    access_token:
+    token_type: bearer
+    expires_in:
+    refresh_token:
+    scope: public offline_access
+    created_at:
+  pin:
+  force_refresh:
