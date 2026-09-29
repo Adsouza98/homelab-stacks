@@ -120,67 +120,67 @@ libraries: # This is called out once within the config.yml file
           george: George Collection
           jrchange: JuniorChange Collection
             # MonsterVerse
-        trakt_list_monster: https://trakt.tv/users/juniorchange/lists/monsterverse
+        mdblist_list_monster: https://mdblist.com/lists/juniorchange/monsterverse
         url_poster_monster: https://theposterdb.com/api/assets/138821
             # 007 - James Bond
-        trakt_list_bond: https://trakt.tv/users/hdlists/lists/james-bond-movies
+        mdblist_list_bond: https://mdblist.com/lists/juniorchange/james-bond-movies
         url_poster_bond: https://theposterdb.com/api/assets/201230
             # Pixar Collection
-        trakt_list_pixar: https://trakt.tv/users/juniorchange/lists/pixar
+        mdblist_list_pixar: https://mdblist.com/lists/juniorchange/pixar
         url_poster_pixar: https://theposterdb.com/api/assets/2190
             # Disney Live-Action Collection
-        trakt_list_disney: https://trakt.tv/users/donxy/lists/disney-live-action-movies
+        mdblist_list_disney: https://mdblist.com/lists/juniorchange/disney-live-action-movies
         url_poster_disney: https://theposterdb.com/api/assets/200068
             # Disney Animation Collection
-        trakt_list_disa: https://trakt.tv/users/juniorchange/lists/disney-animated-movies
+        mdblist_list_disa: https://mdblist.com/lists/juniorchange/disney-animated-movies
         url_poster_disa: https://theposterdb.com/api/assets/11845
             # Dreamworks Animation Collection
-        trakt_list_dream: https://trakt.tv/users/tehrobot/lists/dreamworks
+        mdblist_list_dream: https://mdblist.com/lists/juniorchange/dreamworks-animation
         url_poster_dream: https://theposterdb.com/api/assets/57647
             # Scooby-Doo Collection
-        trakt_list_scooby: https://trakt.tv/users/duxast33/lists/scooby-doo
+        mdblist_list_scooby: https://mdblist.com/lists/juniorchange/scooby-doo
         url_poster_scooby: https://theposterdb.com/api/assets/5898
         radarr_add_missing_scooby: false
             # Spider-Man Universe
-        trakt_list_spidey: https://trakt.tv/users/juniorchange/lists/spider-verse
+        mdblist_list_spidey: https://mdblist.com/lists/juniorchange/spider-verse
         url_poster_spidey: https://theposterdb.com/api/assets/52965
             # DC Animated Movie Universe
-        trakt_list_dcau: https://trakt.tv/users/juniorchange/lists/dc-animated-movie-universe
+        mdblist_list_dcau: https://mdblist.com/lists/juniorchange/dc-animated-movie-universe
         url_poster_dcau: https://theposterdb.com/api/assets/52947
             # DC Animated Originals
-        trakt_list_dcao: https://trakt.tv/users/juniorchange/lists/dc-animated-originals
+        mdblist_list_dcao: https://mdblist.com/lists/juniorchange/dc-animated-originals
         url_poster_dcao: https://theposterdb.com/api/assets/72333
             # DC Original Films
-        trakt_list_dcuo: https://trakt.tv/users/juniorchange/lists/dc-original-films
+        mdblist_list_dcuo: https://mdblist.com/lists/juniorchange/dc-original-films
         url_poster_dcuo: https://theposterdb.com/api/assets/53777
             # DC Extended Universe
-        trakt_list_dceu: https://trakt.tv/users/juniorchange/lists/dc-extended-universe
+        mdblist_list_dceu: https://mdblist.com/lists/juniorchange/dc-extended-universe
         url_poster_dceu: https://theposterdb.com/api/assets/15280
             # DC Universe Studios
-        trakt_list_dcstudios: https://trakt.tv/users/juniorchange/lists/dc-universe
+        mdblist_list_dcstudios: https://mdblist.com/lists/juniorchange/dc-universe
         url_poster_dcstudios: https://theposterdb.com/api/assets/731902
             # Marvel Cinematic Universe - Default
         url_poster_mcu: https://theposterdb.com/api/assets/5912
             # MCU - Phase 1
-        trakt_list_mcu1: https://trakt.tv/users/juniorchange/lists/mcu-phase-1
+        mdblist_list_mcu1: https://mdblist.com/lists/juniorchange/mcu-phase-1
         url_poster_mcu1: https://theposterdb.com/api/assets/324669
             # MCU - Phase 2
-        trakt_list_mcu2: https://trakt.tv/users/juniorchange/lists/mcu-phase-2
+        mdblist_list_mcu2: https://mdblist.com/lists/juniorchange/mcu-phase-2
         url_poster_mcu2: https://theposterdb.com/api/assets/324670
             # MCU - Phase 3
-        trakt_list_mcu3: https://trakt.tv/users/juniorchange/lists/mcu-phase-3
+        mdblist_list_mcu3: https://mdblist.com/lists/juniorchange/mcu-phase-3
         url_poster_mcu3: https://theposterdb.com/api/assets/324673
             # MCU - Phase 4
-        trakt_list_mcu4: https://trakt.tv/users/juniorchange/lists/mcu-phase-4
+        mdblist_list_mcu4: https://mdblist.com/lists/juniorchange/mcu-phase-4
         url_poster_mcu4: https://theposterdb.com/api/assets/324674
             # MCU - Phase 5
-        trakt_list_mcu5: https://trakt.tv/users/juniorchange/lists/mcu-phase-5
+        mdblist_list_mcu5: https://mdblist.com/lists/juniorchange/mcu-phase-5
         url_poster_mcu5: https://theposterdb.com/api/assets/324675
             # Pokémon Collection
-        trakt_list_poki: https://trakt.tv/users/jmpichardo/lists/pokemon
+        mdblist_list_poki: https://mdblist.com/lists/juniorchange/pokemon-movies
         url_poster_poki: https://theposterdb.com/api/assets/1140
             # JuniorChange Collection
-        trakt_list_jrchange: https://trakt.tv/users/juniorchange/lists/juniorchange-picks
+        mdblist_list_jrchange: https://mdblist.com/lists/juniorchange/juniorchange-picks
         file_poster_jrchange: config/assets/Jrchange-collection-poster.jpg
         order_jrchange: 1
             # George Collection
@@ -261,72 +261,72 @@ libraries: # This is called out once within the config.yml file
           george: George Collection
           jrchange: JuniorChange Collection
           # MonsterVerse
-        trakt_list_monster: https://trakt.tv/users/juniorchange/lists/monsterverse
+        mdblist_list_monster: https://mdblist.com/lists/juniorchange/monsterverse
         url_poster_monster: https://theposterdb.com/api/assets/138821
           # 007 - James Bond
-        trakt_list_bond: https://trakt.tv/users/hdlists/lists/james-bond-movies
+        mdblist_list_bond: https://mdblist.com/lists/juniorchange/james-bond-movies
         url_poster_bond: https://theposterdb.com/api/assets/201230
           # Pixar Collection
-        trakt_list_pixar: https://trakt.tv/users/juniorchange/lists/pixar
+        mdblist_list_pixar: https://mdblist.com/lists/juniorchange/pixar
         url_poster_pixar: https://theposterdb.com/api/assets/2190
           # Disney Live-Action Collection
-        trakt_list_disney: https://trakt.tv/users/donxy/lists/disney-live-action-movies
+        mdblist_list_disney: https://mdblist.com/lists/juniorchange/disney-live-action-movies
         url_poster_disney: https://theposterdb.com/api/assets/200068
           # Disney Animation Collection
-        trakt_list_disa: https://trakt.tv/users/juniorchange/lists/disney-animated-movies
+        mdblist_list_disa: https://mdblist.com/lists/juniorchange/disney-animated-movies
         url_poster_disa: https://theposterdb.com/api/assets/11845
           # Dreamworks Animation Collection
-        trakt_list_dream: https://trakt.tv/users/tehrobot/lists/dreamworks
+        mdblist_list_dream: https://mdblist.com/lists/juniorchange/dreamworks-animation
         url_poster_dream: https://theposterdb.com/api/assets/57647
           # Scooby-Doo Collection
-        trakt_list_scooby: https://trakt.tv/users/duxast33/lists/scooby-doo
+        mdblist_list_scooby: https://mdblist.com/lists/juniorchange/scooby-doo
         url_poster_scooby: https://theposterdb.com/api/assets/5898
         radarr_add_missing_scooby: false
           # Spider-Man Universe
-        trakt_list_spidey: https://trakt.tv/users/juniorchange/lists/spider-verse
+        mdblist_list_spidey: https://mdblist.com/lists/juniorchange/spider-verse
         url_poster_spidey: https://theposterdb.com/api/assets/52965
           # DC Animated Movie Universe
-        trakt_list_dcau: https://trakt.tv/users/juniorchange/lists/dc-animated-movie-universe
+        mdblist_list_dcau: https://mdblist.com/lists/juniorchange/dc-animated-movie-universe
         url_poster_dcau: https://theposterdb.com/api/assets/52947
           # DC Animated Originals
-        trakt_list_dcao: https://trakt.tv/users/juniorchange/lists/dc-animated-originals
+        mdblist_list_dcao: https://mdblist.com/lists/juniorchange/dc-animated-originals
         url_poster_dcao: https://theposterdb.com/api/assets/72333
           # DC Original Films
-        trakt_list_dcuo: https://trakt.tv/users/juniorchange/lists/dc-original-films
+        mdblist_list_dcuo: https://mdblist.com/lists/juniorchange/dc-original-films
         url_poster_dcuo: https://theposterdb.com/api/assets/53777
           # DC Extended Universe
-        trakt_list_dceu: https://trakt.tv/users/juniorchange/lists/dc-extended-universe
+        mdblist_list_dceu: https://mdblist.com/lists/juniorchange/dc-extended-universe
         url_poster_dceu: https://theposterdb.com/api/assets/15280
           # DC Universe Studios
-        trakt_list_dcstudios: https://trakt.tv/users/juniorchange/lists/dc-universe
+        mdblist_list_dcstudios: https://mdblist.com/lists/juniorchange/dc-universe
         url_poster_dcstudios: https://theposterdb.com/api/assets/731902
           # Marvel Cinematic Universe - Default
         url_poster_mcu: https://theposterdb.com/api/assets/5912
           # MCU - Phase 1
-        trakt_list_mcu1: https://trakt.tv/users/juniorchange/lists/mcu-phase-1
+        mdblist_list_mcu1: https://mdblist.com/lists/juniorchange/mcu-phase-1
         url_poster_mcu1: https://theposterdb.com/api/assets/324669
         radarr_add_missing_mcu1: true
           # MCU - Phase 2
-        trakt_list_mcu2: https://trakt.tv/users/juniorchange/lists/mcu-phase-2
+        mdblist_list_mcu2: https://mdblist.com/lists/juniorchange/mcu-phase-2
         url_poster_mcu2: https://theposterdb.com/api/assets/324670
         radarr_add_missing_mcu2: true
           # MCU - Phase 3
-        trakt_list_mcu3: https://trakt.tv/users/juniorchange/lists/mcu-phase-3
+        mdblist_list_mcu3: https://mdblist.com/lists/juniorchange/mcu-phase-3
         url_poster_mcu3: https://theposterdb.com/api/assets/324673
         radarr_add_missing_mcu3: true
           # MCU - Phase 4
-        trakt_list_mcu4: https://trakt.tv/users/juniorchange/lists/mcu-phase-4
+        mdblist_list_mcu4: https://mdblist.com/lists/juniorchange/mcu-phase-4
         url_poster_mcu4: https://theposterdb.com/api/assets/324674
         radarr_add_missing_mcu4: true
           # MCU - Phase 5
-        trakt_list_mcu5: https://trakt.tv/users/juniorchange/lists/mcu-phase-5
+        mdblist_list_mcu5: https://mdblist.com/lists/juniorchange/mcu-phase-5
         url_poster_mcu5: https://theposterdb.com/api/assets/324675
         radarr_add_missing_mcu5: true
           # Pokémon Collection
-        trakt_list_poki: https://trakt.tv/users/jmpichardo/lists/pokemon
+        mdblist_list_poki: https://mdblist.com/lists/juniorchange/pokemon-movies
         url_poster_poki: https://theposterdb.com/api/assets/1140
           # JuniorChange Collection
-        trakt_list_jrchange: https://trakt.tv/users/juniorchange/lists/juniorchange-picks
+        mdblist_list_jrchange: https://mdblist.com/lists/juniorchange/juniorchange-picks
         file_poster_jrchange: config/assets/Jrchange-collection-poster.jpg
         order_jrchange: 1
           # George Collection
@@ -415,11 +415,11 @@ libraries: # This is called out once within the config.yml file
           jrchange: JuniorChange Collection
           dcstudios: DC Universe Studios
           # JuniorChange Collection
-        trakt_list_jrchange: https://trakt.tv/users/juniorchange/lists/juniorchange-picks
+        mdblist_list_jrchange: https://mdblist.com/lists/juniorchange/juniorchange-picks
         file_poster_jrchange: config/assets/Jrchange-collection-poster.jpg
         order_jrchange: 1
           # Scooby-Doo Collection
-        trakt_list_scooby: https://trakt.tv/users/duxast33/lists/scooby-doo
+        mdblist_list_scooby: https://mdblist.com/lists/juniorchange/scooby-doo
         url_poster_scooby: https://theposterdb.com/api/assets/5898
           # Marvel Cinematic Universe - Default
         url_poster_mcu: https://theposterdb.com/api/assets/5912
@@ -429,7 +429,7 @@ libraries: # This is called out once within the config.yml file
           # ArrowVerse - Default
         url_poster_arrow: https://theposterdb.com/api/assets/25569
           # DC Universe Studios - Default
-        trakt_list_dcstudios: https://trakt.tv/users/juniorchange/lists/dc-universe
+        mdblist_list_dcstudios: https://mdblist.com/lists/juniorchange/dc-universe
         url_poster_dcstudios: https://theposterdb.com/api/assets/731902
     overlay_files:
     - default: streaming
@@ -456,7 +456,7 @@ libraries: # This is called out once within the config.yml file
           jrchange: JuniorChange Collection
           dcstudios: DC Universe Studios
           # JuniorChange Collection
-        trakt_list_jrchange: https://trakt.tv/users/juniorchange/lists/juniorchange-picks
+        mdblist_list_jrchange: https://mdblist.com/lists/juniorchange/juniorchange-picks
         file_poster_jrchange: config/assets/Jrchange-collection-poster.jpg
         order_jrchange: 1
           # Marvel Cinematic Universe - Default
@@ -467,7 +467,7 @@ libraries: # This is called out once within the config.yml file
           # ArrowVerse - Default
         url_poster_arrow: https://theposterdb.com/api/assets/25569
           # DC Universe Studios - Default
-        trakt_list_dcstudios: https://trakt.tv/users/juniorchange/lists/dc-universe
+        mdblist_list_dcstudios: https://mdblist.com/lists/juniorchange/dc-universe
         url_poster_dcstudios: https://theposterdb.com/api/assets/731902
     remove_overlays: false
     reapply_overlay: true
@@ -586,15 +586,3 @@ sonarr: # Can be individually specified per library as well
   upgrade_existing: false
   ignore_cache: false
   monitor_existing: false
-trakt:
-  client_id: <<TRAKTCLIENTID>>
-  client_secret: <<TRAKTCLIENTSECRET>>
-  authorization:
-    access_token:
-    token_type: bearer
-    expires_in:
-    refresh_token:
-    scope: public offline_access
-    created_at:
-  pin:
-  force_refresh:

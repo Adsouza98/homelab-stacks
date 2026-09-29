@@ -103,9 +103,12 @@ All services that use `network_mode: service:gluetun` depend on this container b
 - `KOMETA_NO_MISSING=False` — Include missing metadata (disabled)
 - `KOMETA_PLEXTOKEN`, `KOMETA_TMDBAPIKEY`, `KOMETA_MDBLISTAPIKEY`, `KOMETA_TAUTULLIAPIKEY` — API keys (from env vars)
 - `KOMETA_RADARRTOKEN`, `KOMETA_RADARR4KTOKEN`, `KOMETA_SONARRTOKEN` — *arr API tokens (from env vars)
-- `KOMETA_TRAKTCLIENTID`, `KOMETA_TRAKTCLIENTSECRET` — Trakt app credentials (from env vars)
 
-Placeholders in `configs/kometa/config.yml` use Kometa Config Secrets (`<<PLEXTOKEN>>`, no underscores). Set the matching `KOMETA_*` values in Portainer or `arr-stack.env`. Leave `trakt.authorization` empty in git; Kometa writes refreshed tokens into the live file after PIN auth. Do not commit those tokens and do not set `KOMETA_READ_ONLY_CONFIG`.
+Placeholders in `configs/kometa/config.yml` use Kometa Config Secrets (`<<PLEXTOKEN>>`, no underscores). Set the matching `KOMETA_*` values in Portainer or `arr-stack.env`. Never commit real keys.
+
+**MDBList**: `KOMETA_MDBLISTAPIKEY` maps to `apikey: <<MDBLISTAPIKEY>>` in the `mdblist:` block of `config.yml`. Get the API key from your MDBList account at https://mdblist.com/preferences/ and set it in Portainer or `arr-stack.env`.
+
+**Universe collections**: The `universe` default in each library adds custom universes via `append_data` and points each one at a juniorchange MDBList list with the `mdblist_list_<key>` template variable (e.g. `mdblist_list_mcu1: https://mdblist.com/lists/juniorchange/mcu-phase-1`). See the [Kometa universe defaults docs](https://kometa.wiki/en/latest/defaults/both/universe/).
 
 #### Volumes
 - `/config` — Kometa configuration and metadata files
@@ -390,13 +393,13 @@ Indexers use this internally to bypass Cloudflare protection.
 - `KOMETA_RUN=False` — Manual execution only
 - `KOMETA_TEST=False` — Production mode
 - `KOMETA_NO_MISSING=False` — Include missing items
-- Kometa Config Secrets (`KOMETA_PLEXTOKEN`, `KOMETA_TMDBAPIKEY`, `KOMETA_MDBLISTAPIKEY`, `KOMETA_TAUTULLIAPIKEY`, `KOMETA_RADARRTOKEN`, `KOMETA_RADARR4KTOKEN`, `KOMETA_SONARRTOKEN`, `KOMETA_TRAKTCLIENTID`, `KOMETA_TRAKTCLIENTSECRET`) — from Portainer / `arr-stack.env`
+- Kometa Config Secrets (`KOMETA_PLEXTOKEN`, `KOMETA_TMDBAPIKEY`, `KOMETA_MDBLISTAPIKEY`, `KOMETA_TAUTULLIAPIKEY`, `KOMETA_RADARRTOKEN`, `KOMETA_RADARR4KTOKEN`, `KOMETA_SONARRTOKEN`) — from Portainer / `arr-stack.env`
 
 #### Volumes
-- `/config` — Kometa configuration and templates (`config.yml` is tracked in git; assets, cache, and Trakt refresh tokens stay local)
+- `/config` — Kometa configuration and templates (`config.yml` is tracked in git; assets and cache stay local)
 
 #### Usage
-Runs automatically at 01:30 daily to update library metadata and create collections in Plex. After deploy, complete Trakt PIN auth once so Kometa can write `trakt.authorization` on the NAS; never commit those refreshed tokens.
+Runs automatically at 01:30 daily to update library metadata and create collections in Plex. Custom universe collections are built from juniorchange's MDBList lists (`mdblist_list_<key>`), which requires `KOMETA_MDBLISTAPIKEY` to be set.
 
 ---
 
@@ -413,8 +416,6 @@ Runs automatically at 01:30 daily to update library metadata and create collecti
    KOMETA_RADARRTOKEN=your_radarr_api_key
    KOMETA_RADARR4KTOKEN=your_radarr_4k_api_key
    KOMETA_SONARRTOKEN=your_sonarr_api_key
-   KOMETA_TRAKTCLIENTID=your_trakt_client_id
-   KOMETA_TRAKTCLIENTSECRET=your_trakt_client_secret
    ```
 
 2. Ensure ExpressVPN config exists at:
