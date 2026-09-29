@@ -1,6 +1,6 @@
 # Misc Stack
 
-A collection of utility and monitoring services for the homelab, including music streaming, disk health monitoring, and IPTV streaming.
+A collection of utility and monitoring services for the homelab, including music streaming, disk health monitoring, IPTV streaming, and TeslaCam clip viewing.
 
 ## Services
 
@@ -78,9 +78,51 @@ Visit `http://<host>:34400` to configure playlists and access the IPTV interface
 
 ---
 
+### TeslaCam Viewer
+**TeslaUSB clip browser** — Dark-theme web UI for Saved / Sentry / Recent clips archived to TrueNAS. Does not need the Pi online.
+
+- **Image**: `ghcr.io/adsouza98/teslacam-viewer:1.1.4`
+- **Container Name**: `teslacam-viewer`
+- **Restart Policy**: Unless stopped
+
+Version is pinned so Portainer git polling and Renovate can pick up new tags. Bump happens when `VERSION` in [Adsouza98/teslacam-viewer](https://github.com/Adsouza98/teslacam-viewer) is published to GHCR.
+
+#### Ports
+| Port | Service |
+|------|---------|
+| 8000 | Web UI (override with `TESLACAM_PORT`) |
+
+#### Environment (set in Portainer)
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PUID` | `568` | Process user ID (TrueNAS apps) |
+| `PGID` | `568` | Process group ID |
+| `TZ` | `America/Toronto` | Timezone |
+| `TESLACAM_MEDIA_PATH` | `/mnt/Starlink/Tesla/TeslaUSB` | Host path to TeslaUSB dataset |
+| `TESLACAM_AUTH_USER` | (empty) | Optional basic-auth username |
+| `TESLACAM_AUTH_PASS` | (empty) | Optional basic-auth password |
+| `TESLACAM_PORT` | `8000` | Host port |
+
+Leave auth empty to disable login.
+
+#### Volumes
+- `${TESLACAM_MEDIA_PATH}:/media:ro` — TeslaUSB archive (read-only)
+- `/mnt/Starlink/Stacks/homelab-stacks/misc/configs/teslacam-viewer` — thumbnail cache
+
+#### GHCR pull (private image)
+Add GitHub Container Registry in Portainer:
+- URL: `https://ghcr.io`
+- Username: GitHub username
+- Password: PAT with `read:packages`
+
+#### Access
+Visit `http://<host>:8000` (or `TESLACAM_PORT`).
+
+---
+
 ## Quick Start
 
-1. Configure environment variables in `misc.env` (Discord token, API keys)
+1. Configure environment variables in `misc.env` (Discord token, API keys, TeslaCam media path/auth)
 2. Start all services:
    ```bash
    docker-compose up -d
@@ -88,6 +130,7 @@ Visit `http://<host>:34400` to configure playlists and access the IPTV interface
 3. Access the services:
    - Scrutiny: `http://<host>:9090`
    - Threadfin: `http://<host>:34400`
+   - TeslaCam Viewer: `http://<host>:8000`
    - Muse: Runs as Discord bot (invite to server via Discord)
 
 ## Configuration
@@ -96,9 +139,10 @@ All service configurations are stored in `./configs/`:
 ```
 configs/
 ├── muse/              # Muse bot data
-├── threadfin/
-│   ├── conf/          # Playlists and settings
-│   └── temp/          # Temporary cache
+├── teslacam-viewer/   # thumbnail cache
+└── threadfin/
+    ├── conf/          # Playlists and settings
+    └── temp/          # Temporary cache
 ```
 
 Scrutiny stores its configuration locally in `./config` and time-series data in `./influxdb`.
@@ -107,4 +151,4 @@ Scrutiny stores its configuration locally in `./config` and time-series data in 
 
 - **Scrutiny** requires privileged access (`SYS_RAWIO`) to read SMART data from all drives
 - All services persist their data in mounted volumes for configuration and state preservation
-- **Threadfin** and **Muse** use non-root user IDs (UID/GID 568) for security
+- **Threadfin**, **Muse**, and **TeslaCam Viewer** use non-root user IDs (UID/GID 568) for security
