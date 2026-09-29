@@ -83,8 +83,6 @@ Collection of utility and monitoring services for the homelab.
    KOMETA_RADARRTOKEN=your_radarr_api_key
    KOMETA_RADARR4KTOKEN=your_radarr_4k_api_key
    KOMETA_SONARRTOKEN=your_sonarr_api_key
-   KOMETA_TRAKTCLIENTID=your_trakt_client_id
-   KOMETA_TRAKTCLIENTSECRET=your_trakt_client_secret
    EOF
    
    # Website Stack
@@ -181,11 +179,9 @@ KOMETA_TAUTULLIAPIKEY=tautulli_api_key
 KOMETA_RADARRTOKEN=radarr_api_key
 KOMETA_RADARR4KTOKEN=radarr_4k_api_key
 KOMETA_SONARRTOKEN=sonarr_api_key
-KOMETA_TRAKTCLIENTID=trakt_client_id
-KOMETA_TRAKTCLIENTSECRET=trakt_client_secret
 ```
 
-Kometa `config.yml` is committed with `<<SECRET>>` placeholders. Set the `KOMETA_*` variables in Portainer (or `arr-stack.env`). Leave `trakt.authorization` empty in git; complete Trakt PIN auth on the NAS so Kometa can refresh tokens locally — do not commit those writes.
+Kometa `config.yml` is committed with `<<SECRET>>` placeholders. Set the `KOMETA_*` variables in Portainer (or `arr-stack.env`). `KOMETA_MDBLISTAPIKEY` maps to `<<MDBLISTAPIKEY>>` in the `mdblist:` block; get the key from your MDBList account at https://mdblist.com/preferences/. Custom universe collections use `mdblist_list_<key>` pointing at juniorchange's MDBList lists (see `arr-stack/README.md`).
 
 **Website Stack** (`website.env`):
 ```env
