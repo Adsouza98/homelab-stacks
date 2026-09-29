@@ -261,8 +261,6 @@ services:
       - KOMETA_RADARRTOKEN=${KOMETA_RADARRTOKEN}
       - KOMETA_RADARR4KTOKEN=${KOMETA_RADARR4KTOKEN}
       - KOMETA_SONARRTOKEN=${KOMETA_SONARRTOKEN}
-      - KOMETA_TRAKTCLIENTID=${KOMETA_TRAKTCLIENTID}
-      - KOMETA_TRAKTCLIENTSECRET=${KOMETA_TRAKTCLIENTSECRET}
     volumes:
       - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/kometa/:/config            # Config
     restart: unless-stopped
