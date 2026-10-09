@@ -94,7 +94,6 @@ libraries: # This is called out once within the config.yml file
         - middle
         - mummy
         - askew
-        - trek
         - dca
         - dcu
         append_data:
@@ -119,6 +118,7 @@ libraries: # This is called out once within the config.yml file
           poki: Pokémon Collection
           george: George Collection
           jrchange: JuniorChange Collection
+          sking: Stephen King Collection
             # MonsterVerse
         mdblist_list_monster: https://mdblist.com/lists/juniorchange/monsterverse
         url_poster_monster: https://theposterdb.com/api/assets/138821
@@ -183,6 +183,9 @@ libraries: # This is called out once within the config.yml file
         mdblist_list_jrchange: https://mdblist.com/lists/juniorchange/juniorchange-picks
         file_poster_jrchange: config/assets/Jrchange-collection-poster.jpg
         order_jrchange: 1
+            # Stephen King Collection
+        mdblist_list_sking: https://mdblist.com/lists/juniorchange/stephen-king-collection
+        url_poster_sking: https://theposterdb.com/api/assets/559525
             # George Collection
         imdb_list_george: https://www.imdb.com/list/ls529469250
         file_poster_george: config/assets/George-collection-poster.jpg
@@ -206,7 +209,7 @@ libraries: # This is called out once within the config.yml file
         name_rocky: Rocky & Creed Collection
         url_poster_rocky: https://theposterdb.com/api/assets/5907
             # Star Trek - Default
-            #url_poster_trek: https://theposterdb.com/api/assets/62523
+        url_poster_trek: https://theposterdb.com/api/assets/62523
         #- file: config/config-files/user-collections/JrChange-collection.yml
     remove_overlays: false
     overlay_files:
@@ -235,7 +238,6 @@ libraries: # This is called out once within the config.yml file
         - middle
         - mummy
         - askew
-        - trek
         - dca
         - dcu
         append_data:
@@ -260,6 +262,7 @@ libraries: # This is called out once within the config.yml file
           poki: Pokémon Collection
           george: George Collection
           jrchange: JuniorChange Collection
+          sking: Stephen King Collection
           # MonsterVerse
         mdblist_list_monster: https://mdblist.com/lists/juniorchange/monsterverse
         url_poster_monster: https://theposterdb.com/api/assets/138821
@@ -329,6 +332,9 @@ libraries: # This is called out once within the config.yml file
         mdblist_list_jrchange: https://mdblist.com/lists/juniorchange/juniorchange-picks
         file_poster_jrchange: config/assets/Jrchange-collection-poster.jpg
         order_jrchange: 1
+          # Stephen King Collection
+        mdblist_list_sking: https://mdblist.com/lists/juniorchange/stephen-king-collection
+        url_poster_sking: https://theposterdb.com/api/assets/559525
           # George Collection
         imdb_list_george: https://www.imdb.com/list/ls529469250
         file_poster_george: config/assets/George-collection-poster.jpg
@@ -352,7 +358,7 @@ libraries: # This is called out once within the config.yml file
         name_rocky: Rocky & Creed Collection
         url_poster_rocky: https://theposterdb.com/api/assets/5907
           # Star Trek - Default
-          #url_poster_trek: https://theposterdb.com/api/assets/62523
+        url_poster_trek: https://theposterdb.com/api/assets/62523
     remove_overlays: false
     reapply_overlay: true
     overlay_files:
@@ -408,16 +414,19 @@ libraries: # This is called out once within the config.yml file
         - dca
         - dcu
         - marvel
-        - trek
         - xmen
         append_data:
           scooby: Scooby-Doo Collection
           jrchange: JuniorChange Collection
+          sking: Stephen King Collection
           dcstudios: DC Universe Studios
           # JuniorChange Collection
         mdblist_list_jrchange: https://mdblist.com/lists/juniorchange/juniorchange-picks
         file_poster_jrchange: config/assets/Jrchange-collection-poster.jpg
         order_jrchange: 1
+          # Stephen King Collection
+        mdblist_list_sking: https://mdblist.com/lists/juniorchange/stephen-king-collection
+        url_poster_sking: https://theposterdb.com/api/assets/559525
           # Scooby-Doo Collection
         mdblist_list_scooby: https://mdblist.com/lists/juniorchange/scooby-doo
         url_poster_scooby: https://theposterdb.com/api/assets/5898
@@ -431,6 +440,8 @@ libraries: # This is called out once within the config.yml file
           # DC Universe Studios - Default
         mdblist_list_dcstudios: https://mdblist.com/lists/juniorchange/dc-universe
         url_poster_dcstudios: https://theposterdb.com/api/assets/731902
+          # Star Trek - Default
+        url_poster_trek: https://theposterdb.com/api/assets/62523
     overlay_files:
     - default: streaming
       template_variables:
@@ -450,15 +461,18 @@ libraries: # This is called out once within the config.yml file
         - dca
         - dcu
         - marvel
-        - trek
         - xmen
         append_data:
           jrchange: JuniorChange Collection
+          sking: Stephen King Collection
           dcstudios: DC Universe Studios
           # JuniorChange Collection
         mdblist_list_jrchange: https://mdblist.com/lists/juniorchange/juniorchange-picks
         file_poster_jrchange: config/assets/Jrchange-collection-poster.jpg
         order_jrchange: 1
+          # Stephen King Collection
+        mdblist_list_sking: https://mdblist.com/lists/juniorchange/stephen-king-collection
+        url_poster_sking: https://theposterdb.com/api/assets/559525
           # Marvel Cinematic Universe - Default
         url_poster_mcu: https://theposterdb.com/api/assets/5912
           # Star Wars Collection - Default
@@ -469,6 +483,8 @@ libraries: # This is called out once within the config.yml file
           # DC Universe Studios - Default
         mdblist_list_dcstudios: https://mdblist.com/lists/juniorchange/dc-universe
         url_poster_dcstudios: https://theposterdb.com/api/assets/731902
+          # Star Trek - Default
+        url_poster_trek: https://theposterdb.com/api/assets/62523
     remove_overlays: false
     reapply_overlay: true
     overlay_files:
