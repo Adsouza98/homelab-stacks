@@ -82,7 +82,7 @@ Visit `http://<host>:34400` to configure playlists and access the IPTV interface
 
 **Cabin player for the Tesla browser** — YouTube and Plex on the passenger screen. The picture is decoded with WebCodecs and drawn on a canvas, so Tesla's Drive-mode block on `<video>` does not stop playback.
 
-- **Image**: `ghcr.io/adsouza98/tesla-media-player:0.2.0`
+- **Image**: `ghcr.io/adsouza98/tesla-media-player:0.2.1`
 - **Source**: [Adsouza98/tesla-media-player](https://github.com/Adsouza98/tesla-media-player)
 - **Container Name**: `tesla-media-player`
 - **Restart Policy**: Unless stopped

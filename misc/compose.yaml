@@ -56,7 +56,7 @@ services:
   # and `proxy_buffering off`.
   tesla-media-player:
     container_name: tesla-media-player
-    image: ghcr.io/adsouza98/tesla-media-player:0.2.0
+    image: ghcr.io/adsouza98/tesla-media-player:0.2.1
     restart: unless-stopped
     environment:
       - PUID=568
