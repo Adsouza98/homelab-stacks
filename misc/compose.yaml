@@ -63,8 +63,8 @@ services:
       - PGID=568
       - TZ=America/Toronto
       - APP_PASSWORD=${VELA_PASSWORD}
-      - OWNER_NAME=${VELA_OWNER_NAME:-Andre}
-      - OWNER_USERNAME=${VELA_OWNER_USERNAME:-andre}
+      - OWNER_NAME=${VELA_OWNER_NAME:-JuniorChange}
+      - OWNER_USERNAME=${VELA_OWNER_USERNAME:-juniorchange}
       - OWNER_EMAIL=${VELA_OWNER_EMAIL:-}
       - OWNER_PLEX_USERNAME=${VELA_OWNER_PLEX:-}
       - TEST_USERNAME=${VELA_TEST_USERNAME:-grok}
