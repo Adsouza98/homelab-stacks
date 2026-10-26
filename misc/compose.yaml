@@ -51,17 +51,29 @@ services:
     restart: unless-stopped
 
   # Vela — Tesla cabin player (YouTube + Plex). Not on the VPN.
-  # HTTPS is required for full quality. Proxy this port in Nginx Proxy Manager
-  # with websockets on and `proxy_buffering off`.
+  # Sign-in is inside Vela (two seats). Nginx Proxy Manager and Cloudflare
+  # only proxy it. HTTPS is required for full quality: websockets on,
+  # and `proxy_buffering off`.
   tesla-media-player:
     container_name: tesla-media-player
-    image: ghcr.io/adsouza98/tesla-media-player:0.1.0
+    image: ghcr.io/adsouza98/tesla-media-player:0.2.0
     restart: unless-stopped
     environment:
       - PUID=568
       - PGID=568
       - TZ=America/Toronto
       - APP_PASSWORD=${VELA_PASSWORD}
+      - OWNER_NAME=${VELA_OWNER_NAME:-Andre}
+      - OWNER_USERNAME=${VELA_OWNER_USERNAME:-andre}
+      - OWNER_EMAIL=${VELA_OWNER_EMAIL:-}
+      - OWNER_PLEX_USERNAME=${VELA_OWNER_PLEX:-}
+      - TEST_USERNAME=${VELA_TEST_USERNAME:-grok}
+      - TEST_PASSWORD=${VELA_TEST_PASSWORD:-}
+      - TEST_EMAIL=${VELA_TEST_EMAIL:-}
+      - TEST_PLEX_USERNAME=${VELA_TEST_PLEX:-}
+      - GOOGLE_CLIENT_ID=${VELA_GOOGLE_CLIENT_ID:-}
+      - GOOGLE_CLIENT_SECRET=${VELA_GOOGLE_CLIENT_SECRET:-}
+      - PUBLIC_URL=${VELA_PUBLIC_URL:-}
       - PLEX_URL=${PLEX_URL:-http://192.168.1.42:32400}
       - PLEX_TOKEN=${PLEX_TOKEN}
       - DEFAULT_QUALITY=${VELA_QUALITY:-1080}

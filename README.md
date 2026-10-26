@@ -101,6 +101,8 @@ Collection of utility and monitoring services for the homelab.
    SPOTIFY_CLIENT_ID=your_spotify_client_id
    SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
    VELA_PASSWORD=choose_a_cabin_password
+   VELA_OWNER_EMAIL=email_on_your_plex_account
+   VELA_OWNER_PLEX=your_plex_username
    PLEX_URL=http://192.168.1.42:32400
    PLEX_TOKEN=your_plex_token
    VELA_QUALITY=1080
@@ -204,12 +206,14 @@ YOUTUBE_API_KEY=youtube_api_key
 SPOTIFY_CLIENT_ID=spotify_client_id
 SPOTIFY_CLIENT_SECRET=spotify_client_secret
 VELA_PASSWORD=cabin_password
+VELA_OWNER_EMAIL=email_on_your_plex_account
+VELA_OWNER_PLEX=your_plex_username
 PLEX_URL=http://192.168.1.42:32400
 PLEX_TOKEN=plex_token
 VELA_QUALITY=1080
 ```
 
-`PLEX_TOKEN` here is only for Vela. Do not commit `misc.env`. YouTube Premium cookies, if you want higher-bitrate streams, go in `misc/configs/tesla-media-player/youtube-cookies.txt` (Netscape format) and are not committed either. Vela is for passenger use only.
+`PLEX_TOKEN` here is the server token Vela uses to read the library, not a sign-in token. Do not commit `misc.env`. Vela has two seats (owner and a Grok test user). Set `VELA_OWNER_EMAIL` and `VELA_OWNER_PLEX` so your Plex account is the only one that can use Sign in with Plex. If `VELA_TEST_PASSWORD` is empty, the test password is written to `misc/configs/tesla-media-player/test-user` on first start. YouTube Premium cookies, if you want higher-bitrate streams, go in `misc/configs/tesla-media-player/youtube-cookies.txt` (Netscape format) and are not committed either. Vela is for passenger use only. Sign-in stays inside Vela; Nginx Proxy Manager and Cloudflare only proxy it.
 
 ## Service Dependencies
 
