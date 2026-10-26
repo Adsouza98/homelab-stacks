@@ -49,3 +49,25 @@ services:
       - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/threadfin/conf:/home/threadfin/conf
       - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/threadfin/temp:/tmp/threadfin:rw
     restart: unless-stopped
+
+  # Vela — Tesla cabin player (YouTube + Plex). Not on the VPN.
+  # HTTPS is required for full quality. Proxy this port in Nginx Proxy Manager
+  # with websockets on and `proxy_buffering off`.
+  tesla-media-player:
+    container_name: tesla-media-player
+    image: ghcr.io/adsouza98/tesla-media-player:0.1.0
+    restart: unless-stopped
+    environment:
+      - PUID=568
+      - PGID=568
+      - TZ=America/Toronto
+      - APP_PASSWORD=${VELA_PASSWORD}
+      - PLEX_URL=${PLEX_URL:-http://192.168.1.42:32400}
+      - PLEX_TOKEN=${PLEX_TOKEN}
+      - DEFAULT_QUALITY=${VELA_QUALITY:-1080}
+      - YOUTUBE_COOKIES=/config/youtube-cookies.txt
+      - CONFIG_DIR=/config
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-media-player:/config
+    ports:
+      - 8095:8095

@@ -1,6 +1,6 @@
 # Misc Stack
 
-A collection of utility and monitoring services for the homelab, including music streaming, disk health monitoring, and IPTV streaming.
+A collection of utility and monitoring services for the homelab, including music streaming, disk health monitoring, IPTV streaming, and the Vela cabin player.
 
 ## Services
 
@@ -78,16 +78,73 @@ Visit `http://<host>:34400` to configure playlists and access the IPTV interface
 
 ---
 
+### Tesla Media Player (Vela)
+
+**Cabin player for the Tesla browser** — YouTube and Plex on the passenger screen. The picture is decoded with WebCodecs and drawn on a canvas, so Tesla's Drive-mode block on `<video>` does not stop playback.
+
+- **Image**: `ghcr.io/adsouza98/tesla-media-player:0.1.0`
+- **Source**: [Adsouza98/tesla-media-player](https://github.com/Adsouza98/tesla-media-player)
+- **Container Name**: `tesla-media-player`
+- **Restart Policy**: Unless stopped
+- **Not VPN-routed.** The car must be able to reach this port, and the container must be able to reach Plex on the LAN.
+
+**Passenger use only.** Watching video on the driver's display while the car is moving is illegal and dangerous.
+
+#### Ports
+| Port | Service |
+|------|---------|
+| 8095 | Web UI and proxied streams |
+
+#### Environment
+- `PUID=568` / `PGID=568`
+- `TZ=America/Toronto`
+- `VELA_PASSWORD` — login password (`APP_PASSWORD` inside the container). If empty, the first start writes one to `generated-password` in the config volume.
+- `PLEX_URL` — defaults to `http://192.168.1.42:32400`. Must be reachable from the container.
+- `PLEX_TOKEN` — Plex token. The Tesla never sees this.
+- `VELA_QUALITY` — `480`, `720`, `1080` (default), or `max`
+
+#### Volumes
+- `/mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-media-player` — settings, generated password, and YouTube cookies
+
+Put a Netscape `cookies.txt` exported from a YouTube Premium browser session at:
+
+```text
+/mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-media-player/youtube-cookies.txt
+```
+
+Or upload it from Vela's Settings page after signing in.
+
+#### HTTPS (required for full quality)
+
+WebCodecs only runs in a secure context. Point Nginx Proxy Manager at `http://<nas>:8095` with websockets enabled, force SSL, and add this under Advanced:
+
+```nginx
+proxy_buffering off;
+proxy_request_buffering off;
+```
+
+Without that, the proxy buffers the stream and the picture never starts. Plain HTTP on port 8095 still loads the UI and can use compatibility mode (MPEG-1, heavier on the 4790K, lower quality).
+
+#### Access
+`http://<host>:8095` on the LAN, or the HTTPS hostname you create in Nginx Proxy Manager. Open the HTTPS name in the Tesla browser.
+
+---
+
 ## Quick Start
 
-1. Configure environment variables in `misc.env` (Discord token, API keys)
-2. Start all services:
+1. Configure environment variables in `misc.env` (Discord token, API keys, Vela password, Plex token)
+2. Create the Vela config directory if it does not exist:
+   ```bash
+   mkdir -p /mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-media-player
+   ```
+3. Start all services:
    ```bash
    docker-compose up -d
    ```
-3. Access the services:
+4. Access the services:
    - Scrutiny: `http://<host>:9090`
    - Threadfin: `http://<host>:34400`
+   - Vela: `http://<host>:8095` (put this behind HTTPS before using it in the car)
    - Muse: Runs as Discord bot (invite to server via Discord)
 
 ## Configuration
@@ -99,6 +156,7 @@ configs/
 ├── threadfin/
 │   ├── conf/          # Playlists and settings
 │   └── temp/          # Temporary cache
+└── tesla-media-player/  # Vela settings, cookies, generated password
 ```
 
 Scrutiny stores its configuration locally in `./config` and time-series data in `./influxdb`.
@@ -107,4 +165,5 @@ Scrutiny stores its configuration locally in `./config` and time-series data in 
 
 - **Scrutiny** requires privileged access (`SYS_RAWIO`) to read SMART data from all drives
 - All services persist their data in mounted volumes for configuration and state preservation
-- **Threadfin** and **Muse** use non-root user IDs (UID/GID 568) for security
+- **Threadfin**, **Muse**, and **Vela** use non-root user IDs (UID/GID 568) for security
+- **Vela** is for passenger use only. Full H.264 quality needs HTTPS in front of port 8095.
