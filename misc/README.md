@@ -118,6 +118,7 @@ existing Misc Stack Renovate rule includes this image.
    | Variable | Default | Purpose |
    |----------|---------|---------|
    | `TTW_PORT` | `8096` | Published host port |
+   | `TTW_LOG_LEVEL` | `info` | `error`, `info`, or `debug`; recreate the container after changing |
    | `TTW_BIND_IP` | `0.0.0.0` | Host interface to publish on; use the NAS LAN IP for a proxy on another Docker network |
    | `TTW_BEHIND_PROXY` | `0` | Set to `1` after restricting port access to the trusted proxy |
    | `TTW_YOUTUBE_CLIENT_ID` | Empty | Google OAuth Web application client ID |
@@ -170,6 +171,17 @@ exactly. Keep credentials in Portainer or an untracked `misc.env`.
 
 The stack overrides the image's authenticated health check with
 `/api/auth/state`, so it reports healthy before an account is created.
+
+#### Logs
+
+Open the container's **Logs** panel in Portainer. `info` shows startup and Google
+connection events; `debug` adds HTTP/upstream timings and the detected OAuth
+callback configuration; `error` shows failures only. Query strings, request bodies
+and authorization headers are excluded from diagnostics. For troubleshooting, set
+`TTW_LOG_LEVEL=debug`, update the stack to recreate the container, then return to
+`info`. Docker rotates logs at 10 MB and keeps three files. The relay image must
+include the logging update for `LOG_LEVEL` to take effect; pull the newly published
+image when updating the stack.
 
 ---
 

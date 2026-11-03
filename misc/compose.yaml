@@ -58,6 +58,7 @@ services:
     environment:
       - TZ=America/Toronto
       - PORT=8080
+      - LOG_LEVEL=${TTW_LOG_LEVEL:-info}
       - BIND=0.0.0.0
       - EXTRA_LISTENERS=0
       # Enable only when the published port is restricted to your reverse proxy.
@@ -68,6 +69,11 @@ services:
       - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-take-the-wheel:/app/data
     ports:
       - "${TTW_BIND_IP:-0.0.0.0}:${TTW_PORT:-8096}:8080"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     mem_limit: 2g
     # /api/state needs a session; this public endpoint works before first setup.
     healthcheck:
