@@ -95,15 +95,21 @@ existing Misc Stack Renovate rule includes this image.
 
 #### Portainer deployment
 
-1. Prepare the data directory on the Docker host. The image runs as Node's
-   UID/GID **1000:1000**; it does not implement `PUID`/`PGID`. Grant that identity
+1. Prepare the data directory on the Docker host. The stack overrides the image's
+   default user with **568:568** using Compose `user`; the image does not implement
+   `PUID`/`PGID`. Grant UID/GID **568:568**
    write access through the dataset ACL, or for a new directory without a custom ACL:
 
    ```bash
    mkdir -p /mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-take-the-wheel
-   chown 1000:1000 /mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-take-the-wheel
+   chown 568:568 /mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-take-the-wheel
    chmod 700 /mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-take-the-wheel
    ```
+
+   For an existing deployment, stop the relay before changing ownership and apply
+   UID/GID 568 to the files inside this directory as well (including user and
+   session files), or grant equivalent access through the dataset ACL. Changing
+   only the directory owner leaves existing credentials unwritable.
 
 2. Deploy or update the existing Git-backed **misc** stack in Portainer using
    `misc/compose.yaml`. Enter these variables in the stack's environment editor

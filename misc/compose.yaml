@@ -53,6 +53,7 @@ services:
   tesla-take-the-wheel:
     container_name: tesla-take-the-wheel
     image: ghcr.io/rafiknassif/teslatakethewheel:1.0.0
+    user: "568:568"
     restart: unless-stopped
     environment:
       - TZ=America/Toronto
