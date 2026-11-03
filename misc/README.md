@@ -132,6 +132,11 @@ existing Misc Stack Renovate rule includes this image.
    Accounts, sessions, service credentials and settings persist under `/app/data`;
    back up this directory and keep it out of Git.
 
+   `DATA_DIR=/app/data` is explicitly set to the bind mount. New image pulls and
+   container recreation preserve `users.json` (accounts and sessions) and
+   `users/<id>.json` (linked credentials and preferences). Keep the host mount path
+   unchanged when redeploying; the application data is not part of the image.
+
 #### HTTPS and reverse proxy
 
 The Tesla browser needs a public HTTPS hostname. In Nginx Proxy Manager, create a
