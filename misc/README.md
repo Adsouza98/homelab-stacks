@@ -78,6 +78,118 @@ Visit `http://<host>:34400` to configure playlists and access the IPTV interface
 
 ---
 
+### Tesla Take The Wheel
+
+YouTube and Plex media relay with per-user accounts and a canvas/WebCodecs player.
+Source: [rafiknassif/teslatakethewheel](https://github.com/rafiknassif/teslatakethewheel).
+
+- **Image**: `ghcr.io/rafiknassif/teslatakethewheel:1.0.0` (Linux amd64)
+- **Container Name**: `tesla-take-the-wheel`
+- **Restart Policy**: Unless stopped
+- **Port**: `8096:8080` by default
+- **Data**: `/mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-take-the-wheel:/app/data`
+- **Memory limit**: 2 GiB
+
+The image tag is pinned for Portainer Git polling and Renovate updates. The
+existing Misc Stack Renovate rule includes this image.
+
+#### Portainer deployment
+
+1. Prepare the data directory on the Docker host. The stack overrides the image's
+   default user with **568:568** using Compose `user`; the image does not implement
+   `PUID`/`PGID`. Grant UID/GID **568:568**
+   write access through the dataset ACL, or for a new directory without a custom ACL:
+
+   ```bash
+   mkdir -p /mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-take-the-wheel
+   chown 568:568 /mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-take-the-wheel
+   chmod 700 /mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-take-the-wheel
+   ```
+
+   For an existing deployment, stop the relay before changing ownership and apply
+   UID/GID 568 to the files inside this directory as well (including user and
+   session files), or grant equivalent access through the dataset ACL. Changing
+   only the directory owner leaves existing credentials unwritable.
+
+2. Deploy or update the existing Git-backed **misc** stack in Portainer using
+   `misc/compose.yaml`. Enter these variables in the stack's environment editor
+   as needed (for CLI use, pass `--env-file misc.env` from the `misc` directory):
+
+   | Variable | Default | Purpose |
+   |----------|---------|---------|
+   | `TTW_PORT` | `8096` | Published host port |
+   | `TTW_LOG_LEVEL` | `info` | `error`, `info`, or `debug`; recreate the container after changing |
+   | `TTW_BIND_IP` | `0.0.0.0` | Host interface to publish on; use the NAS LAN IP for a proxy on another Docker network |
+   | `TTW_BEHIND_PROXY` | `0` | Set to `1` after restricting port access to the trusted proxy |
+   | `TTW_YOUTUBE_CLIENT_ID` | Empty | Google OAuth Web application client ID |
+   | `TTW_YOUTUBE_CLIENT_SECRET` | Empty | Matching Google client secret |
+
+   If the GHCR package is private, add `ghcr.io` under Portainer Registries with
+   a GitHub username and a token with `read:packages` access. No local build is needed.
+
+3. Open `http://<NAS-IP>:8096` and create the first **admin** account before
+   making the app public. Each user links their own Plex account in Settings.
+   Accounts, sessions, service credentials and settings persist under `/app/data`;
+   back up this directory and keep it out of Git.
+
+   `DATA_DIR=/app/data` is explicitly set to the bind mount. New image pulls and
+   container recreation preserve `users.json` (accounts and sessions) and
+   `users/<id>.json` (linked credentials and preferences). Keep the host mount path
+   unchanged when redeploying; the application data is not part of the image.
+
+#### HTTPS and reverse proxy
+
+The Tesla browser needs a public HTTPS hostname. In Nginx Proxy Manager, create a
+proxy host for your chosen domain, forwarding via **http** to the NAS LAN IP on
+port **8096** (or `TTW_PORT`), and enable SSL. NPM runs in the separate website
+stack, so `127.0.0.1` would point to its own container.
+
+Restrict the relay's published port to your proxy using host/network firewall
+rules, then set `TTW_BEHIND_PROXY=1` and redeploy. This allows the app to use the
+forwarded HTTPS scheme and hostname when generating the Google callback URL.
+Forward `Host`, `X-Forwarded-Host` and `X-Forwarded-Proto` from the trusted proxy.
+In the proxy host's Advanced configuration, disable response buffering for streaming:
+
+```nginx
+proxy_buffering off;
+proxy_request_buffering off;
+proxy_read_timeout 3600s;
+```
+
+Use the app's own account login. It supports multiple users; no shared Plex token
+or account password belongs in this Compose file.
+
+#### YouTube sign-in
+
+Search and playback work without Google OAuth. For account features, enable
+**YouTube Data API v3**, create a Google OAuth **Web application** client, add
+your account as a test user if the consent screen is in Testing, and register:
+
+```text
+https://<your-public-hostname>/api/youtube/oauth/callback
+```
+
+Set both `TTW_YOUTUBE_CLIENT_ID` and `TTW_YOUTUBE_CLIENT_SECRET` in Portainer and
+redeploy. Open the app at that HTTPS hostname, then Settings → YouTube account →
+**Sign in with Google**. The callback must match the value displayed in Settings
+exactly. Keep credentials in Portainer or an untracked `misc.env`.
+
+The stack overrides the image's authenticated health check with
+`/api/auth/state`, so it reports healthy before an account is created.
+
+#### Logs
+
+Open the container's **Logs** panel in Portainer. `info` shows startup and Google
+connection events; `debug` adds HTTP/upstream timings and the detected OAuth
+callback configuration; `error` shows failures only. Query strings, request bodies
+and authorization headers are excluded from diagnostics. For troubleshooting, set
+`TTW_LOG_LEVEL=debug`, update the stack to recreate the container, then return to
+`info`. Docker rotates logs at 10 MB and keeps three files. The relay image must
+include the logging update for `LOG_LEVEL` to take effect; pull the newly published
+image when updating the stack.
+
+---
+
 ## Quick Start
 
 1. Configure environment variables in `misc.env` (Discord token, API keys)

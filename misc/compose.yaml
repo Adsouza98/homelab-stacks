@@ -49,3 +49,37 @@ services:
       - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/threadfin/conf:/home/threadfin/conf
       - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/threadfin/temp:/tmp/threadfin:rw
     restart: unless-stopped
+
+  tesla-take-the-wheel:
+    container_name: tesla-take-the-wheel
+    image: ghcr.io/rafiknassif/teslatakethewheel:1.0.0
+    user: "568:568"
+    restart: unless-stopped
+    environment:
+      - TZ=America/Toronto
+      - PORT=8080
+      - DATA_DIR=/app/data
+      - LOG_LEVEL=${TTW_LOG_LEVEL:-info}
+      - BIND=0.0.0.0
+      - EXTRA_LISTENERS=0
+      # Enable only when the published port is restricted to your reverse proxy.
+      - BEHIND_PROXY=${TTW_BEHIND_PROXY:-0}
+      - YOUTUBE_CLIENT_ID=${TTW_YOUTUBE_CLIENT_ID:-}
+      - YOUTUBE_CLIENT_SECRET=${TTW_YOUTUBE_CLIENT_SECRET:-}
+    volumes:
+      - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-take-the-wheel:/app/data
+    ports:
+      - "${TTW_BIND_IP:-0.0.0.0}:${TTW_PORT:-8096}:8080"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    mem_limit: 2g
+    # /api/state needs a session; this public endpoint works before first setup.
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/api/auth/state').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 60s
+      timeout: 10s
+      start_period: 20s
+      retries: 3
