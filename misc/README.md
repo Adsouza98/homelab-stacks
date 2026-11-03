@@ -86,7 +86,7 @@ Source: [rafiknassif/teslatakethewheel](https://github.com/rafiknassif/teslatake
 - **Image**: `ghcr.io/rafiknassif/teslatakethewheel:1.0.0` (Linux amd64)
 - **Container Name**: `tesla-take-the-wheel`
 - **Restart Policy**: Unless stopped
-- **Port**: `8097:8080` by default
+- **Port**: `8096:8080` by default
 - **Data**: `/mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-take-the-wheel:/app/data`
 - **Memory limit**: 2 GiB
 
@@ -111,7 +111,7 @@ existing Misc Stack Renovate rule includes this image.
 
    | Variable | Default | Purpose |
    |----------|---------|---------|
-   | `TTW_PORT` | `8097` | Published host port |
+   | `TTW_PORT` | `8096` | Published host port |
    | `TTW_BIND_IP` | `0.0.0.0` | Host interface to publish on; use the NAS LAN IP for a proxy on another Docker network |
    | `TTW_BEHIND_PROXY` | `0` | Set to `1` after restricting port access to the trusted proxy |
    | `TTW_YOUTUBE_CLIENT_ID` | Empty | Google OAuth Web application client ID |
@@ -120,7 +120,7 @@ existing Misc Stack Renovate rule includes this image.
    If the GHCR package is private, add `ghcr.io` under Portainer Registries with
    a GitHub username and a token with `read:packages` access. No local build is needed.
 
-3. Open `http://<NAS-IP>:8097` and create the first **admin** account before
+3. Open `http://<NAS-IP>:8096` and create the first **admin** account before
    making the app public. Each user links their own Plex account in Settings.
    Accounts, sessions, service credentials and settings persist under `/app/data`;
    back up this directory and keep it out of Git.
@@ -129,7 +129,7 @@ existing Misc Stack Renovate rule includes this image.
 
 The Tesla browser needs a public HTTPS hostname. In Nginx Proxy Manager, create a
 proxy host for your chosen domain, forwarding via **http** to the NAS LAN IP on
-port **8097** (or `TTW_PORT`), and enable SSL. NPM runs in the separate website
+port **8096** (or `TTW_PORT`), and enable SSL. NPM runs in the separate website
 stack, so `127.0.0.1` would point to its own container.
 
 Restrict the relay's published port to your proxy using host/network firewall

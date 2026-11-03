@@ -48,7 +48,7 @@ Collection of utility and monitoring services for the homelab.
 - Real-time disk health monitoring for all 12 drives
 - IPTV/M3U playlist server
 
-**Ports**: 9090 (Scrutiny), 34400 (Threadfin), 8097 (Tesla Take The Wheel)
+**Ports**: 9090 (Scrutiny), 34400 (Threadfin), 8096 (Tesla Take The Wheel)
 
 For the Tesla relay's Portainer environment, persistent storage permissions and HTTPS
 proxy setup, see [Tesla Take The Wheel](./misc/README.md#tesla-take-the-wheel).
