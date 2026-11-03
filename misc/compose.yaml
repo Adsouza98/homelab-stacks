@@ -49,3 +49,19 @@ services:
       - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/threadfin/conf:/home/threadfin/conf
       - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/threadfin/temp:/tmp/threadfin:rw
     restart: unless-stopped
+
+  teslacam-viewer:
+    container_name: teslacam-viewer
+    image: ghcr.io/adsouza98/teslacam-viewer:1.4.7
+    restart: unless-stopped
+    ports:
+      - "${TESLACAM_PORT:-8000}:8000"
+    environment:
+      - PUID=${PUID:-568}
+      - PGID=${PGID:-568}
+      - TZ=${TZ:-America/Toronto}
+      - AUTH_USER=${TESLACAM_AUTH_USER:-}
+      - AUTH_PASS=${TESLACAM_AUTH_PASS:-}
+    volumes:
+      - ${TESLACAM_MEDIA_PATH:-/mnt/Starlink/Tesla/TeslaUSB}:/media:ro
+      - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/teslacam-viewer:/cache
