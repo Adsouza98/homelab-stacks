@@ -41,14 +41,15 @@ Complete web service stack featuring dashboard, request management, and reverse 
 ### [Misc Stack](./misc/) — Utilities & Monitoring
 Collection of utility and monitoring services for the homelab.
 
-**Services**: Muse (Discord music bot), Scrutiny (disk health monitoring), Threadfin (IPTV streaming)
+**Services**: Muse (Discord music bot), Scrutiny (disk health monitoring), Threadfin (IPTV streaming), Vela / tesla-media-player (Tesla cabin YouTube + Plex)
 
 **Key Features**:
 - Discord bot for music streaming (YouTube + Spotify)
 - Real-time disk health monitoring for all 12 drives
 - IPTV/M3U playlist server
+- Passenger-screen player that draws video on a canvas (WebCodecs), so Tesla Drive mode does not freeze playback
 
-**Ports**: 9090 (Scrutiny), 34400 (Threadfin)
+**Ports**: 9090 (Scrutiny), 34400 (Threadfin), 8095 (Vela)
 
 [→ Read Misc Stack README](./misc/README.md)
 
@@ -93,12 +94,18 @@ Collection of utility and monitoring services for the homelab.
    DB_ROOT_PASSWORD=your_secure_root_password
    EOF
    
-   # Misc Stack (if using Muse)
+   # Misc Stack (if using Muse or Vela)
    cat > misc/misc.env << EOF
    DISCORD_TOKEN=your_discord_bot_token
    YOUTUBE_API_KEY=your_youtube_api_key
    SPOTIFY_CLIENT_ID=your_spotify_client_id
    SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
+   VELA_PASSWORD=choose_a_cabin_password
+   VELA_OWNER_EMAIL=email_on_your_plex_account
+   VELA_OWNER_PLEX=your_plex_username
+   PLEX_URL=http://192.168.1.42:32400
+   PLEX_TOKEN=your_plex_token
+   VELA_QUALITY=1080
    EOF
    ```
 
@@ -125,6 +132,7 @@ Collection of utility and monitoring services for the homelab.
    - Nginx Proxy Manager: `http://<NAS-IP>:82`
    - Tautulli: `http://<NAS-IP>:8181`
    - Scrutiny: `http://<NAS-IP>:9090`
+   - Vela (Tesla player): `http://<NAS-IP>:8095` — proxy this with HTTPS before opening it in the car
 
 ## Directory Structure
 
@@ -197,7 +205,15 @@ DISCORD_TOKEN=discord_bot_token
 YOUTUBE_API_KEY=youtube_api_key
 SPOTIFY_CLIENT_ID=spotify_client_id
 SPOTIFY_CLIENT_SECRET=spotify_client_secret
+VELA_PASSWORD=cabin_password
+VELA_OWNER_EMAIL=email_on_your_plex_account
+VELA_OWNER_PLEX=your_plex_username
+PLEX_URL=http://192.168.1.42:32400
+PLEX_TOKEN=plex_token
+VELA_QUALITY=1080
 ```
+
+`PLEX_TOKEN` here is the server token Vela uses to read the library, not a sign-in token. Do not commit `misc.env`. Vela has two seats (owner and a Grok test user). Set `VELA_OWNER_EMAIL` and `VELA_OWNER_PLEX` so your Plex account is the only one that can use Sign in with Plex. If `VELA_TEST_PASSWORD` is empty, the test password is written to `misc/configs/tesla-media-player/test-user` on first start. YouTube Premium cookies, if you want higher-bitrate streams, go in `misc/configs/tesla-media-player/youtube-cookies.txt` (Netscape format) and are not committed either. Vela is for passenger use only. Sign-in stays inside Vela; Nginx Proxy Manager and Cloudflare only proxy it.
 
 ## Service Dependencies
 
@@ -225,7 +241,7 @@ Plex (external) ┬─ Tautulli
 
 ### Direct Services (Local Network)
 - Organizr, Ombi, Nginx Proxy Manager, MariaDB
-- Tautulli, Kometa, Muse, Scrutiny, Threadfin
+- Tautulli, Kometa, Muse, Scrutiny, Threadfin, Vela (tesla-media-player)
 - Can be exposed via Nginx Proxy Manager with SSL
 
 ## Common Tasks
