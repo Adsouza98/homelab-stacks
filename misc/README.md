@@ -84,7 +84,7 @@ YouTube and Plex media relay with per-user accounts and a canvas/WebCodecs playe
 
 Source: [Adsouza98/teslatakethewheel](https://github.com/Adsouza98/teslatakethewheel), a fork of [rafiknassif/teslatakethewheel](https://github.com/rafiknassif/teslatakethewheel). The image is published by this fork's GitHub Action, not the upstream repository.
 
-- **Image**: `ghcr.io/adsouza98/teslatakethewheel:1.1.0` (linux/amd64). Do not use `latest` in this stack.
+- **Image**: `ghcr.io/adsouza98/teslatakethewheel:1.1.1` (linux/amd64). Do not use `latest` in this stack.
 - **Container name**: `tesla-take-the-wheel`
 - **User**: `568:568` (Compose `user`; the image has no `PUID`/`PGID`)
 - **Restart**: unless stopped
