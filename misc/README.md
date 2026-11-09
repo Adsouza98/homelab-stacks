@@ -84,7 +84,7 @@ YouTube and Plex media relay with per-user accounts and a canvas/WebCodecs playe
 
 Source: [Adsouza98/teslatakethewheel](https://github.com/Adsouza98/teslatakethewheel), a fork of [rafiknassif/teslatakethewheel](https://github.com/rafiknassif/teslatakethewheel). The image is published by this fork's GitHub Action, not the upstream repository.
 
-- **Image**: `ghcr.io/adsouza98/teslatakethewheel:1.0.2` (linux/amd64). Do not use `latest` in this stack.
+- **Image**: `ghcr.io/adsouza98/teslatakethewheel:1.1.0` (linux/amd64). Do not use `latest` in this stack.
 - **Container name**: `tesla-take-the-wheel`
 - **User**: `568:568` (Compose `user`; the image has no `PUID`/`PGID`)
 - **Restart**: unless stopped
@@ -116,6 +116,9 @@ The tag is pinned for Portainer Git polling. Renovate's Misc Stack rule includes
    | `TTW_BEHIND_PROXY` | `0` | Set to `1` only after port 8096 is reachable solely from the proxy. |
    | `TTW_YOUTUBE_CLIENT_ID` | Empty | Google OAuth Web client ID |
    | `TTW_YOUTUBE_CLIENT_SECRET` | Empty | Matching client secret |
+   | `TTW_OPENSUBTITLES_API_KEY` | Empty | OpenSubtitles.com API key. CC still works for tracks already on the file without it. |
+   | `TTW_OPENSUBTITLES_USERNAME` | Empty | OpenSubtitles account, needed to download a searched subtitle |
+   | `TTW_OPENSUBTITLES_PASSWORD` | Empty | That account's password |
 
    The GHCR package is private. In Portainer, add a `ghcr.io` registry for `adsouza98` with a token that has `read:packages`.
 

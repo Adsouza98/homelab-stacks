@@ -53,7 +53,7 @@ services:
   tesla-take-the-wheel:
     container_name: tesla-take-the-wheel
     # Published by Adsouza98/teslatakethewheel. Pin the version tag, not latest.
-    image: ghcr.io/adsouza98/teslatakethewheel:1.0.2
+    image: ghcr.io/adsouza98/teslatakethewheel:1.1.0
     user: "568:568"
     restart: unless-stopped
     environment:
@@ -67,6 +67,9 @@ services:
       - BEHIND_PROXY=${TTW_BEHIND_PROXY:-0}
       - YOUTUBE_CLIENT_ID=${TTW_YOUTUBE_CLIENT_ID:-}
       - YOUTUBE_CLIENT_SECRET=${TTW_YOUTUBE_CLIENT_SECRET:-}
+      - OPENSUBTITLES_API_KEY=${TTW_OPENSUBTITLES_API_KEY:-}
+      - OPENSUBTITLES_USERNAME=${TTW_OPENSUBTITLES_USERNAME:-}
+      - OPENSUBTITLES_PASSWORD=${TTW_OPENSUBTITLES_PASSWORD:-}
     volumes:
       - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-take-the-wheel:/app/data
     ports:
