@@ -84,7 +84,7 @@ YouTube and Plex media relay with per-user accounts and a canvas/WebCodecs playe
 
 Source: [Adsouza98/teslatakethewheel](https://github.com/Adsouza98/teslatakethewheel), a fork of [rafiknassif/teslatakethewheel](https://github.com/rafiknassif/teslatakethewheel). The image is published by this fork's GitHub Action, not the upstream repository.
 
-- **Image**: `ghcr.io/adsouza98/teslatakethewheel:1.0.0` (linux/amd64). Do not use `latest` in this stack.
+- **Image**: `ghcr.io/adsouza98/teslatakethewheel:1.0.1` (linux/amd64). Do not use `latest` in this stack.
 - **Container name**: `tesla-take-the-wheel`
 - **User**: `568:568` (Compose `user`; the image has no `PUID`/`PGID`)
 - **Restart**: unless stopped
@@ -92,7 +92,7 @@ Source: [Adsouza98/teslatakethewheel](https://github.com/Adsouza98/teslatakethew
 - **Data**: `/mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-take-the-wheel` mounted at `/app/data`
 - **Memory limit**: 2 GiB, so a last-resort libx264 session cannot exhaust the 32 GB host
 
-The tag is pinned for Portainer Git polling. Renovate's Misc Stack rule includes `teslatakethewheel`. The `1.0.0` tag does not exist until the fork's **Publish to GHCR** workflow has succeeded on `main`.
+The tag is pinned for Portainer Git polling. Renovate's Misc Stack rule includes `teslatakethewheel`. The fork bumps `package.json` on every merged pull request and publishes that version; this stack follows the tag, not `latest`.
 
 #### Portainer
 

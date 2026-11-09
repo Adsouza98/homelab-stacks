@@ -53,7 +53,7 @@ services:
   tesla-take-the-wheel:
     container_name: tesla-take-the-wheel
     # Published by Adsouza98/teslatakethewheel. Pin the version tag, not latest.
-    image: ghcr.io/adsouza98/teslatakethewheel:1.0.0
+    image: ghcr.io/adsouza98/teslatakethewheel:1.0.1
     user: "568:568"
     restart: unless-stopped
     environment:
