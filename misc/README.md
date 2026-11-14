@@ -80,11 +80,11 @@ Visit `http://<host>:34400` to configure playlists and access the IPTV interface
 
 ### Tesla Take The Wheel
 
-YouTube and Plex media relay with per-user accounts and a canvas/WebCodecs player. The NAS remuxes both sources into one fragmented MP4 so the Tesla browser can keep drawing on a canvas after the car leaves Park. It does not play through a `<video>` element, which the car pauses in Drive. 2.0.0 adds Cast: the car shows a six-character code, and a phone signed in as the same account can send a video file, a link, or the camera. Nothing extra is installed on the phone.
+YouTube and Plex media relay with per-user accounts and a canvas/WebCodecs player. The NAS remuxes both sources into one fragmented MP4 so the Tesla browser can keep drawing on a canvas after the car leaves Park. It does not play through a `<video>` element, which the car pauses in Drive. 2.0.0 adds Cast: the car shows a six-character code, and a phone signed in as the same account can send a video file, a link, or the camera. Nothing extra is installed on the phone. 2.1.0 adds a Cabin player layout beside the original Classic bar. Classic stays the default. Cabin is chosen under Settings → Player layout, uses larger touch targets, and moves the picture settings behind More when the browser window is shorter than 640px.
 
 Source: [Adsouza98/teslatakethewheel](https://github.com/Adsouza98/teslatakethewheel), a fork of [rafiknassif/teslatakethewheel](https://github.com/rafiknassif/teslatakethewheel). The image is published by this fork's GitHub Action, not the upstream repository.
 
-- **Image**: `ghcr.io/adsouza98/teslatakethewheel:2.0.0` (linux/amd64). Do not use `latest` in this stack.
+- **Image**: `ghcr.io/adsouza98/teslatakethewheel:2.1.0` (linux/amd64). Do not use `latest` in this stack.
 - **Container name**: `tesla-take-the-wheel`
 - **User**: `568:568` (Compose `user`; the image has no `PUID`/`PGID`)
 - **Restart**: unless stopped
