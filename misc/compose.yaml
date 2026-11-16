@@ -53,7 +53,7 @@ services:
   tesla-take-the-wheel:
     container_name: tesla-take-the-wheel
     # Published by Adsouza98/teslatakethewheel. Pin the version tag, not latest.
-    image: ghcr.io/adsouza98/teslatakethewheel:2.3.1
+    image: ghcr.io/adsouza98/teslatakethewheel:3.0.0
     user: "568:568"
     restart: unless-stopped
     environment:
@@ -67,6 +67,10 @@ services:
       - BEHIND_PROXY=${TTW_BEHIND_PROXY:-0}
       - YOUTUBE_CLIENT_ID=${TTW_YOUTUBE_CLIENT_ID:-}
       - YOUTUBE_CLIENT_SECRET=${TTW_YOUTUBE_CLIENT_SECRET:-}
+      - TWITCH_CLIENT_ID=${TTW_TWITCH_CLIENT_ID:-}
+      - TWITCH_CLIENT_SECRET=${TTW_TWITCH_CLIENT_SECRET:-}
+      - KICK_CLIENT_ID=${TTW_KICK_CLIENT_ID:-}
+      - KICK_CLIENT_SECRET=${TTW_KICK_CLIENT_SECRET:-}
       - OPENSUBTITLES_API_KEY=${TTW_OPENSUBTITLES_API_KEY:-}
       - OPENSUBTITLES_USERNAME=${TTW_OPENSUBTITLES_USERNAME:-}
       - OPENSUBTITLES_PASSWORD=${TTW_OPENSUBTITLES_PASSWORD:-}

@@ -80,11 +80,11 @@ Visit `http://<host>:34400` to configure playlists and access the IPTV interface
 
 ### Tesla Take The Wheel
 
-YouTube and Plex media relay with per-user accounts and a canvas/WebCodecs player. The NAS remuxes both sources into one fragmented MP4 so the Tesla browser can keep drawing on a canvas after the car leaves Park. It does not play through a `<video>` element, which the car pauses in Drive. 2.0.0 adds Cast: the car shows a six-character code, and a phone signed in as the same account can send a video file, a link, or the camera. Nothing extra is installed on the phone. 2.1.0 adds a Cabin player layout beside the original Classic bar. Classic stays the default. Cabin is chosen under Settings → Player layout, uses larger touch targets, and moves the picture settings behind More when the browser window is shorter than 640px. 2.2.0 browses YouTube as rows and opens a row's name — Plex or YouTube — as a vertical category that keeps loading as you scroll. 2.3.0 makes YouTube Home one scrolling feed, moves channel rows to Subscriptions ordered by what you watch here, and adds a History tab. 2.3.1 keeps the right-hand clock on the full duration while a scrub moves the left-hand clock, and playback starts there on release.
+YouTube and Plex media relay with per-user accounts and a canvas/WebCodecs player. The NAS remuxes both sources into one fragmented MP4 so the Tesla browser can keep drawing on a canvas after the car leaves Park. It does not play through a `<video>` element, which the car pauses in Drive. 2.0.0 adds Cast: the car shows a six-character code, and a phone signed in as the same account can send a video file, a link, or the camera. Nothing extra is installed on the phone. 2.1.0 adds a Cabin player layout beside the original Classic bar. Classic stays the default. Cabin is chosen under Settings → Player layout, uses larger touch targets, and moves the picture settings behind More when the browser window is shorter than 640px. 2.2.0 browses YouTube as rows and opens a row's name — Plex or YouTube — as a vertical category that keeps loading as you scroll. 2.3.1 keeps the right-hand clock on the full duration while a scrub moves the left-hand clock, and playback starts there on release. 3.0.0 adds Twitch and Kick. Twitch sign-in shows followed channels that are live. Kick has no follow list, so sign-in unlocks the live directory and channel lookup. Register `https://ttw.juniorchange.com/api/twitch/oauth/callback` and `https://ttw.juniorchange.com/api/kick/oauth/callback` on those apps, then set the four `TTW_TWITCH_*` and `TTW_KICK_*` variables and redeploy.
 
 Source: [Adsouza98/teslatakethewheel](https://github.com/Adsouza98/teslatakethewheel), a fork of [rafiknassif/teslatakethewheel](https://github.com/rafiknassif/teslatakethewheel). The image is published by this fork's GitHub Action, not the upstream repository.
 
-- **Image**: `ghcr.io/adsouza98/teslatakethewheel:2.3.1` (linux/amd64). Do not use `latest` in this stack.
+- **Image**: `ghcr.io/adsouza98/teslatakethewheel:3.0.0` (linux/amd64). Do not use `latest` in this stack.
 - **Container name**: `tesla-take-the-wheel`
 - **User**: `568:568` (Compose `user`; the image has no `PUID`/`PGID`)
 - **Restart**: unless stopped
@@ -116,6 +116,10 @@ The tag is pinned for Portainer Git polling. Renovate's Misc Stack rule includes
    | `TTW_BEHIND_PROXY` | `0` | Set to `1` only after port 8096 is reachable solely from the proxy. |
    | `TTW_YOUTUBE_CLIENT_ID` | Empty | Google OAuth Web client ID |
    | `TTW_YOUTUBE_CLIENT_SECRET` | Empty | Matching client secret |
+   | `TTW_TWITCH_CLIENT_ID` | Empty | Twitch application client id from dev.twitch.tv |
+   | `TTW_TWITCH_CLIENT_SECRET` | Empty | Matching Twitch secret |
+   | `TTW_KICK_CLIENT_ID` | Empty | Kick application client id from the Developer tab |
+   | `TTW_KICK_CLIENT_SECRET` | Empty | Matching Kick secret |
    | `TTW_OPENSUBTITLES_API_KEY` | Empty | OpenSubtitles.com API key. CC still works for tracks already on the file without it. |
    | `TTW_OPENSUBTITLES_USERNAME` | Empty | OpenSubtitles account, needed to download a searched subtitle |
    | `TTW_OPENSUBTITLES_PASSWORD` | Empty | That account's password |
