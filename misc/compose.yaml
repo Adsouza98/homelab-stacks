@@ -53,14 +53,14 @@ services:
   tesla-take-the-wheel:
     container_name: tesla-take-the-wheel
     # Published by Adsouza98/teslatakethewheel. Pin the version tag, not latest.
-    image: ghcr.io/adsouza98/teslatakethewheel:3.3.0
+    image: ghcr.io/adsouza98/teslatakethewheel:3.3.1
     user: "568:568"
     restart: unless-stopped
     environment:
       - TZ=America/Toronto
       - PORT=8080
       - DATA_DIR=/app/data
-      - LOG_LEVEL=${TTW_LOG_LEVEL:-info}
+      - LOG_LEVEL=${TTW_LOG_LEVEL:-debug}
       - BIND=0.0.0.0
       - EXTRA_LISTENERS=0
       # Enable only when the published port is restricted to the reverse proxy.
