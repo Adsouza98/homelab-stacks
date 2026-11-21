@@ -227,7 +227,7 @@ services:
       - /mnt/Starlink/Downloads/:/Downloads                                              # Downloads
     restart: unless-stopped
   tautulli:
-    image: lscr.io/linuxserver/tautulli:v2.18.2-ls245
+    image: lscr.io/linuxserver/tautulli:v2.19.1-ls252
     container_name: tautulli
     environment:
       - PUID=568
@@ -242,7 +242,7 @@ services:
       - 8181:8181
     restart: unless-stopped
   kometa:
-    image: lscr.io/linuxserver/kometa:v2.5.3-ls123
+    image: lscr.io/linuxserver/kometa:v2.5.5-ls4
     container_name: kometa
     environment:
       - PUID=568
