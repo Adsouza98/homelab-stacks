@@ -41,14 +41,17 @@ Complete web service stack featuring dashboard, request management, and reverse 
 ### [Misc Stack](./misc/) — Utilities & Monitoring
 Collection of utility and monitoring services for the homelab.
 
-**Services**: Muse (Discord music bot), Scrutiny (disk health monitoring), Threadfin (IPTV streaming)
+**Services**: Muse (Discord music bot), Scrutiny (disk health monitoring), Threadfin (IPTV streaming), Tesla Take The Wheel (YouTube + Plex relay)
 
 **Key Features**:
 - Discord bot for music streaming (YouTube + Spotify)
 - Real-time disk health monitoring for all 12 drives
 - IPTV/M3U playlist server
 
-**Ports**: 9090 (Scrutiny), 34400 (Threadfin)
+**Ports**: 9090 (Scrutiny), 34400 (Threadfin), 8096 (Tesla Take The Wheel)
+
+For the Tesla relay's Portainer environment, persistent storage permissions and HTTPS
+proxy setup, see [Tesla Take The Wheel](./misc/README.md#tesla-take-the-wheel).
 
 [→ Read Misc Stack README](./misc/README.md)
 
