@@ -53,7 +53,7 @@ services:
   tesla-take-the-wheel:
     container_name: tesla-take-the-wheel
     # Published by Adsouza98/teslatakethewheel. Pin the version tag, not latest.
-    image: ghcr.io/adsouza98/teslatakethewheel:3.10.0
+    image: ghcr.io/adsouza98/teslatakethewheel:3.11.0
     user: "568:568"
     restart: unless-stopped
     environment:
@@ -74,6 +74,8 @@ services:
       - OPENSUBTITLES_API_KEY=${TTW_OPENSUBTITLES_API_KEY:-}
       - OPENSUBTITLES_USERNAME=${TTW_OPENSUBTITLES_USERNAME:-}
       - OPENSUBTITLES_PASSWORD=${TTW_OPENSUBTITLES_PASSWORD:-}
+      - TTW_REPORT_WEBHOOK_URL=${TTW_REPORT_WEBHOOK_URL:-}
+      - TTW_REPORT_WEBHOOK_KEY=${TTW_REPORT_WEBHOOK_KEY:-}
     volumes:
       - /mnt/Starlink/Stacks/homelab-stacks/misc/configs/tesla-take-the-wheel:/app/data
     ports:
