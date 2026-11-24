@@ -35,7 +35,7 @@ services:
       - /mnt/Starlink/Stacks/homelab-stacks/arr-stack/configs/gluetun/:/gluetun
     restart: unless-stopped
   prowlarr:
-    image: lscr.io/linuxserver/prowlarr:3.0.2.5780-ls169
+    image: lscr.io/linuxserver/prowlarr:3.1.0.5799-ls170
     container_name: prowlarr
     network_mode: service:gluetun  # This uses ExpressVPN’s network stack - 9696:9696
     depends_on:
