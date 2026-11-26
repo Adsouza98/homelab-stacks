@@ -65,8 +65,13 @@
       "groupName": "Misc Stack",
       "groupSlug": "misc-stack",
       "matchPackageNames": [
-        "/muse|scrutiny|threadfin|teslatakethewheel/"
+        "/muse|scrutiny|threadfin/"
       ]
+    },
+    {
+      "description": "Tesla Take The Wheel image is private on GHCR and pinned by hand",
+      "matchPackageNames": ["ghcr.io/adsouza98/teslatakethewheel"],
+      "enabled": false
     }
   ],
   "automerge": false,
